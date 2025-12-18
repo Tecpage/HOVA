@@ -1,0 +1,8 @@
+project: Nova
+version: 0.1
+status: init
+source_of_truth: true
+description: >
+  Zentrales Projekt Nova.
+  Alle Inhalte und Ableitungen werden aus dieser Datei generiert.
+last_change: $(date)
