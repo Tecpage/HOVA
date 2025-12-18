@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Fingerprint">
+  <g fill="none" stroke="#216245" stroke-width="10" stroke-linecap="round">
+    <path d="M128 42c-38 0-70 26-78 61"/>
+    <path d="M206 103c-8-35-40-61-78-61"/>
+    <path d="M80 110c10-22 28-34 48-34s38 12 48 34"/>
+    <path d="M64 140c0-44 28-72 64-72s64 28 64 72"/>
+    <path d="M92 144c0-24 14-40 36-40s36 16 36 40"/>
+    <path d="M102 188c-8-18-10-32-10-48"/>
+    <path d="M164 140c0 40-10 76-28 106"/>
+    <path d="M124 246c-8-10-14-22-18-36"/>
+    <path d="M154 246c10-14 18-30 24-48"/>
+    <path d="M76 206c-8-14-14-30-18-48"/>
+    <path d="M196 206c8-18 14-40 16-64"/>
+  </g>
+</svg>

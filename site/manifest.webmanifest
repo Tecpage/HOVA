@@ -1,0 +1,11 @@
+{
+  "name": "HOVA Viewer",
+  "short_name": "HOVA",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0f0c",
+  "theme_color": "#216245",
+  "icons": [
+    { "src": "./assets/H_button.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HOVA Viewer</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <meta name="theme-color" content="#216245" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="top" aria-hidden="true"></div>
+  <div class="shell">
+    <aside class="sb" aria-label="Navigation">
+      <div class="brand">
+        <img src="./assets/H_button.svg" alt="HOVA" />
+        <div>
+          <div class="t1">HOVA Viewer</div>
+          <div class="t2">Holiday-Inn-Grün · Fingerprint</div>
+        </div>
+      </div>
+      <div class="search" role="search">
+        <input id="search" type="search" placeholder="Suche" autocomplete="off" />
+      </div>
+      <nav id="nav" class="nav"></nav>
+      <div class="sbfoot">
+        <img src="./assets/fingerprint.svg" alt="" aria-hidden="true" />
+        <div>Fingerprint · #216245</div>
+      </div>
+    </aside>
+    <main class="main">
+      <img class="wm" src="./assets/fingerprint.svg" alt="" aria-hidden="true" />
+      <div class="content">
+        <div class="h1">
+          <h1 id="viewTitle">Start</h1>
+          <div class="pills">
+            <a class="pill" href="./index.html">Home</a>
+            <a class="pill" href="./nova.yaml">nova.yaml</a>
+            <a class="pill" href="./CHANGELOG.md">Changelog</a>
+          </div>
+        </div>
+        <section class="card">
+          <h2>Ansicht</h2>
+          <pre id="viewBody"></pre>
+          <div class="small">Hinweis: Installierbar in Chrome (PWA). Für echten Onlinezugriff wird GitHub Pages genutzt.</div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="./app.js"></script>
+</body>
+</html>

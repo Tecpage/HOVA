@@ -1,9 +1,8 @@
-name: Deploy dashboards to GitHub Pages
+name: Deploy HOVA Viewer (GitHub Pages)
 
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -12,66 +11,25 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install Python deps
+      - uses: actions/checkout@v4
+      - name: Prepare artifact
         run: |
-          python -m pip install --upgrade pip
-          pip install pyyaml
-
-      - name: Build IPRO dashboard (generates IPRO/dashboard/)
-        run: python IPRO/build_dashboard.py
-
-      - name: Export Tacheles to static JSON (generates Tacheles/dashboard/data.json)
-        run: python Tacheles/build_static.py
-
-      - name: Prepare site folder
-        run: |
-          rm -rf public
-          mkdir -p public
-
-          # Portal (root)
-          cp -r Portal/* public/
-
-          # IPRO (static)
-          mkdir -p public/ipro
-          cp -r IPRO/dashboard/* public/ipro/
-
-          # Tacheles (static + read-only fallback)
-          mkdir -p public/tacheles
-          cp -r Tacheles/dashboard/* public/tacheles/
-
-          # Project H placeholder
-          mkdir -p public/h
-          cp -r H/* public/h/
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+          test -d site
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: public
-
+          path: site
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
