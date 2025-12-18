@@ -1,0 +1,20 @@
+name: Nova Snapshot
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create snapshot
+        run: |
+          TS=$(date +"%Y%m%d_%H%M%S")
+          tar -czf nova_snapshot_$TS.tar.gz nova.yaml CHANGELOG.md
+      - name: Upload snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: nova-snapshot
+          path: nova_snapshot_*.tar.gz
