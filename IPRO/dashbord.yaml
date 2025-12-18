@@ -1,0 +1,59 @@
+dashboard:
+  title: IPRO Dashboard – Mieter & Indexierung
+  data_sources:
+    tenants_indexation:
+      source: tenants.yaml
+      output: dashboard/data/tenants_indexation.json
+  vpi:
+    base: VPI 2020 = 100
+    storage: local
+    current:
+      month: 2025-11
+      value: 122.7
+    threshold_field: indexation.threshold_percent
+    base_index_field: indexation.base_index_value
+    base_amount_field: indexation.base_net_amount
+  governance:
+    change_tracking:
+      required: true
+      mechanisms:
+      - git commit per change
+      - change_log entry in touched YAML
+      note: 'Keine stillen Änderungen. Bei Unklarheiten: erst klären, dann committen.'
+  views:
+  - id: tenants_index
+    type: table
+    source: tenants_indexation
+    filters:
+    - id: index_status
+      type: select
+      options:
+      - all
+      - with_index
+      - without_index
+      - triggered
+    columns:
+    - field: name
+      label: Name
+    - field: delta_vpi_percent
+      label: Δ VPI %
+    - field: status
+      label: Status
+    - field: new_net_amount
+      label: Neuer Netto-Betrag
+    - field: indexation_details
+      label: Indexierung (Details)
+    status_rules:
+      ok:
+        label: OK
+        color: green
+      triggered:
+        label: HANDLUNGSBEDARF
+        color: red
+      missing:
+        label: VPI/Basis fehlt
+        color: yellow
+  privacy:
+    hide_internal_ids: true
+    note: TEN-ID und Mieter-Nr. bleiben in YAML/JSON erhalten, werden aber im Dashboard
+      nicht angezeigt.

@@ -1,0 +1,90 @@
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "");
+
+async function apiGet(path){
+  const res = await fetch(path, { cache: "no-store" });
+  if(!res.ok){
+    const txt = await res.text().catch(() => "");
+    throw new Error(`HTTP ${res.status}: ${txt || path}`);
+  }
+  return await res.json();
+}
+
+async function apiPost(path, body){
+  const res = await fetch(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body || {})
+  });
+  if(!res.ok){
+    const txt = await res.text().catch(() => "");
+    throw new Error(`HTTP ${res.status}: ${txt || path}`);
+  }
+  return await res.json();
+}
+
+function renderApps(apps){
+  const box = $("apps");
+  box.innerHTML = "";
+
+  for(const a of (apps || [])){
+    const row = document.createElement("div");
+    row.className = "appRow";
+    row.innerHTML = `
+      <div>
+        <div class="appName">${esc(a.name)}</div>
+        <div class="small">${esc(a.workdir)} · ${esc(a.script)} ${esc((a.args||[]).join(" "))}</div>
+      </div>
+      <div class="rowBtns">
+        <button data-act="run" data-id="${esc(a.id)}">Start</button>
+      </div>
+    `;
+    box.appendChild(row);
+  }
+
+  box.querySelectorAll("button[data-act='run']").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = btn.getAttribute("data-id");
+      btn.disabled = true;
+      const oldText = btn.textContent;
+      btn.textContent = "Start…";
+      try{
+        $("meta").textContent = `Starte: ${id} …`;
+        const out = await apiPost("/api/run", { id });
+        if(out?.ok){
+          $("meta").textContent = `Gestartet: ${id}`;
+        } else {
+          $("meta").textContent = `Fehler: ${out?.error || "unbekannt"}`;
+        }
+      } catch(e){
+        $("meta").textContent = `Fehler: ${e?.message || e}`;
+      } finally {
+        btn.textContent = oldText;
+        btn.disabled = false;
+        // Re-render (best-effort)
+        setTimeout(() => refresh().catch(()=>{}), 300);
+      }
+    });
+  });
+}
+
+async function refresh(){
+  try{
+    const j = await apiGet("/api/apps");
+    if(j?.error){
+      $("meta").textContent = "Fehler: " + j.error;
+      renderApps([]);
+      return;
+    }
+    const apps = j.apps || [];
+    $("meta").textContent = `Apps geladen: ${apps.length}`;
+    renderApps(apps);
+  } catch(e){
+    $("meta").textContent = `Fehler: ${e?.message || e}`;
+  }
+}
+
+// initial
+refresh();
+// periodic (no refresh button)
+setInterval(() => refresh().catch(()=>{}), 10000);

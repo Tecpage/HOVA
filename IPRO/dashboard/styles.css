@@ -1,0 +1,170 @@
+/* IPRO Dashboard – Styles (aligned to Tacheles) */
+:root{
+  --bg:#f5f6f7;
+  --panel:#fff;
+  --border:#e5e5e5;
+  --text:#111;
+  --muted:#666;
+  --brand:#11284B;
+  --ok:#e7f6ed;
+  --warn:#fff6d6;
+  --fail:#ffe3e3;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:12px 16px;
+  background:var(--brand);
+  color:#fff;
+  position:sticky;
+  top:0;
+  z-index:60;
+}
+.topbar .title{font-weight:700;letter-spacing:.2px}
+.topbar .meta{
+  margin-left:8px;
+  font-size:12px;
+  opacity:.9;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:48vw;
+}
+.topbar .actions{margin-left:auto;display:flex;gap:8px}
+
+.btn{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  padding:7px 10px;
+  border-radius:8px;
+  font-size:13px;
+  cursor:pointer;
+}
+.btn:hover{background:rgba(255,255,255,.18)}
+.btn:active{transform:translateY(1px)}
+
+.filters{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 16px;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:48px;
+  z-index:55;
+}
+.filtersLeft{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:1;
+  min-width:0;
+}
+.filtersRight{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+#q{
+  width:min(520px, 100%);
+  padding:8px 10px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:13px;
+}
+
+.pill{
+  background:#f1f3f5;
+  border:1px solid var(--border);
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  color:#333;
+  white-space:nowrap;
+}
+
+.muted{font-size:12px;color:var(--muted);white-space:nowrap}
+
+.healthBanner{
+  padding:8px 16px;
+  border-bottom:1px solid var(--border);
+  background:var(--ok);
+  position:sticky;
+  top:92px;
+  z-index:50;
+}
+.healthBanner.warn{background:var(--warn)}
+.healthBanner.fail{background:var(--fail)}
+
+#status{font-size:13px;font-weight:600}
+
+.layout{
+  display:flex;
+  gap:12px;
+  padding:12px 16px 16px;
+  align-items:flex-start;
+}
+
+.tablewrap{
+  flex:1;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:auto;
+  max-height:calc(100vh - 170px);
+}
+
+.tbl{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+.tbl th,.tbl td{
+  border-bottom:1px solid var(--border);
+  padding:8px 10px;
+  vertical-align:top;
+}
+.tbl th{
+  background:#fafafa;
+  position:sticky;
+  top:0;
+  z-index:5;
+  font-weight:600;
+}
+.tbl tr:nth-child(even) td{background:#fcfcfc}
+.tbl td.num{text-align:right}
+.tbl td.center{text-align:center}
+
+.panel{
+  width:380px;
+  max-width:42vw;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px 12px;
+  position:sticky;
+  top:120px;
+  height:calc(100vh - 140px);
+  overflow:auto;
+}
+.panelTitle{font-weight:700;margin:2px 0 6px}
+.panelHint{font-size:12px;color:var(--muted);margin-bottom:8px}
+.panelBody{font-size:12px;white-space:pre-wrap}

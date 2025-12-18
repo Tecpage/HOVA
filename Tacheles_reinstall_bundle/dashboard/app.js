@@ -1,0 +1,646 @@
+/* Tacheles – Dashboard (minimal view + edit/save/versioning) */
+
+const $ = (id) => document.getElementById(id);
+
+const API = {
+  DATA: "/api/data",
+  UPDATE: "/api/update",
+  APPEND_REMARK: "/api/append_remark",
+};
+
+const STATUS_EDIT_ALLOWED = ["Keyed", "In Bearbeitung", "Freigemeldet", "Formal abgenommen"];
+const BEARBEITER_EDIT_ALLOWED = ["HOCHTIEF", "Apleona", "WISAG", "pwrd", "Köster", "Andere"];
+
+// Table columns (requested: Gebäude/Frist/WISAG-Abnahme hidden)
+const TABLE_COLS = [
+  { key: "__rownum", label: "#", cls: "col-num", center: true },
+  { key: "nr_apleona_wisag", label: "WISAG-Nr.", cls: "col-wisag", center: true },
+  { key: "nr_ht", label: "MAZ", cls: "col-maz" },
+  { key: "object_code", label: "Objekt" },
+  { key: "mietbereich", label: "Mietbereich" },
+  { key: "status", label: "Status" },
+  { key: "zustaendigkeit", label: "Aktueller Bearbeiter" },
+];
+
+const DATE_FIELDS = new Set([
+  "datum_anzeige",
+  "termin_mangelbeseitigung",
+  "nachfrist_2",
+  "nachfrist_3",
+  "termin_freimeldung",
+  "mangel_abgestellt_am",
+  "bestaetigung_am",
+]);
+
+let STATE = {
+  fingerprint: "",
+  rows: [],
+  selectedId: null,
+};
+
+function esc(s) {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function digits3(n) {
+  const x = Number(n);
+  if (!Number.isFinite(x)) return null;
+  const i = Math.trunc(x);
+  if (i < 0) return null;
+  return String(i).padStart(3, "0");
+}
+
+function normalizeMazDisplay(v) {
+  const s = String(v ?? "").trim();
+  if (!s) return "";
+  const m = s.match(/(\d{1,3})/);
+  if (!m) return s;
+  const d = digits3(m[1]);
+  if (!d) return s;
+  return `MAZ ${d}`;
+}
+
+function normalizeDMYDisplay(v) {
+  const s = String(v ?? "").trim();
+  if (!s) return "";
+  // ISO -> DMY
+  const mIso = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (mIso) return `${mIso[3]}.${mIso[2]}.${mIso[1]}`;
+
+  const m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  if (!m) return s;
+  const dd = String(m[1]).padStart(2, "0");
+  const mm = String(m[2]).padStart(2, "0");
+  const yy = m[3];
+  return `${dd}.${mm}.${yy}`;
+}
+
+function dmyToISO(dmy) {
+  const s = String(dmy ?? "").trim();
+  if (!s) return "";
+  const m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  if (!m) {
+    // already iso?
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    return "";
+  }
+  const dd = String(m[1]).padStart(2, "0");
+  const mm = String(m[2]).padStart(2, "0");
+  const yy = m[3];
+  return `${yy}-${mm}-${dd}`;
+}
+
+function isoToDMY(iso) {
+  const s = String(iso ?? "").trim();
+  if (!s) return "";
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return "";
+  return `${m[3]}.${m[2]}.${m[1]}`;
+}
+
+function isoToDate(iso) {
+  const m = String(iso ?? "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return null;
+  const y = Number(m[1]);
+  const mo = Number(m[2]) - 1;
+  const d = Number(m[3]);
+  const dt = new Date(y, mo, d);
+  // guard against invalid dates like 2025-02-31
+  if (dt.getFullYear() !== y || dt.getMonth() !== mo || dt.getDate() !== d) return null;
+  dt.setHours(0, 0, 0, 0);
+  return dt;
+}
+
+function getAccState(row) {
+  const acc = row?.acceptance ?? null;
+  if (!acc || typeof acc !== "object") return { state: "", notes: "" };
+  return {
+    state: String(acc.wisag_formal_acceptance ?? "").trim(),
+    notes: String(acc.notes ?? "").trim(),
+  };
+}
+
+function rowNeedsWisagAcceptance(row) {
+  const acc = getAccState(row);
+  return acc.state === "open";
+}
+
+function setMsg(text, kind = "") {
+  const el = $("panelMsg");
+  if (!el) return;
+  el.textContent = text || "";
+  el.className = "panelMsg" + (kind ? ` ${kind}` : "");
+}
+
+async function apiGet(url) {
+  const res = await fetch(url, { cache: "no-store" });
+  const js = await res.json().catch(() => ({}));
+  if (!res.ok || js.ok === false) {
+    throw new Error(js.error || `HTTP ${res.status}`);
+  }
+  return js;
+}
+
+async function apiPost(url, payload) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload || {}),
+  });
+  const js = await res.json().catch(() => ({}));
+  if (!res.ok || js.ok === false) {
+    throw new Error(js.error || `HTTP ${res.status}`);
+  }
+  return js;
+}
+
+function updateFingerprint(fp) {
+  STATE.fingerprint = fp || "";
+  const el = $("meta");
+  if (el) el.textContent = `Fingerprint: ${STATE.fingerprint || "…"}`;
+}
+
+function uniqueSorted(arr) {
+  const s = new Set(arr.map((x) => String(x ?? "").trim()).filter((x) => x));
+  return Array.from(s).sort((a, b) => a.localeCompare(b, "de"));
+}
+
+function buildFilters() {
+  const statusSel = $("statusFilter");
+  const zustSel = $("zustFilter");
+  if (!statusSel || !zustSel) return;
+
+  const statuses = uniqueSorted(STATE.rows.map((r) => r.status));
+  const zusta = uniqueSorted(STATE.rows.map((r) => r.zustaendigkeit));
+
+  statusSel.innerHTML = `<option value="">Status: alle</option>` + statuses.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+  zustSel.innerHTML = `<option value="">Aktueller Bearbeiter: alle</option>` + zusta.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+}
+
+function rowMatchesQuery(row, q) {
+  if (!q) return true;
+  const hay = [
+    row.nr_apleona_wisag,
+    row.nr_ht,
+    row.object_code,
+    row.object_name,
+    row.gebaeude,
+    row.mietbereich,
+    row.mietflaeche,
+    row.firma,
+    row.status,
+    row.zustaendigkeit,
+    row.mangel,
+    row.bearbeitungsstand,
+    row.bemerkung_aktueller_stand,
+  ]
+    .map((x) => String(x ?? ""))
+    .join(" | ")
+    .toLowerCase();
+  return hay.includes(q.toLowerCase());
+}
+
+function getFilteredRows() {
+  const q = $("q")?.value?.trim() || "";
+  const status = $("statusFilter")?.value?.trim() || "";
+  const zust = $("zustFilter")?.value?.trim() || "";
+
+  return STATE.rows.filter((r) => {
+    if (!rowMatchesQuery(r, q)) return false;
+    if (status && String(r.status ?? "").trim() !== status) return false;
+    if (zust && String(r.zustaendigkeit ?? "").trim() !== zust) return false;
+    return true;
+  });
+}
+
+function renderTable() {
+  const thead = $("thead");
+  const tbody = $("tbody");
+  if (!thead || !tbody) return;
+
+  // header
+  thead.innerHTML = TABLE_COLS.map((c) => `<th class="${esc(c.cls || "")}">${esc(c.label)}</th>`).join("");
+
+  const rows = getFilteredRows();
+
+  // body
+  tbody.innerHTML = rows
+    .map((r, idx) => {
+      const selected = r.id === STATE.selectedId ? " selected" : "";
+      const wisagOpen = rowNeedsWisagAcceptance(r) ? " wisag-open" : "";
+      const trCls = `${selected}${wisagOpen}`.trim();
+
+      const cells = TABLE_COLS.map((c) => {
+        let v = "";
+        if (c.key === "__rownum") v = String(idx + 1);
+        else if (c.key === "nr_ht") v = normalizeMazDisplay(r[c.key]);
+        else v = String(r[c.key] ?? "");
+
+        const cls = esc(c.cls || "");
+        return `<td class="${cls}">${esc(v)}</td>`;
+      }).join("");
+
+      return `<tr class="${trCls}" data-id="${esc(r.id)}">${cells}</tr>`;
+    })
+    .join("");
+
+  // click handling
+  tbody.querySelectorAll("tr[data-id]").forEach((tr) => {
+    tr.addEventListener("click", () => {
+      STATE.selectedId = tr.getAttribute("data-id");
+      renderTable();
+      renderPanel();
+    });
+  });
+}
+
+function buildSelectHTML(field, currentValue, allowedValues) {
+  const cur = String(currentValue ?? "").trim();
+
+  let opts = "";
+  if (cur && !allowedValues.includes(cur)) {
+    opts += `<option value="${esc(cur)}" selected disabled>Aktuell: ${esc(cur)}</option>`;
+  } else if (!cur) {
+    opts += `<option value="" selected disabled>Bitte wählen …</option>`;
+  }
+
+  opts += allowedValues
+    .map((v) => {
+      const sel = cur === v ? " selected" : "";
+      return `<option value="${esc(v)}"${sel}>${esc(v)}</option>`;
+    })
+    .join("");
+
+  return `<select class="edit" data-field="${esc(field)}">${opts}</select>`;
+}
+
+function validateDateRules(candidate) {
+  // candidate uses ISO strings
+  const fr = isoToDate(candidate.frist);
+  const n2 = isoToDate(candidate.n2);
+  const n3 = isoToDate(candidate.n3);
+  const fm = isoToDate(candidate.freim);
+
+  const gt = (a, b) => a && b && a.getTime() > b.getTime();
+
+  if (candidate.n2 && !fr) return { ok: false, msg: "Nachfrist 2 benötigt zuerst eine Frist." };
+  if (n2 && fr && !gt(n2, fr)) return { ok: false, msg: "Nachfrist 2 muss nach der Frist liegen." };
+
+  if (candidate.n3 && !fr) return { ok: false, msg: "Nachfrist 3 benötigt zuerst eine Frist." };
+  if (n3 && n2 && !gt(n3, n2)) return { ok: false, msg: "Nachfrist 3 muss nach Nachfrist 2 liegen." };
+  if (n3 && fr && !n2 && !gt(n3, fr)) return { ok: false, msg: "Nachfrist 3 muss nach der Frist liegen." };
+
+  if (candidate.freim) {
+    const last = [fr, n2, n3].filter(Boolean).sort((a, b) => a.getTime() - b.getTime()).pop() || null;
+    if (!last) return { ok: false, msg: "Freimeldung benötigt mindestens eine Frist." };
+    if (fm && last && !gt(fm, last)) return { ok: false, msg: "Freimeldung muss nach der letzten Frist liegen." };
+  }
+
+  return { ok: true, msg: "" };
+}
+
+async function saveField(defectId, field, value) {
+  setMsg("Speichern …");
+  const js = await apiPost(`${API.UPDATE}?_=${Date.now()}`, { id: defectId, field, value });
+  if (js.fingerprint) updateFingerprint(js.fingerprint);
+
+  if (js.row && js.row.id) {
+    const i = STATE.rows.findIndex((r) => r.id === js.row.id);
+    if (i >= 0) STATE.rows[i] = js.row;
+  }
+  setMsg("Gespeichert.", "ok");
+  renderTable();
+  renderPanel();
+}
+
+function renderPanel() {
+  const body = $("panelBody");
+  if (!body) return;
+
+  const row = STATE.rows.find((r) => r.id === STATE.selectedId) || null;
+  if (!row) {
+    body.innerHTML = `<div class="smallHelp">Keine Zeile ausgewählt.</div>`;
+    return;
+  }
+
+  const acc = getAccState(row);
+  const accChecked = acc.state === "accepted";
+  const accVisible = acc.state === "open" || acc.state === "accepted";
+
+  // Build panel with aligned grid
+  const html = [];
+
+  html.push(`<div class="sectionTitle">Details</div>`);
+  html.push(`<div class="formGrid" id="formMain">
+    <label>WISAG-Nr.</label>
+    <input class="edit" data-field="nr_apleona_wisag" value="${esc(row.nr_apleona_wisag ?? "")}" />
+
+    <label>MAZ</label>
+    <input class="edit" data-field="nr_ht" value="${esc(normalizeMazDisplay(row.nr_ht ?? ""))}" />
+
+    <label>Objekt</label>
+    <input class="edit" data-field="object_code" value="${esc(row.object_code ?? "")}" />
+
+    <label>Gebäude</label>
+    <input class="edit" data-field="gebaeude" value="${esc(row.gebaeude ?? "")}" />
+
+    <label>Mietbereich</label>
+    <input class="edit" data-field="mietbereich" value="${esc(row.mietbereich ?? "")}" />
+
+    <label>Mietfläche</label>
+    <input class="edit" data-field="mietflaeche" value="${esc(row.mietflaeche ?? "")}" />
+
+    <label>Firma</label>
+    <input class="edit" data-field="firma" value="${esc(row.firma ?? "")}" />
+  </div>`);
+
+  html.push(`<div class="sectionTitle">Bearbeitung</div>`);
+  html.push(`<div class="formGrid" id="formWork">
+    <label>Status</label>
+    ${buildSelectHTML("status", row.status ?? "", STATUS_EDIT_ALLOWED)}
+
+    <label>Aktueller Bearbeiter</label>
+    ${buildSelectHTML("zustaendigkeit", row.zustaendigkeit ?? "", BEARBEITER_EDIT_ALLOWED)}
+
+    <label>WISAG formelle Abnahme</label>
+    <div>
+      <label style="display:flex;align-items:center;gap:10px;">
+        <input type="checkbox" data-field="acceptance.wisag_formal_acceptance" ${accChecked ? "checked" : ""} ${accVisible ? "" : "disabled"} />
+        <span>${accVisible ? "erledigt" : "n/a"}</span>
+      </label>
+    </div>
+  </div>`);
+
+  html.push(`<div class="sectionTitle">Termine</div>`);
+  const isoAnzeige = dmyToISO(row.datum_anzeige ?? "");
+  const isoFrist = dmyToISO(row.termin_mangelbeseitigung ?? "");
+  const isoN2 = dmyToISO(row.nachfrist_2 ?? "");
+  const isoN3 = dmyToISO(row.nachfrist_3 ?? "");
+  const isoFreim = dmyToISO(row.termin_freimeldung ?? "");
+
+  html.push(`<div class="formGrid" id="formDates">
+    <label>Datum Anzeige</label>
+    <input class="edit" type="date" data-field="datum_anzeige" value="${esc(isoAnzeige)}" />
+
+    <label>Frist</label>
+    <input class="edit" type="date" data-field="termin_mangelbeseitigung" value="${esc(isoFrist)}" />
+
+    <label>Nachfrist 2</label>
+    <input class="edit" type="date" data-field="nachfrist_2" value="${esc(isoN2)}" />
+
+    <label>Nachfrist 3</label>
+    <input class="edit" type="date" data-field="nachfrist_3" value="${esc(isoN3)}" />
+
+    <label>Freimeldung</label>
+    <input class="edit" type="date" data-field="termin_freimeldung" value="${esc(isoFreim)}" />
+  </div>`);
+
+  html.push(`<div class="sectionTitle">Mangel</div>`);
+  html.push(`<div class="formGrid" id="formText">
+    <label>Mangel</label>
+    <textarea class="edit" data-field="mangel">${esc(row.mangel ?? "")}</textarea>
+
+    <label>Aktueller Stand</label>
+    <textarea class="edit" data-field="bemerkung_aktueller_stand">${esc(row.bemerkung_aktueller_stand ?? "")}</textarea>
+  </div>`);
+
+  html.push(`<div class="sectionTitle">Bemerkungen (append-only)</div>`);
+  const hist = String(row.bearbeitungsstand ?? "").trim();
+  html.push(`<div class="formGrid" id="formNotes">
+    <div class="noteHistory">${esc(hist || "—")}</div>
+    <div class="noteComposer">
+      <div class="notePrefix" id="notePrefix">[${new Date().toLocaleString("de-DE")}]</div>
+      <textarea class="noteInput" id="noteInput" placeholder="Neue Bemerkung (mind. 10 Wörter) – Enter zum Speichern …"></textarea>
+      <div class="smallHelp">Regel: Beim Speichern wird automatisch Datum/Uhrzeit vorangestellt und als neue Zeile angehängt. Löschen von gespeicherten Einträgen ist nicht vorgesehen.</div>
+    </div>
+  </div>`);
+
+  
+
+  // Weitere Felder aus der YAML (sichtbar; einfache Typen editierbar)
+  html.push(`<div class="sectionTitle">Weitere Felder</div>`);
+  const shownKeys = new Set([
+    "nr_apleona_wisag","nr_ht","object_code","gebaeude","mietbereich","mietflaeche","firma",
+    "status","zustaendigkeit",
+    "datum_anzeige","termin_mangelbeseitigung","nachfrist_2","nachfrist_3","termin_freimeldung",
+    "mangel","bemerkung_aktueller_stand","bearbeitungsstand",
+    "acceptance"
+  ]);
+  const extras = Object.keys(row || {}).filter((k) => !shownKeys.has(k)).sort((a,b)=>a.localeCompare(b,"de"));
+  if (extras.length === 0) {
+    html.push(`<div class="smallHelp">—</div>`);
+  } else {
+    html.push(`<div class="formGrid" id="formExtra">`);
+    extras.forEach((k) => {
+      const v = row[k];
+
+      // id + komplexe Felder nur anzeigen (readonly)
+      if (k === "id") {
+        html.push(`<label>${esc(k)}</label><input class="edit" value="${esc(v)}" readonly />`);
+        return;
+      }
+      if (v && typeof v === "object") {
+        html.push(`<label>${esc(k)}</label><textarea class="edit" readonly>${esc(JSON.stringify(v, null, 2))}</textarea>`);
+        return;
+      }
+
+      const s = String(v ?? "");
+      if (s.length > 80 || s.includes("\\n")) {
+        html.push(`<label>${esc(k)}</label><textarea class="edit" data-field="${esc(k)}">${esc(s)}</textarea>`);
+      } else {
+        html.push(`<label>${esc(k)}</label><input class="edit" data-field="${esc(k)}" value="${esc(s)}" />`);
+      }
+    });
+    html.push(`</div>`);
+  }
+
+// Optional: show acceptance notes (read-only)
+  if (acc.notes) {
+    html.push(`<hr class="sep" />`);
+    html.push(`<div class="smallHelp"><strong>WISAG-Abnahme Notizen:</strong><br/>${esc(acc.notes)}</div>`);
+  }
+
+  body.innerHTML = html.join("");
+
+  // dynamic timestamp in note prefix (updates until first character typed)
+  setupNoteComposer(row.id);
+
+  // hook field saving
+  hookFormAutosave(row);
+}
+
+function setupNoteComposer(defectId) {
+  const prefixEl = $("notePrefix");
+  const inputEl = $("noteInput");
+  if (!prefixEl || !inputEl) return;
+
+  let frozenTs = null;
+  let timer = null;
+
+  const fmtNow = () => {
+    const d = new Date();
+    const pad = (x) => String(x).padStart(2, "0");
+    const ts = `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    return ts;
+  };
+
+  const startTimer = () => {
+    stopTimer();
+    timer = setInterval(() => {
+      if (!frozenTs) prefixEl.textContent = `[${fmtNow()}]`;
+    }, 500);
+  };
+
+  const stopTimer = () => {
+    if (timer) clearInterval(timer);
+    timer = null;
+  };
+
+  startTimer();
+
+  inputEl.addEventListener("input", () => {
+    const text = inputEl.value || "";
+    if (!frozenTs && text.trim().length > 0) {
+      frozenTs = fmtNow();
+      prefixEl.textContent = `[${frozenTs}]`;
+    }
+    if (text.trim().length === 0) {
+      frozenTs = null; // user cleared before saving
+    }
+  });
+
+  inputEl.addEventListener("keydown", async (ev) => {
+    if (ev.key === "Enter" && !ev.shiftKey) {
+      ev.preventDefault();
+      const raw = String(inputEl.value ?? "").trim();
+      if (!raw) return;
+
+      // min 10 words
+      const words = raw.split(/\s+/).filter(Boolean);
+      if (words.length < 10) {
+        setMsg("Bemerkung benötigt mind. 10 Wörter (nach Datum/Uhrzeit).", "err");
+        return;
+      }
+
+      const ts = frozenTs || fmtNow();
+      setMsg("Speichern …");
+
+      try {
+        const js = await apiPost(`${API.APPEND_REMARK}?_=${Date.now()}`, {
+          id: defectId,
+          field: "bearbeitungsstand",
+          ts,
+          text: raw,
+        });
+
+        if (js.fingerprint) updateFingerprint(js.fingerprint);
+        if (js.row && js.row.id) {
+          const i = STATE.rows.findIndex((r) => r.id === js.row.id);
+          if (i >= 0) STATE.rows[i] = js.row;
+        }
+
+        // reset composer
+        inputEl.value = "";
+        frozenTs = null;
+        prefixEl.textContent = `[${fmtNow()}]`;
+
+        setMsg("Gespeichert.", "ok");
+        renderTable();
+        renderPanel();
+      } catch (e) {
+        setMsg(String(e.message || e), "err");
+      }
+    }
+  });
+
+  // clean timer when re-rendering
+  window.addEventListener("beforeunload", () => stopTimer());
+}
+
+function hookFormAutosave(row) {
+  const container = $("panelBody");
+  if (!container) return;
+
+  container.querySelectorAll(".edit").forEach((el) => {
+    const field = el.getAttribute("data-field");
+    if (!field) return;
+    if (el.disabled || el.hasAttribute("readonly")) return;
+
+    const tag = el.tagName.toLowerCase();
+    const type = (el.getAttribute("type") || "").toLowerCase();
+
+    const handler = async () => {
+      try {
+        // checkbox
+        if (type === "checkbox") {
+          const checked = el.checked === true;
+          const newState = checked ? "accepted" : "open";
+          await saveField(row.id, field, newState);
+          return;
+        }
+
+        // date fields: validate logical order BEFORE save
+        if (type === "date" || DATE_FIELDS.has(field)) {
+          const isoVal = String(el.value ?? "").trim(); // ISO
+          const candidate = {
+            frist: field === "termin_mangelbeseitigung" ? isoVal : dmyToISO(row.termin_mangelbeseitigung ?? ""),
+            n2: field === "nachfrist_2" ? isoVal : dmyToISO(row.nachfrist_2 ?? ""),
+            n3: field === "nachfrist_3" ? isoVal : dmyToISO(row.nachfrist_3 ?? ""),
+            freim: field === "termin_freimeldung" ? isoVal : dmyToISO(row.termin_freimeldung ?? ""),
+          };
+          const vr = validateDateRules(candidate);
+          if (!vr.ok) {
+            setMsg(vr.msg, "err");
+            // revert UI to last saved value
+            el.value = dmyToISO(row[field] ?? "");
+            return;
+          }
+          await saveField(row.id, field, isoVal);
+          return;
+        }
+
+        // normal text/select/textarea
+        const val = tag === "textarea" ? el.value : el.value;
+        await saveField(row.id, field, val);
+      } catch (e) {
+        setMsg(String(e.message || e), "err");
+      }
+    };
+
+    if (tag === "select") el.addEventListener("change", handler);
+    else if (type === "date" || type === "checkbox") el.addEventListener("change", handler);
+    else el.addEventListener("blur", handler);
+  });
+}
+
+async function loadData() {
+  setMsg("");
+  const js = await apiGet(`${API.DATA}?_=${Date.now()}`);
+  updateFingerprint(js.fingerprint || "");
+  STATE.rows = Array.isArray(js.rows) ? js.rows : [];
+  buildFilters();
+  renderTable();
+  renderPanel();
+}
+
+function attachFilterEvents() {
+  $("q")?.addEventListener("input", () => renderTable());
+  $("statusFilter")?.addEventListener("change", () => renderTable());
+  $("zustFilter")?.addEventListener("change", () => renderTable());
+}
+
+async function init() {
+  attachFilterEvents();
+  try {
+    await loadData();
+  } catch (e) {
+    setMsg(`Fehler beim Laden: ${String(e.message || e)}`, "err");
+  }
+}
+
+window.addEventListener("DOMContentLoaded", init);

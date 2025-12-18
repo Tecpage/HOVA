@@ -1,0 +1,422 @@
+#!/usr/bin/env python3
+import sys, os, json, datetime, shutil, threading, re
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
+from urllib.parse import urlparse, parse_qs
+import yaml
+
+try:
+    from openpyxl import Workbook
+except Exception:
+    Workbook = None
+
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8010
+ROOT = sys.argv[2] if len(sys.argv) > 2 else os.getcwd()
+
+YAML_PATH = os.path.join(ROOT, "Tacheles.yaml")
+DASH_DIR  = os.path.join(ROOT, "dashboard")
+VERSIONS_DIR = os.path.join(ROOT, ".versions")
+
+# Editing constraints (frontend also enforces; backend is source of truth)
+STATUS_ALLOWED = ["Keyed", "In Bearbeitung", "Freigemeldet", "Formal abgenommen"]
+BEARBEITER_ALLOWED = ["HOCHTIEF", "Apleona", "Wisag", "pwrd", "Köster", "Andere"]
+
+# Fields treated as dates (format TT.MM.JJJJ)
+DATE_FIELDS = {
+  "datum_anzeige",
+  "termin_mangelbeseitigung",
+  "termin_freimeldung",
+  "nachfrist_2",
+  "nachfrist_3",
+  "freigabe_ersatzvornahme",
+  "anzeige_ersatzvornahme",
+  "mangel_abgestellt_am",
+  "bestaetigung_am",
+}
+
+LOCK = threading.Lock()
+
+def fingerprint():
+    # timestamp with seconds
+    return datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
+def ts_dmy_hms(dt=None):
+    dt = dt or datetime.datetime.now()
+    return dt.strftime("%d.%m.%Y %H:%M:%S")
+
+def normalize_date(value: str) -> str:
+    s = ("" if value is None else str(value)).strip()
+    if not s:
+        return ""
+    # YYYY-MM-DD
+    m = re.match(r"^(\d{4})\s*-\s*(\d{1,2})\s*-\s*(\d{1,2})$", s)
+    if m:
+        y, mo, d = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        return f"{d:02d}.{mo:02d}.{y:04d}"
+    # DD.MM.YYYY (allow spaces)
+    m = re.match(r"^(\d{1,2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{4})$", s)
+    if m:
+        d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        return f"{d:02d}.{mo:02d}.{y:04d}"
+    raise ValueError("Datum muss TT.MM.JJJJ sein (oder YYYY-MM-DD).")
+
+def normalize_maz(value: str) -> str:
+    s = ("" if value is None else str(value)).strip()
+    if not s:
+        return ""
+    digits = re.sub(r"\D", "", s)
+    if not digits:
+        raise ValueError("MAZ muss eine Zahl enthalten.")
+    n = int(digits)
+    if n < 0:
+        raise ValueError("MAZ ungültig.")
+    return f"MAZ {n:03d}"
+
+def load_yaml():
+    with open(YAML_PATH, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f) or {}
+
+def save_yaml_with_version(doc: dict, reason: str = ""):
+    os.makedirs(VERSIONS_DIR, exist_ok=True)
+    ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    # Snapshot BEFORE writing
+    try:
+        snap = os.path.join(VERSIONS_DIR, f"Tacheles_{ts}.yaml")
+        shutil.copy2(YAML_PATH, snap)
+    except Exception:
+        pass
+    tmp = YAML_PATH + f".tmp.{ts}"
+    with open(tmp, "w", encoding="utf-8") as f:
+        yaml.safe_dump(
+            doc,
+            f,
+            sort_keys=False,
+            allow_unicode=True,
+            default_flow_style=False,
+            width=120,
+        )
+    os.replace(tmp, YAML_PATH)
+
+def deep_set(obj: dict, path: str, value):
+    parts = path.split(".")
+    cur = obj
+    for p in parts[:-1]:
+        if p not in cur or not isinstance(cur[p], dict):
+            cur[p] = {}
+        cur = cur[p]
+    cur[parts[-1]] = value
+
+def deep_get(obj: dict, path: str):
+    parts = path.split(".")
+    cur = obj
+    for p in parts:
+        if not isinstance(cur, dict) or p not in cur:
+            return None
+        cur = cur[p]
+    return cur
+
+def find_defect(doc: dict, defect_id: str):
+    defects = doc.get("defects")
+    if not isinstance(defects, list):
+        return None
+    for d in defects:
+        if isinstance(d, dict) and str(d.get("id") or "") == str(defect_id or ""):
+            return d
+    return None
+
+def row_from_defect(d: dict):
+    acc = d.get("acceptance") if isinstance(d.get("acceptance"), dict) else {}
+    st_raw = str(d.get("status") or "").strip()
+    st = st_raw.lower()
+
+    wfa = acc.get("wisag_formal_acceptance")
+    # Only meaningful for Freigemeldet/Formal abgenommen
+    if st == "freigemeldet":
+        v = str(wfa or "open").strip().lower()
+        wfa = "accepted" if v == "accepted" else "open"
+    elif st == "formal abgenommen":
+        wfa = "accepted"
+    else:
+        wfa = ""
+
+    return {
+        "id": d.get("id"),
+        "nr_apleona_wisag": d.get("nr_apleona_wisag"),
+        "nr_ht": d.get("nr_ht"),
+        "object_code": d.get("object_code"),
+        "gebaeude": d.get("gebaeude"),
+        "mietbereich": d.get("mietbereich"),
+        "status": d.get("status"),
+        "zustaendigkeit": d.get("zustaendigkeit"),
+        "termin_mangelbeseitigung": d.get("termin_mangelbeseitigung"),
+        "wisag_formal_acceptance": wfa,
+    }
+
+# Excel export is kept (not necessarily linked from UI)
+COLUMNS_EXPORT = [
+  ("nr_apleona_wisag", "WISAG-Nr."),
+  ("nr_ht", "MAZ"),
+  ("object_code", "Objekt"),
+  ("gebaeude", "Gebäude"),
+  ("mietbereich", "Mietbereich"),
+  ("status", "Status"),
+  ("zustaendigkeit", "Aktueller Bearbeiter"),
+  ("termin_mangelbeseitigung", "Frist"),
+  ("wisag_formal_acceptance", "WISAG Abnahme"),
+]
+
+def export_xlsx(rows):
+    if Workbook is None:
+        return None, "openpyxl fehlt. Installiere: python3 -m pip install --user openpyxl"
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Maengel"
+    ws.append([label for _,label in COLUMNS_EXPORT])
+    for r in rows:
+        ws.append([r.get(k) for k,_ in COLUMNS_EXPORT])
+    import io
+    buf = io.BytesIO()
+    wb.save(buf)
+    return buf.getvalue(), None
+
+class Handler(SimpleHTTPRequestHandler):
+    def end_headers(self):
+        # Avoid stale assets; makes "Hard Reload" unnecessary
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        return super().end_headers()
+
+    def _json(self, obj, code=200):
+        data = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
+    def _read_json(self):
+        try:
+            n = int(self.headers.get("Content-Length","0"))
+        except Exception:
+            n = 0
+        raw = self.rfile.read(n) if n > 0 else b""
+        if not raw:
+            return {}
+        try:
+            return json.loads(raw.decode("utf-8"))
+        except Exception:
+            return {}
+
+    def do_GET(self):
+        p = urlparse(self.path)
+        path = p.path
+
+        if path == "/":
+            self.send_response(302)
+            self.send_header("Location","/dashboard/")
+            self.end_headers()
+            return
+
+        if path == "/api/health":
+            self._json({"ok": True, "fingerprint": fingerprint()})
+            return
+
+        if path == "/api/data":
+            with LOCK:
+                doc = load_yaml()
+                defects = doc.get("defects") if isinstance(doc.get("defects"), list) else []
+                rows = [row_from_defect(d) for d in defects if isinstance(d, dict)]
+            # Provide unique values for filters
+            status_values = sorted({str(r.get("status") or "").strip() for r in rows if str(r.get("status") or "").strip()})
+            bearb_values  = sorted({str(r.get("zustaendigkeit") or "").strip() for r in rows if str(r.get("zustaendigkeit") or "").strip()})
+            self._json({
+                "fingerprint": fingerprint(),
+                "rows": rows,
+                "filter_status_values": status_values,
+                "filter_bearbeiter_values": bearb_values,
+                "edit_status_allowed": STATUS_ALLOWED,
+                "edit_bearbeiter_allowed": BEARBEITER_ALLOWED,
+                "date_fields": sorted(list(DATE_FIELDS)),
+            })
+            return
+
+        if path == "/api/defect":
+            qs = parse_qs(p.query or "")
+            defect_id = (qs.get("id") or [""])[0]
+            with LOCK:
+                doc = load_yaml()
+                d = find_defect(doc, defect_id)
+                if not d:
+                    self._json({"ok": False, "error": "Defect not found"}, 404)
+                    return
+                self._json({"ok": True, "fingerprint": fingerprint(), "defect": d})
+            return
+
+        if path == "/api/export.xlsx":
+            with LOCK:
+                doc = load_yaml()
+                defects = doc.get("defects") if isinstance(doc.get("defects"), list) else []
+                rows = [row_from_defect(d) for d in defects if isinstance(d, dict)]
+            content, err = export_xlsx(rows)
+            if err:
+                self._json({"ok": False, "error": err}, 500)
+                return
+            self.send_response(200)
+            self.send_header("Content-Type","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            self.send_header("Content-Disposition",'attachment; filename="Tacheles_Maengel.xlsx"')
+            self.send_header("Content-Length", str(len(content)))
+            self.end_headers()
+            self.wfile.write(content)
+            return
+
+        return super().do_GET()
+
+    def do_POST(self):
+        p = urlparse(self.path)
+        path = p.path
+
+        if path == "/api/update":
+            body = self._read_json()
+            defect_id = body.get("id")
+            patch = body.get("patch") if isinstance(body.get("patch"), dict) else {}
+
+            if not defect_id or not patch:
+                self._json({"ok": False, "error": "id und patch sind erforderlich."}, 400)
+                return
+
+            with LOCK:
+                doc = load_yaml()
+                d = find_defect(doc, defect_id)
+                if not d:
+                    self._json({"ok": False, "error": "Defect not found"}, 404)
+                    return
+
+                # Apply patch with validations
+                try:
+                    for k, v in patch.items():
+                        key = str(k)
+
+                        # Status
+                        if key == "status":
+                            val = ("" if v is None else str(v)).strip()
+                            if val not in STATUS_ALLOWED:
+                                raise ValueError(f"Status muss einer der Vorgaben sein: {', '.join(STATUS_ALLOWED)}")
+                            d["status"] = val
+                            # keep acceptance consistent
+                            if val == "Formal abgenommen":
+                                d.setdefault("acceptance", {})
+                                if isinstance(d["acceptance"], dict):
+                                    d["acceptance"]["wisag_formal_acceptance"] = "accepted"
+                            elif val == "Freigemeldet":
+                                d.setdefault("acceptance", {})
+                                if isinstance(d["acceptance"], dict):
+                                    d["acceptance"].setdefault("wisag_formal_acceptance", "open")
+
+                        # Bearbeiter / Zuständigkeit
+                        elif key == "zustaendigkeit":
+                            val = ("" if v is None else str(v)).strip()
+                            if val not in BEARBEITER_ALLOWED:
+                                raise ValueError(f"Aktueller Bearbeiter muss einer der Vorgaben sein: {', '.join(BEARBEITER_ALLOWED)}")
+                            d["zustaendigkeit"] = val
+
+                        # MAZ (nr_ht)
+                        elif key == "nr_ht":
+                            d["nr_ht"] = normalize_maz(v)
+
+                        # Date fields
+                        elif key in DATE_FIELDS:
+                            d[key] = normalize_date(v)
+
+                        else:
+                            # allow nested set via dot path
+                            if "." in key:
+                                deep_set(d, key, v)
+                            else:
+                                d[key] = v
+
+                except ValueError as e:
+                    self._json({"ok": False, "error": str(e)}, 400)
+                    return
+                except Exception:
+                    self._json({"ok": False, "error": "Update fehlgeschlagen."}, 500)
+                    return
+
+                # persist
+                save_yaml_with_version(doc, reason="update")
+
+                # Return updated objects
+                self._json({
+                    "ok": True,
+                    "fingerprint": fingerprint(),
+                    "defect": d,
+                    "row": row_from_defect(d),
+                })
+            return
+
+        if path == "/api/append_remark":
+            body = self._read_json()
+            defect_id = body.get("id")
+            text = ("" if body.get("text") is None else str(body.get("text"))).strip()
+            ts = ("" if body.get("ts") is None else str(body.get("ts"))).strip()
+
+            if not defect_id:
+                self._json({"ok": False, "error": "id ist erforderlich."}, 400)
+                return
+            if not text:
+                self._json({"ok": False, "error": "Bemerkung darf nicht leer sein."}, 400)
+                return
+
+            # timestamp: client may send captured ts; validate or fall back
+            if ts:
+                # expected: DD.MM.YYYY HH:MM:SS
+                if not re.match(r"^\d{2}\.\d{2}\.\d{4}\s+\d{2}:\d{2}:\d{2}$", ts):
+                    self._json({"ok": False, "error": "Zeitstempel ungültig. Erwartet: TT.MM.JJJJ HH:MM:SS"}, 400)
+                    return
+            else:
+                ts = ts_dmy_hms()
+
+            # word count (>=10) for the user text
+            words = [w for w in re.split(r"\s+", text) if w]
+            if len(words) < 10:
+                self._json({"ok": False, "error": "Bemerkung muss mindestens 10 Worte enthalten."}, 400)
+                return
+
+            line = f"[{ts}] {text}"
+
+            with LOCK:
+                doc = load_yaml()
+                d = find_defect(doc, defect_id)
+                if not d:
+                    self._json({"ok": False, "error": "Defect not found"}, 404)
+                    return
+
+                existing = d.get("bemerkung_aktueller_stand")
+                if existing is None:
+                    existing = ""
+                existing = str(existing)
+                existing = existing.rstrip("\n")
+                d["bemerkung_aktueller_stand"] = (existing + "\n" + line).strip("\n") if existing.strip() else line
+
+                save_yaml_with_version(doc, reason="append_remark")
+
+                self._json({
+                    "ok": True,
+                    "fingerprint": fingerprint(),
+                    "defect": d,
+                    "row": row_from_defect(d),
+                })
+            return
+
+        self._json({"ok": False, "error": "Unknown endpoint"}, 404)
+
+def main():
+    if not os.path.exists(YAML_PATH):
+        print("FEHLER: Tacheles.yaml nicht gefunden:", YAML_PATH)
+        sys.exit(2)
+    os.makedirs(DASH_DIR, exist_ok=True)
+    httpd = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+    print(f"Serving: http://127.0.0.1:{PORT}/dashboard/")
+    httpd.serve_forever()
+
+if __name__ == "__main__":
+    main()

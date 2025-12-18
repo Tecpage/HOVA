@@ -1,0 +1,1510 @@
+# payments.yaml
+# Projekt Y – Sollstellungen (Rent Roll), historisch + aktuell (append-only)
+
+meta:
+  ssot: "yaml"
+  file_type: "payments"
+  kind_default: "rent_roll"
+  append_only: true
+  maintained_by: "ORG-0001"
+  last_verified: "2025-11-01"
+
+validation:
+  rules:
+    - id: V-PAY-001
+      description: "IDs sind eindeutig und stabil: PAY-<YYYY-MM-DD>-TEN-<NNNN> (oder PAY-<YYYY-MM-DD>-<tenant_no>)."
+    - id: V-PAY-002
+      description: "Append-only: bestehende Einträge werden nicht verändert; Korrekturen erfolgen als neuer Eintrag mit kind=correction."
+    - id: V-PAY-003
+      description: "Summe der Komponenten (inkl. base_rent_net) muss total_net ergeben (2 Dezimalstellen, kaufmännische Rundung)."
+      check: "total_net == round(sum(components[*]), 2)"
+    - id: V-PAY-004
+      description: "tenant_id muss in tenants.yaml existieren."
+    - id: V-PAY-005
+      description: "period Format: YYYY-MM; as_of Format: YYYY-MM-DD."
+    - id: V-PAY-006
+      description: "Währung immer ISO: EUR."
+
+assistant_prompt_snapshot:
+  purpose: "Arbeitsmodus Projekt Y (YAML-only SSOT) – Zahlungen/Sollstellungen modellieren und validieren."
+  operating_mode:
+    - "Keine Datenbank. YAML-Dateien sind Single Source of Truth."
+    - "Ich (ChatGPT) normalisiere Strukturen, vergebe IDs, halte Referenzen stabil und dokumentiere Änderungen."
+    - "Jede Änderung wird als change_log-Eintrag in der betroffenen YAML-Datei ergänzt."
+    - "Sollstellungen werden als rent_roll erfasst; Ist-Zahlungen werden in diesem Projektzweig nicht modelliert."
+  prompt:
+    - "Wenn ich neue Zahlungsdaten erhalte, erstelle/ergänze ich rent_roll-Records pro tenant_id + period."
+    - "Ich validiere: IDs, Referenzen (tenant_id), Summencheck (Komponenten → total_net), Formate (as_of/period), Währung."
+    - "Ich füge nach jeder Änderung einen change_log-Eintrag mit Datum, Zusammenfassung und Quelle hinzu."
+    - "Für rent_roll gilt: components umfasst die ausgewiesenen Bausteine plus base_rent_net (Rest), sodass sum(components)=total_net."
+
+payments:
+  - id: PAY-2025-11-01-TEN-0001
+    tenant_id: TEN-0001
+    tenant_no: "27"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 2162.67
+      heating: 870.52
+      storage_cellar: 38.60
+      parking: 49.85
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 4409.76
+
+    total_net: 7531.40
+    total_gross: 7531.40
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0002
+    tenant_id: TEN-0002
+    tenant_no: "38"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 148.13
+      heating: 55.55
+      storage_cellar: 0.00
+      parking: 30.00
+      cleaning: 0.00
+      mailroom: 9.45
+      management_fee: 18.67
+      other_services: 0.00
+      base_rent_net: 414.99
+
+    total_net: 676.79
+    total_gross: 805.39
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+    notes: "incl. Rechnungen ab 03/2021"
+
+  - id: PAY-2025-11-01-TEN-0003
+    tenant_id: TEN-0003
+    tenant_no: "02"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 40.41
+      heating: 14.70
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 101.04
+
+    total_net: 156.15
+    total_gross: 185.82
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0004
+    tenant_id: TEN-0004
+    tenant_no: "56"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 115.56
+      heating: 43.34
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 47.19
+      mailroom: 7.37
+      management_fee: 14.28
+      other_services: 0.00
+      base_rent_net: 317.43
+
+    total_net: 545.17
+    total_gross: 648.75
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0005
+    tenant_id: TEN-0005
+    tenant_no: "16"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 160.40
+      heating: 48.82
+      storage_cellar: 32.93
+      parking: 25.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 280.02
+
+    total_net: 547.17
+    total_gross: 651.13
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0006
+    tenant_id: TEN-0006
+    tenant_no: "21"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 244.30
+      heating: 78.65
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 486.96
+
+    total_net: 809.91
+    total_gross: 963.79
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0007
+    tenant_id: TEN-0007
+    tenant_no: "70"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 484.42
+      heating: 181.66
+      storage_cellar: 0.00
+      parking: 60.00
+      cleaning: 197.80
+      mailroom: 30.90
+      management_fee: 57.55
+      other_services: 0.00
+      base_rent_net: 1278.86
+
+    total_net: 2291.19
+    total_gross: 2726.50
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0008
+    tenant_id: TEN-0008
+    tenant_no: "84"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 27.86
+      heating: 10.45
+      storage_cellar: 50.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 1.78
+      management_fee: 6.60
+      other_services: 0.00
+      base_rent_net: 96.57
+
+    total_net: 193.26
+    total_gross: 229.98
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0009
+    tenant_id: TEN-0009
+    tenant_no: "53"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 39.70
+      heating: 14.89
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 2.53
+      management_fee: 5.49
+      other_services: 0.00
+      base_rent_net: 122.08
+
+    total_net: 184.69
+    total_gross: 219.78
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0010
+    tenant_id: TEN-0010
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 39.77
+      heating: 14.91
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 82.85
+
+    total_net: 137.53
+    total_gross: 163.66
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0011
+    tenant_id: TEN-0011
+    tenant_no: "83"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 1929.38
+      heating: 819.19
+      storage_cellar: 299.11
+      parking: 696.15
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 7915.91
+
+    total_net: 11659.74
+    total_gross: 11659.74
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+    notes: "Lastschrift nur für Miete"
+
+  - id: PAY-2025-11-01-TEN-0012
+    tenant_id: TEN-0012
+    tenant_no: "05"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 94.51
+      heating: 34.37
+      storage_cellar: 41.46
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 14.91
+      other_services: 0.00
+      base_rent_net: 143.67
+
+    total_net: 328.92
+    total_gross: 391.41
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0013
+    tenant_id: TEN-0013
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 116.03
+      heating: 37.30
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 6.34
+      management_fee: 15.06
+      other_services: 0.00
+      base_rent_net: 334.69
+
+    total_net: 509.42
+    total_gross: 606.21
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0014
+    tenant_id: TEN-0014
+    tenant_no: "35"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 591.82
+      heating: 192.47
+      storage_cellar: 38.38
+      parking: 43.46
+      cleaning: 261.41
+      mailroom: 40.83
+      management_fee: 95.88
+      other_services: 0.00
+      base_rent_net: 2092.28
+
+    total_net: 3356.53
+    total_gross: 3994.27
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+    notes: "Lastschrift nur für Miete"
+
+  - id: PAY-2025-11-01-TEN-0015
+    tenant_id: TEN-0015
+    tenant_no: "34"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 225.05
+      heating: 127.53
+      storage_cellar: 166.73
+      parking: 43.46
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 375.07
+
+    total_net: 937.84
+    total_gross: 1116.03
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0016
+    tenant_id: TEN-0016
+    tenant_no: "45"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 44.30
+      heating: 16.61
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 2.83
+      management_fee: 4.57
+      other_services: 0.00
+      base_rent_net: 101.53
+
+    total_net: 169.84
+    total_gross: 202.11
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0017
+    tenant_id: TEN-0017
+    tenant_no: "08"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 3055.96
+      heating: 1292.91
+      storage_cellar: 157.98
+      parking: 295.00
+      cleaning: 1078.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 189.00
+      base_rent_net: 6317.41
+
+    total_net: 12386.26
+    total_gross: 14739.65
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+    notes: "Lastschrift nur für Miete"
+
+  - id: PAY-2025-11-01-TEN-0018
+    tenant_id: TEN-0018
+    tenant_no: "07"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 69.82
+      heating: 25.25
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 185.69
+
+    total_net: 280.76
+    total_gross: 334.11
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0019
+    tenant_id: TEN-0019
+    tenant_no: "22"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 303.35
+      heating: 131.89
+      storage_cellar: 0.00
+      parking: 30.00
+      cleaning: 0.00
+      mailroom: 20.19
+      management_fee: 34.49
+      other_services: 0.00
+      base_rent_net: 766.37
+
+    total_net: 1286.29
+    total_gross: 1530.69
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+    notes: "Lastschrift für alles"
+
+  - id: PAY-2025-11-01-TEN-0020
+    tenant_id: TEN-0020
+    tenant_no: "37"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 426.08
+      heating: 154.11
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 177.68
+      mailroom: 27.76
+      management_fee: 49.51
+      other_services: 0.00
+      base_rent_net: 1100.31
+
+    total_net: 1935.45
+    total_gross: 2303.19
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0021
+    tenant_id: TEN-0021
+    tenant_no: "40"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 1802.90
+      heating: 676.09
+      storage_cellar: 0.00
+      parking: 40.00
+      cleaning: 375.61
+      mailroom: 115.00
+      management_fee: 246.30
+      other_services: 0.00
+      base_rent_net: 5473.25
+
+    total_net: 8729.15
+    total_gross: 10387.70
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+    notes: "Lastschrift nur für Miete"
+
+  - id: PAY-2025-11-01-TEN-0022
+    tenant_id: TEN-0022
+    tenant_no: "54"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 140.81
+      heating: 45.34
+      storage_cellar: 0.00
+      parking: 61.36
+      cleaning: 0.00
+      mailroom: 10.52
+      management_fee: 18.13
+      other_services: 0.00
+      base_rent_net: 402.84
+
+    total_net: 679.00
+    total_gross: 808.00
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+    notes: "Lastschrift ab 04/2021 + Miete + Paketgebühren, vorab AVIS schicken, lt. email vom 18.07.2025"
+
+  - id: PAY-2025-11-01-TEN-0023
+    tenant_id: TEN-0023
+    tenant_no: "86"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 90.70
+      heating: 34.01
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 16.43
+      other_services: 0.00
+      base_rent_net: 226.74
+
+    total_net: 367.88
+    total_gross: 367.88
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0024
+    tenant_id: TEN-0024
+    tenant_no: "75"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 77.66
+      heating: 29.12
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 13.69
+      other_services: 0.00
+      base_rent_net: 194.16
+
+    total_net: 314.63
+    total_gross: 374.42
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0025
+    tenant_id: TEN-0025
+    tenant_no: "11"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 50.55
+      heating: 16.46
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 129.31
+
+    total_net: 196.32
+    total_gross: 233.62
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0026
+    tenant_id: TEN-0026
+    tenant_no: "36"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 989.32
+      heating: 377.46
+      storage_cellar: 130.67
+      parking: 145.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 2087.76
+
+    total_net: 3730.21
+    total_gross: 4438.95
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0027
+    tenant_id: TEN-0027
+    tenant_no: "80"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 40.65
+      heating: 14.78
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 2.83
+      management_fee: 4.38
+      other_services: 0.00
+      base_rent_net: 97.02
+
+    total_net: 159.66
+    total_gross: 189.99
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0028
+    tenant_id: TEN-0028
+    tenant_no: "25"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 339.92
+      heating: 101.99
+      storage_cellar: 370.27
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 0.00
+
+    total_net: 812.18
+    total_gross: 812.18
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0029
+    tenant_id: TEN-0029
+    tenant_no: "48"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 148.79
+      heating: 54.10
+      storage_cellar: 64.79
+      parking: 65.00
+      cleaning: 0.00
+      mailroom: 10.35
+      management_fee: 19.74
+      other_services: 0.00
+      base_rent_net: 373.89
+
+    total_net: 736.66
+    total_gross: 876.63
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+    notes: "Lastschrift nur für Miete ab 12/2023 (ohne BK-Abrechnungen)"
+
+  - id: PAY-2025-11-01-TEN-0030
+    tenant_id: TEN-0030
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 0.00
+      heating: 0.00
+      storage_cellar: 0.00
+      parking: 38.79
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 0.00
+
+    total_net: 38.79
+    total_gross: 46.16
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0031
+    tenant_id: TEN-0031
+    tenant_no: "09"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 44.16
+      heating: 16.56
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 2.82
+      management_fee: 6.13
+      other_services: 0.00
+      base_rent_net: 136.26
+
+    total_net: 205.93
+    total_gross: 245.05
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+    notes: "incl. BK!!!; vorabinformation zum Lastschrifteinzug"
+
+  - id: PAY-2025-11-01-TEN-0032
+    tenant_id: TEN-0032
+    tenant_no: "64"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 202.02
+      heating: 64.94
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 11.05
+      mailroom: 0.00
+      management_fee: 25.68
+      other_services: 0.00
+      base_rent_net: 570.71
+
+    total_net: 874.40
+    total_gross: 1040.53
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0033
+    tenant_id: TEN-0033
+    tenant_no: "43"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 174.18
+      heating: 60.39
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 9.73
+      management_fee: 24.80
+      other_services: 0.00
+      base_rent_net: 551.19
+
+    total_net: 820.29
+    total_gross: 820.29
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0034
+    tenant_id: TEN-0034
+    tenant_no: "17"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 118.63
+      heating: 38.19
+      storage_cellar: 0.00
+      parking: 35.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 347.22
+
+    total_net: 539.04
+    total_gross: 641.46
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0035
+    tenant_id: TEN-0035
+    tenant_no: "69"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 611.13
+      heating: 196.43
+      storage_cellar: 0.00
+      parking: 80.00
+      cleaning: 106.95
+      mailroom: 33.41
+      management_fee: 71.21
+      other_services: 0.00
+      base_rent_net: 1582.38
+
+    total_net: 2681.51
+    total_gross: 3191.00
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0036
+    tenant_id: TEN-0036
+    tenant_no: "89"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 28.34
+      heating: 10.63
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 1.81
+      management_fee: 4.13
+      other_services: 0.00
+      base_rent_net: 91.73
+
+    total_net: 136.64
+    total_gross: 162.60
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0037
+    tenant_id: TEN-0037
+    tenant_no: "12"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 115.37
+      heating: 43.16
+      storage_cellar: 0.00
+      parking: 25.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 216.84
+
+    total_net: 400.37
+    total_gross: 400.37
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0038
+    tenant_id: TEN-0038
+    tenant_no: "81"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 39.70
+      heating: 14.89
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 2.53
+      management_fee: 5.81
+      other_services: 0.00
+      base_rent_net: 129.00
+
+    total_net: 191.93
+    total_gross: 228.40
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0039
+    tenant_id: TEN-0039
+    tenant_no: "79"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 71.60
+      heating: 23.01
+      storage_cellar: 88.57
+      parking: 25.00
+      cleaning: 25.06
+      mailroom: 6.45
+      management_fee: 12.20
+      other_services: 0.00
+      base_rent_net: 182.57
+
+    total_net: 434.46
+    total_gross: 517.01
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0040
+    tenant_id: TEN-0040
+    tenant_no: "91"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 269.42
+      heating: 101.03
+      storage_cellar: 49.71
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 14.65
+      management_fee: 27.99
+      other_services: 0.00
+      base_rent_net: 621.98
+
+    total_net: 1084.78
+    total_gross: 1290.90
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0041
+    tenant_id: TEN-0041
+    tenant_no: "92"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 53.90
+      heating: 20.21
+      storage_cellar: 0.00
+      parking: 25.00
+      cleaning: 0.00
+      mailroom: 3.44
+      management_fee: 7.86
+      other_services: 0.00
+      base_rent_net: 174.60
+
+    total_net: 285.01
+    total_gross: 339.16
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0042
+    tenant_id: TEN-0042
+    tenant_no: "96"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 53.69
+      heating: 20.13
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 3.42
+      management_fee: 6.54
+      other_services: 0.00
+      base_rent_net: 145.41
+
+    total_net: 229.19
+    total_gross: 272.74
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0043
+    tenant_id: TEN-0043
+    tenant_no: "95"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 117.86
+      heating: 44.20
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 7.52
+      management_fee: 13.26
+      other_services: 0.00
+      base_rent_net: 294.66
+
+    total_net: 477.50
+    total_gross: 568.23
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0044
+    tenant_id: TEN-0044
+    tenant_no: "99"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 95.50
+      heating: 35.81
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 6.09
+      management_fee: 13.20
+      other_services: 0.00
+      base_rent_net: 293.29
+
+    total_net: 443.89
+    total_gross: 528.23
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0045
+    tenant_id: TEN-0045
+    tenant_no: "101"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 70.30
+      heating: 26.36
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 4.48
+      management_fee: 9.89
+      other_services: 0.00
+      base_rent_net: 219.67
+
+    total_net: 330.70
+    total_gross: 330.70
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0046
+    tenant_id: TEN-0046
+    tenant_no: "102"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 39.70
+      heating: 14.89
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 2.53
+      management_fee: 5.58
+      other_services: 0.00
+      base_rent_net: 124.05
+
+    total_net: 186.75
+    total_gross: 222.23
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0047
+    tenant_id: TEN-0047
+    tenant_no: "105"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 109.08
+      heating: 40.91
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 6.96
+      management_fee: 14.31
+      other_services: 0.00
+      base_rent_net: 318.15
+
+    total_net: 489.41
+    total_gross: 582.40
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0048
+    tenant_id: TEN-0048
+    tenant_no: "78"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 44.86
+      heating: 16.82
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 8.75
+      other_services: 0.00
+      base_rent_net: 130.83
+
+    total_net: 201.26
+    total_gross: 239.50
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0049
+    tenant_id: TEN-0049
+    tenant_no: "103"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 211.94
+      heating: 79.48
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 13.52
+      management_fee: 29.80
+      other_services: 0.00
+      base_rent_net: 662.33
+
+    total_net: 997.07
+    total_gross: 1186.52
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0050
+    tenant_id: TEN-0050
+    tenant_no: "106"
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 53.83
+      heating: 20.19
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 3.43
+      management_fee: 7.56
+      other_services: 0.00
+      base_rent_net: 168.23
+
+    total_net: 253.24
+    total_gross: 301.36
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0051
+    tenant_id: TEN-0051
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 107.93
+      heating: 60.71
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 16.53
+      mailroom: 5.16
+      management_fee: 12.14
+      other_services: 0.00
+      base_rent_net: 269.81
+
+    total_net: 472.28
+    total_gross: 562.01
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0052
+    tenant_id: TEN-0052
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 74.43
+      heating: 44.66
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 4.56
+      management_fee: 10.72
+      other_services: 0.00
+      base_rent_net: 238.16
+
+    total_net: 372.53
+    total_gross: 443.31
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0053
+    tenant_id: TEN-0053
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 56.15
+      heating: 33.69
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 3.44
+      management_fee: 8.09
+      other_services: 0.00
+      base_rent_net: 179.68
+
+    total_net: 281.05
+    total_gross: 334.45
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+  - id: PAY-2025-11-01-TEN-0054
+    tenant_id: TEN-0054
+
+    kind: "rent_roll"
+    as_of: "2025-11-01"
+    period: "2025-11"
+
+    currency: "EUR"
+
+    components:
+      bk_nk: 95.61
+      heating: 0.00
+      storage_cellar: 0.00
+      parking: 0.00
+      cleaning: 0.00
+      mailroom: 0.00
+      management_fee: 0.00
+      other_services: 0.00
+      base_rent_net: 132.32
+
+    total_net: 227.93
+    total_gross: 271.24
+
+    source: "Rent Roll Nov 2025 (Stand 01.11.2025)"
+    verified: true
+
+change_log:
+  - ts: "2025-12-13"
+    file: "payments.yaml"
+    summary: "Validierungsregeln und Prompt-Snapshot ergänzt (YAML-only, append-only rent_roll)."
+    source: "User request: validate + persist prompt in project"
+  - ts: "2025-12-13"
+    file: "payments.yaml"
+    summary: "Rent Roll November 2025 vollständig übernommen (TEN-0001…TEN-0054), inkl. base_rent_net (Rest) zur Summenvalidierung."
+    source: "User pasted rent roll table (Stand 01.11.2025)"

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Y – Reporting Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="title">Y – Reporting Dashboard</div>
+    <div class="meta">Zugriffspunkte auf IPRO, Tacheles (und das nächste Projekt).</div>
+  </header>
+
+  <main class="wrap">
+    <section class="grid" aria-label="Projekte">
+
+      <a class="card" href="./tacheles/" data-color="#111111" rel="noreferrer">
+        <div class="icon" aria-hidden="true">T</div>
+        <div class="cardBody">
+          <div class="cardTitle">Tacheles</div>
+          <div class="cardText">Mängel / Status / Bearbeitung</div>
+          <div class="cardHint">Online: /tacheles/</div>
+        </div>
+      </a>
+
+      <a class="card" href="./ipro/" data-color="#11284B" rel="noreferrer">
+        <div class="icon" aria-hidden="true">I</div>
+        <div class="cardBody">
+          <div class="cardTitle">IPRO</div>
+          <div class="cardText">Mieter &amp; Indexierung / Payments</div>
+          <div class="cardHint">Online: /ipro/</div>
+        </div>
+      </a>
+
+      <a class="card" href="./h/" data-color="#216245">
+        <div class="icon" aria-hidden="true"><img src="assets/H_button_holidayinn_green.svg" alt="H" /></div>
+        <div class="cardBody">
+          <div class="cardTitle">Neues Projekt</div>
+          <div class="cardText">Button „H“ (Holiday-Inn-Grün)</div>
+          <div class="cardHint">Online: /h/ (Platzhalter)</div>
+        </div>
+      </a>
+
+    </section>
+
+    <section class="note">
+      <h2>Hinweis</h2>
+      <p>
+        Diese Seite ist als <b>Start-/Reporting-Portal</b> gedacht. Für Online-Betrieb solltest du die URLs auf
+        permanente Endpunkte (Domain + Pfad) umstellen und idealerweise Zugriff (Auth) davor schalten.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    // Set card colors from data-color
+    document.querySelectorAll('.card').forEach((c) => {
+      const col = c.getAttribute('data-color') || '#111';
+      const icon = c.querySelector('.icon');
+      if (icon) icon.style.background = col;
+    });
+  </script>
+</body>
+</html>

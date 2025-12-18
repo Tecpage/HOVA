@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="H Logo">
+  <!-- Holiday Inn green sampled from official logo asset: RGB(33,98,69) / #216245 -->
+  <rect width="512" height="512" fill="transparent"/>
+  <text x="256" y="355"
+        text-anchor="middle"
+        font-family="Avenir Next, SF Pro Display, Helvetica, Arial, sans-serif"
+        font-size="360"
+        font-weight="800"
+        fill="#216245">H</text>
+</svg>

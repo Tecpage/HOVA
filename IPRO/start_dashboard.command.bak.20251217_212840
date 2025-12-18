@@ -1,0 +1,409 @@
+#!/bin/bash
+set -euo pipefail
+
+ROOT="/Users/ericschone/Library/Mobile Documents/com~apple~CloudDocs/Y/IPRO"
+PORT="8000"
+BASE_URL="http://localhost:${PORT}/dashboard/"
+DASH_DIR="$ROOT/dashboard"
+DATA_DIR="$DASH_DIR/data"
+PID_FILE="$DATA_DIR/server.pid"
+BUILD_LOG="/tmp/ipro_dashboard_build.log"
+
+cd "$ROOT"
+
+echo "=== IPRO Dashboard Start (Hard Reset) ==="
+echo "→ ROOT: $ROOT"
+
+echo "→ Hard-Stop: beende alte Server/Build-Prozesse…"
+
+# 1) PID-file kill (from previous runs)
+if [ -f "$PID_FILE" ]; then
+  OLD_PID="$(cat "$PID_FILE" 2>/dev/null || true)"
+  if [ -n "$OLD_PID" ] && kill -0 "$OLD_PID" 2>/dev/null; then
+    echo "  PID-File gefunden: $OLD_PID → beende…"
+    kill "$OLD_PID" 2>/dev/null || true
+    sleep 0.3
+  fi
+  rm -f "$PID_FILE" || true
+fi
+
+# 2) Kill anything listening on PORT (authoritative)
+PIDS_BY_PORT="$(lsof -ti tcp:${PORT} 2>/dev/null || true)"
+if [ -n "$PIDS_BY_PORT" ]; then
+  echo "  Port ${PORT} belegt durch PID(s): ${PIDS_BY_PORT} → beende…"
+  kill ${PIDS_BY_PORT} 2>/dev/null || true
+  sleep 0.3
+fi
+
+# 3) Extra safety: kill common stale patterns started from this project
+pkill -f "python3 -m http.server ${PORT}" 2>/dev/null || true
+pkill -f "python -m http.server ${PORT}" 2>/dev/null || true
+sleep 0.2
+
+# 4) Verify port is free
+if lsof -i tcp:${PORT} >/dev/null 2>&1; then
+  echo "  WARNUNG: Port ${PORT} ist immer noch belegt. Bitte prüfe: lsof -i tcp:${PORT}"
+else
+  echo "  OK: Port ${PORT} ist frei."
+fi
+
+# ----------------------------
+# Physically delete ALL generated artefacts before building
+# ----------------------------
+echo "→ Cache/Artefakte bereinigen (physisch löschen)…"
+mkdir -p "$DATA_DIR"
+rm -f "$DATA_DIR"/*.json 2>/dev/null || true
+rm -f "$DASH_DIR/index.html" "$DASH_DIR/app.js" 2>/dev/null || true
+rm -f "$DATA_DIR/build_meta.json" "$DATA_DIR/index.json" "$DATA_DIR/quality_report.json" "$DATA_DIR/validation_report.json" 2>/dev/null || true
+rm -f "$DASH_DIR"/*.map 2>/dev/null || true
+
+repair_artifacts() {
+  echo "→ Repair: lösche generierte Artefakte…"
+  rm -f "$DATA_DIR"/*.json 2>/dev/null || true
+  rm -f "$DASH_DIR/index.html" "$DASH_DIR/app.js" 2>/dev/null || true
+  rm -f "$DATA_DIR/build_meta.json" "$DATA_DIR/index.json" "$DATA_DIR/quality_report.json" "$DATA_DIR/validation_report.json" 2>/dev/null || true
+}
+
+verify_artifacts() {
+  python3 - <<'PY'
+import os, sys, json
+ROOT = "/Users/ericschone/Library/Mobile Documents/com~apple~CloudDocs/Y/IPRO"
+DASH = os.path.join(ROOT, "dashboard")
+DATA = os.path.join(DASH, "data")
+
+idx = os.path.join(DASH, "index.html")
+js  = os.path.join(DASH, "app.js")
+meta = os.path.join(DATA, "build_meta.json")
+
+required_files = [
+  idx,
+  js,
+  meta,
+  os.path.join(DATA, "tenants_indexation.json"),
+  os.path.join(DATA, "payments_rent_roll.json"),
+]
+missing = [p for p in required_files if not os.path.exists(p)]
+if missing:
+  print("MISSING_FILES:", missing)
+  sys.exit(2)
+
+html = open(idx, "r", encoding="utf-8").read()
+js_src = open(js, "r", encoding="utf-8").read()
+
+# Markers for the current expected UI
+need_html_1 = "Miet-Nr."
+need_html_2 = "healthBanner"
+need_js = "tenant_status"
+
+errs = []
+if need_html_2 not in html: errs.append("HTML missing healthBanner")
+if need_js not in js_src: errs.append("JS missing tenant_status")
+
+# JSON sanity
+try:
+  ti = json.load(open(os.path.join(DATA, "tenants_indexation.json"), "r", encoding="utf-8"))
+  pr = json.load(open(os.path.join(DATA, "payments_rent_roll.json"), "r", encoding="utf-8"))
+  if not isinstance(ti.get("rows"), list): errs.append("tenants_indexation.json rows missing")
+  if not isinstance(pr.get("rows"), list): errs.append("payments_rent_roll.json rows missing")
+except Exception as e:
+  errs.append("JSON parse error: " + str(e))
+
+# build_meta fingerprint must exist
+try:
+  bm = json.load(open(meta, "r", encoding="utf-8"))
+  fp = str(bm.get("fingerprint") or "")
+  if not fp:
+    errs.append("build_meta.json missing fingerprint")
+except Exception as e:
+  errs.append("build_meta.json parse error: " + str(e))
+
+if errs:
+  print("VERIFY_ERRORS:")
+  for e in errs:
+    print(" -", e)
+  sys.exit(3)
+
+print("VERIFY_OK")
+sys.exit(0)
+PY
+}
+
+echo "→ Build+Verify (redundant, self-healing)…"
+ATTEMPT=1
+MAX_ATTEMPTS=3
+while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+  echo "  → Build Attempt $ATTEMPT/$MAX_ATTEMPTS (Log: $BUILD_LOG)"
+  if python3 tools/build_dashboard.py 2>&1 | tee "$BUILD_LOG"; then
+    if verify_artifacts; then
+      echo "  ✔ Verify OK"
+      break
+    else
+      echo "  ⚠ Verify FAILED (siehe $BUILD_LOG)"
+      repair_artifacts
+    fi
+  else
+    echo "  ✖ Build FAILED (siehe $BUILD_LOG)"
+    repair_artifacts
+  fi
+  ATTEMPT=$((ATTEMPT+1))
+  sleep 0.2
+done
+
+if [ $ATTEMPT -gt $MAX_ATTEMPTS ]; then
+  echo "✖ Dashboard konnte nach $MAX_ATTEMPTS Versuchen nicht stabil gebaut werden. Log: $BUILD_LOG"
+  exit 1
+fi
+
+echo "→ Build-Fingerprint (build_meta.json)"
+python3 - <<'PY'
+import os, json
+ROOT = "/Users/ericschone/Library/Mobile Documents/com~apple~CloudDocs/Y/IPRO"
+path = os.path.join(ROOT, "dashboard", "data", "build_meta.json")
+try:
+    m = json.load(open(path, "r", encoding="utf-8"))
+    fp = str(m.get('fingerprint') or '')
+    print("[META] fingerprint=" + (fp[:12] if fp else "<missing>"))
+except Exception as e:
+    print("[META] fingerprint=<error>", e)
+PY
+
+FP12="$(python3 - <<'PY'
+import os, json
+ROOT = "/Users/ericschone/Library/Mobile Documents/com~apple~CloudDocs/Y/IPRO"
+path = os.path.join(ROOT, "dashboard", "data", "build_meta.json")
+try:
+    m = json.load(open(path, "r", encoding="utf-8"))
+    fp = str(m.get('fingerprint') or '')
+    print(fp[:12] if fp else "")
+except Exception:
+    print("")
+PY
+)"
+
+# ----------------------------
+# Start server (static dashboard + /api/chat backend)
+# ----------------------------
+echo "→ Starte lokalen Server (Port ${PORT})"
+
+# IMPORTANT: Requires OPENAI_API_KEY to be set in the environment.
+# The API key MUST NOT be placed in index.html/app.js.
+
+nohup python3 - <<'PY' "${PORT}" "${ROOT}" >/dev/null 2>&1 &
+import sys, os, json, re
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
+
+PORT = int(sys.argv[1])
+ROOT = sys.argv[2]
+DASH_DIR = os.path.join(ROOT, "dashboard")
+DATA_DIR = os.path.join(DASH_DIR, "data")
+
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "").strip()
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini").strip()  # change via env
+
+def load_json(name: str):
+    path = os.path.join(DATA_DIR, name)
+    if not os.path.exists(path):
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+TENANTS = load_json("tenants_indexation.json") or {}
+PAYMENTS = load_json("payments_rent_roll.json") or {}
+BUILD_META = load_json("build_meta.json") or {}
+QUALITY = load_json("quality_report.json") or {}
+
+TEN_ROWS = TENANTS.get("rows") if isinstance(TENANTS.get("rows"), list) else []
+PAY_ROWS = PAYMENTS.get("rows") if isinstance(PAYMENTS.get("rows"), list) else []
+
+def norm(s: str) -> str:
+    s = (s or "").lower()
+    s = re.sub(r"[^a-z0-9äöüß]+", " ", s)
+    return re.sub(r"\s+", " ", s).strip()
+
+def retrieve_context(q: str, limit: int = 12):
+    nq = norm(q)
+    if not nq:
+        return {"tenants": [], "payments": [], "meta": BUILD_META, "quality": QUALITY}
+
+    # Extract tenant_no candidates
+    tno = None
+    m = re.search(r"\b(\d{1,3}|SP|N)\b", q)
+    if m:
+        tno = m.group(1)
+
+    tenants_hit = []
+    for r in TEN_ROWS:
+        if not isinstance(r, dict):
+            continue
+        name = str(r.get("name") or "")
+        nname = norm(name)
+        if (tno and str(r.get("tenant_no") or "") == tno) or (nq and nq in nname):
+            tenants_hit.append(r)
+            if len(tenants_hit) >= limit:
+                break
+
+    pay_hit = []
+    for r in PAY_ROWS:
+        if not isinstance(r, dict):
+            continue
+        name = str(r.get("name") or "")
+        nname = norm(name)
+        if (tno and str(r.get("tenant_no") or "") == tno) or (nq and nq in nname):
+            pay_hit.append(r)
+            if len(pay_hit) >= limit:
+                break
+
+    return {
+        "tenants": tenants_hit,
+        "payments": pay_hit,
+        "meta": {
+            "fingerprint": (BUILD_META.get("fingerprint") or ""),
+            "vpi_month": BUILD_META.get("vpi_month"),
+            "vpi_value": BUILD_META.get("vpi_value"),
+        },
+        "quality": {
+            "warnings": QUALITY.get("warnings", []),
+            "errors": QUALITY.get("errors", []),
+        }
+    }
+
+def call_openai_chat(messages):
+    if not OPENAI_API_KEY:
+        return ("OPENAI_API_KEY fehlt. Bitte als Environment Variable setzen.", 500)
+
+    url = "https://api.openai.com/v1/chat/completions"
+    body = {
+        "model": OPENAI_MODEL,
+        "messages": messages,
+        "temperature": 0.2,
+    }
+
+    req = Request(url, data=json.dumps(body).encode("utf-8"), headers={
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Content-Type": "application/json",
+    })
+
+    try:
+        with urlopen(req, timeout=30) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            txt = (((data.get("choices") or [{}])[0].get("message") or {}).get("content") or "").strip()
+            return (txt or "(keine Antwort)", 200)
+    except HTTPError as e:
+        try:
+            err = e.read().decode("utf-8", errors="replace")
+        except Exception:
+            err = str(e)
+        return (f"OpenAI API HTTPError: {e.code} {e.reason}\n{err}", 500)
+    except URLError as e:
+        return (f"OpenAI API URLError: {e}", 500)
+    except Exception as e:
+        return (f"OpenAI API Error: {e}", 500)
+
+class Handler(SimpleHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        super().end_headers()
+
+    def translate_path(self, path):
+        path = path.split('?', 1)[0].split('#', 1)[0]
+        # Serve /dashboard/* from DASH_DIR
+        if path.startswith("/dashboard/"):
+            rel = path[len("/dashboard/"):]
+            if rel == "":
+                rel = "index.html"
+            return os.path.join(DASH_DIR, rel)
+        # Serve / (optional): redirect to /dashboard/
+        if path == "/":
+            return os.path.join(DASH_DIR, "index.html")
+        return super().translate_path(path)
+
+    def do_GET(self):
+        if self.path == "/":
+            self.send_response(302)
+            self.send_header("Location", "/dashboard/")
+            self.end_headers()
+            return
+        return super().do_GET()
+
+    def do_POST(self):
+        if self.path != "/api/chat":
+            self.send_response(404)
+            self.end_headers()
+            return
+
+        length = int(self.headers.get("Content-Length", "0") or "0")
+        raw = self.rfile.read(length) if length > 0 else b"{}"
+        try:
+            payload = json.loads(raw.decode("utf-8"))
+        except Exception:
+            payload = {}
+
+        user_msg = str(payload.get("message") or "").strip()
+        if not user_msg:
+            self.send_response(400)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": "message fehlt"}).encode("utf-8"))
+            return
+
+        ctx = retrieve_context(user_msg)
+
+        system = (
+            "Du bist ein Projekt-assistierender Chat für Projekt Y (IPRO). "
+            "Du darfst ausschließlich anhand des bereitgestellten Kontexts antworten (Projektdateien/Artefakte). "
+            "Wenn etwas nicht im Kontext steht: sage 'Nicht in Projektdaten vorhanden.' "
+            "Gib am Ende Quellen an (Datei + Feld), soweit möglich."
+        )
+
+        messages = [
+            {"role": "system", "content": system},
+            {"role": "user", "content": "KONTEXT (JSON-Auszüge):\n" + json.dumps(ctx, ensure_ascii=False, indent=2)},
+            {"role": "user", "content": user_msg},
+        ]
+
+        answer, status = call_openai_chat(messages)
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.end_headers()
+        self.wfile.write(json.dumps({"answer": answer, "build": (BUILD_META.get("fingerprint") or "")[:12]}, ensure_ascii=False).encode("utf-8"))
+
+httpd = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+httpd.serve_forever()
+PY
+
+SERVER_PID=$!
+echo "$SERVER_PID" > "$PID_FILE"
+
+sleep 0.6
+STAMP="$(date +%s)"
+URL="${BASE_URL}?build=${FP12}&v=${STAMP}"
+
+echo "→ Öffne Google Chrome (neuer Tab): ${URL}"
+set +e
+osascript <<OSA
+set targetURL to "${URL}"
+
+tell application "Google Chrome"
+  activate
+  if (count of windows) = 0 then
+    make new window
+    set URL of active tab of front window to targetURL
+  else
+    tell front window
+      make new tab at end of tabs with properties {URL:targetURL}
+      set active tab index to (count of tabs)
+    end tell
+  end if
+end tell
+OSA
+if [ $? -ne 0 ]; then
+  open "$URL" >/dev/null 2>&1 || true
+fi
+set -e
+
+echo "=== Dashboard läuft (PID: ${SERVER_PID}) ==="
+exit 0

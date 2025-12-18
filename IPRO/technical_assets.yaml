@@ -1,0 +1,453 @@
+# technical_assets.yaml
+# Projekt Y – Technische Anlagen (Bestand & Wartung)
+
+meta:
+  maintained_by: ORG-0001
+  scope: "IPRO – Gebäude Schnorrstraße"
+  ssot: "yaml"
+
+validation:
+  rules:
+    - id: V-TA-001
+      description: "IDs sind eindeutig und stabil: TA-0001 … (keine Wiederverwendung)."
+    - id: V-TA-002
+      description: "seriennummer (serial_number) sollte eindeutig sein; Duplikate sind zu markieren."
+    - id: V-TA-003
+      description: "maintenance.last_service und maintenance.next_service Format: YYYY-MM."
+    - id: V-TA-004
+      description: "assigned_tenant (falls gesetzt) muss in tenants.yaml existieren."
+
+assistant_prompt_snapshot:
+  purpose: "Technische Anlagen (Bestand + Wartung) als YAML-SSOT modellieren."
+  operating_mode:
+    - "Keine Datenbank. Diese YAML-Datei ist SSOT für technische Anlagen."
+    - "Änderungen werden im change_log dokumentiert."
+    - "Neue Anlagen werden append-only ergänzt; bestehende Einträge werden nur korrigiert, wenn faktisch falsch."
+  prompt:
+    - "Für jede Anlage: Kategorie, Hersteller, Modell, Seriennummer, Baujahr, Standort, Compliance, Wartung."
+    - "Wartungsdaten im Format YYYY-MM; nächste Wartung aus Intervall ableitbar, aber explizit gespeichert."
+
+
+asset_group: "climate_and_cooling"
+
+ipro_klimaanlagen:
+  - id: 1
+    name: "VDKF-Anlage 2. OG"
+    modell: "Toshiba MCY-MHD0604HS8-E"
+    seriennummer: "08640048"
+    baujahr: 2020
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 2
+    name: "VDKF-Anlage 7./6. OG"
+    modell: "Toshiba MCY-MHP0604HS8-E"
+    seriennummer: "69740704"
+    baujahr: 2016
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 3
+    name: "VDKF-Anlage 2./6. OG"
+    modell: "Toshiba MCY-MHP0604HS8-E"
+    seriennummer: "6940045"
+    baujahr: 2016
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 4
+    name: "VDKF-Anlage Büros 7. OG"
+    modell: "Toshiba MCY-MHP0604HS8-E"
+    seriennummer: "548640073"
+    baujahr: 2019
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 5
+    name: "Klimaanlage Besprechungsraum Funk 4. OG"
+    modell: "Toshiba RAV-GM561ATP-E"
+    seriennummer: "92500792"
+    baujahr: 2019
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 6
+    name: "Klimaanlage Meetingraum 7. OG Raum 740"
+    modell: "Toshiba RAV-SM563AT-E"
+    seriennummer: "30380697"
+    baujahr: 2013
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 7
+    name: "Klimaanlage Schulungsraum LEB Raum 441"
+    modell: "Carrier 38SLP024G9"
+    seriennummer: "0745107297"
+    baujahr: 2008
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 8
+    name: "Klimaanlage Serverraum 4. OG"
+    modell: "Toshiba RAV-SM1104AT8P-E"
+    seriennummer: "30380697"
+    baujahr: 2017
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 9
+    name: "Klimaanlage Serverraum/Küche Funk"
+    modell: "Toshiba RAV-GM561ATP-E"
+    seriennummer: "92500791"
+    baujahr: 2019
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 10
+    name: "Unterbaukühlung Küche"
+    modell: "THB419YFZ"
+    seriennummer: null
+    baujahr: 1993
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 11
+    name: "Kühlvitrine Küche"
+    modell: "FR 8.5G / IDTA"
+    seriennummer: null
+    baujahr: 2009
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 12
+    name: "Saladette Küche"
+    modell: "AEZ3425Y"
+    seriennummer: null
+    baujahr: 1993
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 13
+    name: "NK-Kühlzelle Viessmann"
+    modell: "Danfoss SC21G"
+    seriennummer: null
+    baujahr: 1993
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 14
+    name: "NK-Kühlzelle Foster"
+    modell: "CAE9460Z"
+    seriennummer: null
+    baujahr: 1993
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+  - id: 15
+    name: "TK-Kühlzelle Foster"
+    modell: "CAJ2464Z"
+    seriennummer: null
+    baujahr: 1993
+    wartung:
+      letztes_service: "2025-10"
+      naechste_wartung: "2026-10"
+
+assets:
+  - id: TA-0001
+    category: "HVAC"
+    name: "VDKF-Anlage 2. OG"
+    manufacturer: "Toshiba"
+    model: "MCY-MHD0604HS8-E"
+    serial_number: "08640048"
+    year_built: 2020
+    location: "2. OG"
+    compliance:
+      vdkf_required: true
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0002
+    category: "HVAC"
+    name: "VDKF-Anlage 7./6. OG"
+    manufacturer: "Toshiba"
+    model: "MCY-MHP0604HS8-E"
+    serial_number: "69740704"
+    year_built: 2016
+    location: "7./6. OG"
+    compliance:
+      vdkf_required: true
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0003
+    category: "HVAC"
+    name: "VDKF-Anlage 2./6. OG"
+    manufacturer: "Toshiba"
+    model: "MCY-MHP0604HS8-E"
+    serial_number: "6940045"
+    year_built: 2016
+    location: "2./6. OG"
+    compliance:
+      vdkf_required: true
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0004
+    category: "HVAC"
+    name: "VDKF-Anlage Büros 7. OG"
+    manufacturer: "Toshiba"
+    model: "MCY-MHP0604HS8-E"
+    serial_number: "548640073"
+    year_built: 2019
+    location: "7. OG"
+    compliance:
+      vdkf_required: true
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0005
+    category: "HVAC"
+    name: "Klimaanlage Besprechungsraum Funk 4. OG"
+    manufacturer: "Toshiba"
+    model: "RAV-GM561ATP-E"
+    serial_number: "92500792"
+    year_built: 2019
+    location: "4. OG"
+    assigned_tenant: TEN-0011
+    compliance:
+      vdkf_required: true
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0006
+    category: "HVAC"
+    name: "Klimaanlage Meetingraum 7. OG Raum 740"
+    manufacturer: "Toshiba"
+    model: "RAV-SM563AT-E"
+    serial_number: "30380697"
+    year_built: 2013
+    location: "Raum 740"
+    compliance:
+      vdkf_required: true
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0007
+    category: "HVAC"
+    name: "Klimaanlage Schulungsraum LEB Raum 441"
+    manufacturer: "Carrier"
+    model: "38SLP024G9"
+    serial_number: "0745107297"
+    year_built: 2008
+    location: "Raum 441"
+    assigned_tenant: TEN-0020
+    compliance:
+      vdkf_required: true
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0008
+    category: "HVAC"
+    name: "Klimaanlage Serverraum 4. OG"
+    manufacturer: "Toshiba"
+    model: "RAV-SM1104AT8P-E"
+    serial_number: "30380697"
+    year_built: 2017
+    location: "4. OG"
+    compliance:
+      vdkf_required: true
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0009
+    category: "HVAC"
+    name: "Klimaanlage Serverraum/Küche Funk"
+    manufacturer: "Toshiba"
+    model: "RAV-GM561ATP-E"
+    serial_number: "92500791"
+    year_built: 2019
+    location: "Küche"
+    assigned_tenant: TEN-0011
+    compliance:
+      vdkf_required: true
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0010
+    category: "Cooling"
+    name: "Unterbaukühlung Küche"
+    manufacturer: null
+    model: "THB419YFZ"
+    serial_number: null
+    year_built: 1993
+    location: "Küche"
+    compliance:
+      vdkf_required: false
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0011
+    category: "Cooling"
+    name: "Kühlvitrine Küche"
+    manufacturer: null
+    model: "FR 8.5G / IDTA"
+    serial_number: null
+    year_built: 2009
+    location: "Küche"
+    compliance:
+      vdkf_required: false
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0012
+    category: "Cooling"
+    name: "Saladette Küche"
+    manufacturer: null
+    model: "AEZ3425Y"
+    serial_number: null
+    year_built: 1993
+    location: "Küche"
+    compliance:
+      vdkf_required: false
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0013
+    category: "Cooling"
+    name: "NK-Kühlzelle Viessmann"
+    manufacturer: null
+    model: "Danfoss SC21G"
+    serial_number: null
+    year_built: 1993
+    location: "Küche"
+    compliance:
+      vdkf_required: false
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0014
+    category: "Cooling"
+    name: "NK-Kühlzelle Foster"
+    manufacturer: null
+    model: "CAE9460Z"
+    serial_number: null
+    year_built: 1993
+    location: "Küche"
+    compliance:
+      vdkf_required: false
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+  - id: TA-0015
+    category: "Cooling"
+    name: "TK-Kühlzelle Foster"
+    manufacturer: null
+    model: "CAJ2464Z"
+    serial_number: null
+    year_built: 1993
+    location: "Küche"
+    compliance:
+      vdkf_required: false
+    maintenance:
+      last_service: "2025-10"
+      next_service: "2026-10"
+
+maintenance_plans:
+  - id: MP-IPRO-BUEROHAUS
+    name: "Wartungsplan Bürohaus IPRO AG"
+    scope: "Bürohaus IPRO AG – Lüftung & Brandschutz"
+    interval_standard: "jährlich"
+    status:
+      year_2025_completed: true
+      last_maintenance_date: "2025-11-25"
+
+    client:
+      organisation_id: ORG-0001
+      contact_person: "Hr. Neutschmann"
+      phone: "0172 / 356 7533"
+      address: "Georg-Schumann-Str. 70, 04159 Dresden"
+
+    service_provider:
+      name: "Lattermann Haustechnik GmbH"
+      technicians:
+        - "Hr. Papenfuß"
+        - "Hr. Herr"
+
+    covered_assets:
+      - asset_ref: "ANL-BIO-05-06"
+        description: "Biolüftungsanlage 5. & 6. OG"
+        maintenance_tasks:
+          - "Sichtprüfung"
+          - "Funktionsprüfung"
+          - "Reinigung"
+          - "Luftmengenprüfung"
+          - "Filterwechsel (2× KS-Filter)"
+
+      - asset_ref: "ANL-DACH-01"
+        description: "Dachlüftungsgerät"
+        maintenance_tasks:
+          - "Gerät gereinigt"
+          - "2× KS-Filter ersetzt"
+
+      - asset_ref: "ANL-BSK-01"
+        description: "Brandschutzklappen Bürohaus"
+        quantity: 4
+        legal_basis: "Brandschutz / Bauordnung"
+        maintenance_tasks:
+          - "Auslösung geprüft"
+          - "Funktionsprüfung"
+          - "Freigängigkeit kontrolliert"
+
+    materials_2025:
+      - type: "Filter"
+        specification: "TROX KS"
+        serial_number: "DE19836413"
+        kept_on_site: true
+
+    documentation_requirements:
+      - "Messwerte erfassen"
+      - "Wartungsprotokoll erstellen"
+      - "Unterschrift Monteur"
+      - "Unterschrift Auftraggeber"
+
+    recommendation:
+      preferred_window: "März–Mai"
+      rationale: "Stabile Außentemperaturen, geringere Nutzerstörungen"
+
+change_log:
+  - ts: "2025-12-13"
+    file: "technical_assets.yaml"
+    summary: "Jährlichen Wartungsplan Bürohaus IPRO AG (Lüftung & Brandschutzklappen) ergänzt; Wartung 2025 formal nachgepflegt."
+    source: "User confirmation: immer hochladen"
+  - ts: "2025-12-13"
+    file: "technical_assets.yaml"
+    summary: "Anlagenbestand Klimatisierung/Kälte vollständig (15 Assets) erfasst; Validierungsregeln und Prompt-Snapshot ergänzt."
+    source: "User device list pasted in chat"

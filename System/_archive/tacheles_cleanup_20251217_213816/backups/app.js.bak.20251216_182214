@@ -1,0 +1,597 @@
+const $ = (id)=>document.getElementById(id);
+const norm = (s)=>String(s??'').toLowerCase().replace(/[^a-z0-9äöüß]+/g,' ').trim();
+
+let STATE = {
+  fp: "",
+  rows: [],
+  filterStatusValues: [],
+  filterBearbeiterValues: [],
+  editStatusAllowed: [],
+  editBearbeiterAllowed: [],
+  dateFields: new Set(),
+  selectedId: null,
+  selectedDefect: null,
+};
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+function fmtDateDisplay(v){
+  const s = String(v ?? '').trim();
+  if(!s) return "";
+  // YYYY-MM-DD -> DD.MM.YYYY
+  const m1 = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if(m1){
+    const y = m1[1], mo = String(m1[2]).padStart(2,'0'), d = String(m1[3]).padStart(2,'0');
+    return `${d}.${mo}.${y}`;
+  }
+  // DD.MM.YYYY normalize padding
+  const m2 = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  if(m2){
+    const d = String(m2[1]).padStart(2,'0'), mo = String(m2[2]).padStart(2,'0'), y = m2[3];
+    return `${d}.${mo}.${y}`;
+  }
+  return s;
+}
+
+function fmtMazDisplay(v){
+  const s = String(v ?? '').trim();
+  if(!s) return "";
+  const digits = s.replace(/\D/g,'');
+  if(!digits) return s;
+  const n = parseInt(digits, 10);
+  if(Number.isNaN(n)) return s;
+  return `MAZ ${String(n).padStart(3,'0')}`;
+}
+
+function wisagAbnahmeDisplay(row){
+  const acc = String(row.wisag_formal_acceptance || '').trim().toLowerCase();
+  if(acc === "open") return { text: "Formelle Abnahme erbeten", cls: "wisag-need" };
+  if(acc === "accepted") return { text: "Abgenommen", cls: "wisag-ok" };
+  return { text: "", cls: "" };
+}
+
+function passes(r){
+  const q = $("q").value.trim();
+  const st = $("statusFilter").value;
+  const zust = $("zustFilter").value;
+
+  if(st && String(r.status||'') !== st) return false;
+  if(zust && String(r.zustaendigkeit||'') !== zust) return false;
+
+  if(!q) return true;
+  const hay = [
+    r.nr_apleona_wisag,
+    fmtMazDisplay(r.nr_ht),
+    r.object_code,
+    r.gebaeude,
+    r.mietbereich,
+    r.status,
+    r.zustaendigkeit,
+    fmtDateDisplay(r.termin_mangelbeseitigung),
+  ].map(norm).join(' ');
+  return hay.includes(norm(q));
+}
+
+function setHeader(){
+  const tr = $("thead");
+  const cols = [
+    {key:"__idx", label:"#"},
+    {key:"nr_apleona_wisag", label:"WISAG-Nr."},
+    {key:"nr_ht", label:"MAZ"},
+    {key:"object_code", label:"Objekt"},
+    {key:"gebaeude", label:"Gebäude"},
+    {key:"mietbereich", label:"Mietbereich"},
+    {key:"status", label:"Status"},
+    {key:"zustaendigkeit", label:"Aktueller Bearbeiter"},
+    {key:"termin_mangelbeseitigung", label:"Frist"},
+    {key:"wisag_formal_acceptance", label:"WISAG Abnahme"},
+  ];
+  tr.innerHTML = cols.map(c=>`<th>${esc(c.label)}</th>`).join('');
+  STATE._tableCols = cols;
+}
+
+function renderFilters(){
+  // Status
+  const stSel = $("statusFilter");
+  const stCur = stSel.value || "";
+  stSel.innerHTML = `<option value="">Status: alle</option>` + STATE.filterStatusValues.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+  stSel.value = stCur;
+
+  // Bearbeiter
+  const zuSel = $("zustFilter");
+  const zuCur = zuSel.value || "";
+  zuSel.innerHTML = `<option value="">Aktueller Bearbeiter: alle</option>` + STATE.filterBearbeiterValues.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+  zuSel.value = zuCur;
+}
+
+function renderTable(){
+  const wrap = $("tablewrap");
+  const scrollTop = wrap.scrollTop;
+  const scrollLeft = wrap.scrollLeft;
+
+  const rows = STATE.rows.filter(passes);
+  const tbody = $("tbody");
+
+  tbody.innerHTML = rows.map((r, idx)=>{
+    const isSelected = STATE.selectedId && String(r.id||'') === String(STATE.selectedId||'');
+    const acc = String(r.wisag_formal_acceptance || '').toLowerCase();
+    const needs = acc === "open";
+    const cls = [
+      needs ? 'needs-accept' : '',
+      isSelected ? 'selected' : ''
+    ].join(' ').trim();
+
+    return `<tr class="${cls}" data-id="${esc(r.id||'')}">
+      ${STATE._tableCols.map(c=>{
+        if(c.key === "__idx"){
+          return `<td class="col-idx">${idx+1}</td>`;
+        }
+        if(c.key === "nr_ht"){
+          return `<td title="${esc(r.nr_ht)}">${esc(fmtMazDisplay(r.nr_ht))}</td>`;
+        }
+        if(c.key === "termin_mangelbeseitigung"){
+          return `<td title="${esc(r.termin_mangelbeseitigung)}">${esc(fmtDateDisplay(r.termin_mangelbeseitigung))}</td>`;
+        }
+        if(c.key === "wisag_formal_acceptance"){
+          const w = wisagAbnahmeDisplay(r);
+          return `<td class="${w.cls}">${esc(w.text)}</td>`;
+        }
+        const v = r[c.key];
+        return `<td title="${esc(v)}">${esc(v)}</td>`;
+      }).join('')}
+    </tr>`;
+  }).join('');
+
+  tbody.querySelectorAll("tr[data-id]").forEach(tr=>{
+    tr.addEventListener("click", async ()=>{
+      const id = tr.getAttribute("data-id") || null;
+      if(!id) return;
+      STATE.selectedId = id;
+      await loadDefect(id);
+      renderTable();   // refresh selection highlight
+      renderPanel();   // show details
+    });
+  });
+
+  // restore scroll
+  wrap.scrollTop = scrollTop;
+  wrap.scrollLeft = scrollLeft;
+}
+
+function findRow(id){
+  return STATE.rows.find(r => String(r.id||'') === String(id||'')) || null;
+}
+
+async function apiGet(url){
+  const res = await fetch(url, {cache:"no-store"});
+  const j = await res.json();
+  return {res, j};
+}
+
+async function apiPost(url, payload){
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(payload),
+  });
+  const j = await res.json().catch(()=>({}));
+  return {res, j};
+}
+
+async function loadData(){
+  const {j} = await apiGet("/api/data");
+  STATE.fp = j.fingerprint || "";
+  STATE.rows = Array.isArray(j.rows) ? j.rows : [];
+  STATE.filterStatusValues = Array.isArray(j.filter_status_values) ? j.filter_status_values : [];
+  STATE.filterBearbeiterValues = Array.isArray(j.filter_bearbeiter_values) ? j.filter_bearbeiter_values : [];
+  STATE.editStatusAllowed = Array.isArray(j.edit_status_allowed) ? j.edit_status_allowed : [];
+  STATE.editBearbeiterAllowed = Array.isArray(j.edit_bearbeiter_allowed) ? j.edit_bearbeiter_allowed : [];
+  STATE.dateFields = new Set(Array.isArray(j.date_fields) ? j.date_fields : []);
+  $("meta").textContent = `Fingerprint: ${STATE.fp || "—"}`;
+
+  renderFilters();
+  setHeader();
+  renderTable();
+  renderPanel(); // if selection exists
+}
+
+async function loadDefect(id){
+  const {res, j} = await apiGet(`/api/defect?id=${encodeURIComponent(id)}`);
+  if(!res.ok || !j.ok){
+    STATE.selectedDefect = null;
+    return;
+  }
+  STATE.selectedDefect = j.defect || null;
+}
+
+function labelFor(key){
+  const L = {
+    "id":"ID",
+    "nr_apleona_wisag":"WISAG-Nr.",
+    "nr_ht":"MAZ",
+    "object_code":"Objekt",
+    "object_name":"Objektname",
+    "gebaeude":"Gebäude",
+    "mietbereich":"Mietbereich",
+    "mietflaeche":"Mietfläche",
+    "firma":"Firma",
+    "status":"Status",
+    "zustaendigkeit":"Aktueller Bearbeiter",
+    "datum_anzeige":"Datum Anzeige",
+    "termin_mangelbeseitigung":"Frist",
+    "termin_freimeldung":"Freimeldung",
+    "nachfrist_2":"Nachfrist 2",
+    "nachfrist_3":"Nachfrist 3",
+    "freigabe_ersatzvornahme":"Freigabe Ersatzvornahme",
+    "anzeige_ersatzvornahme":"Anzeige Ersatzvornahme",
+    "mangel_abgestellt_am":"Mangel abgestellt am",
+    "bestaetigung_am":"Bestätigung am",
+    "mangel":"Mangel",
+    "bearbeitungsstand":"Bearbeitungsstand",
+    "bemerkung":"Bemerkung",
+    "bemerkung_aktueller_stand":"Aktueller Stand",
+    "acceptance.wisag_formal_acceptance":"WISAG Abnahme (formal)",
+    "acceptance.notes":"WISAG Abnahme – Notes",
+  };
+  return L[key] || key;
+}
+
+function isReadOnlyKey(key){
+  return ["id","object_code","object_name","sheet","sheet_stand","nr_apleona_wisag"].includes(key);
+}
+
+function isDateKey(key){
+  return STATE.dateFields.has(key);
+}
+
+function fieldKeyToDomId(key){
+  return "f_" + key.replace(/[^a-z0-9]+/gi, "_");
+}
+
+function renderPanel(){
+  const box = $("panelBody");
+  const d = STATE.selectedDefect;
+
+  if(!STATE.selectedId){
+    box.innerHTML = `<div class="valueText">Keine Zeile ausgewählt.</div>`;
+    return;
+  }
+  if(!d){
+    const r = findRow(STATE.selectedId);
+    box.innerHTML = `<div class="valueText">Details nicht verfügbar.</div>` + (r ? `<div class="smallNote">ID: ${esc(r.id||"")}</div>` : "");
+    return;
+  }
+
+  // Build a stable field list (known keys first, then rest)
+  const known = [
+    "nr_apleona_wisag","nr_ht","object_code","gebaeude","mietbereich","mietflaeche","firma",
+    "status","zustaendigkeit",
+    "datum_anzeige","termin_mangelbeseitigung","termin_freimeldung","nachfrist_2","nachfrist_3",
+    "mangel","bearbeitungsstand",
+  ];
+
+  // Flatten: acceptance.* plus JSON for complex values
+  const flat = {};
+  const complex = new Set();
+
+  const addKV = (k, v) => {
+    if(v && typeof v === "object"){
+      try{
+        flat[k] = JSON.stringify(v, null, 2);
+      }catch(e){
+        flat[k] = String(v);
+      }
+      complex.add(k);
+    }else{
+      flat[k] = v;
+    }
+  };
+
+  for(const [k,v] of Object.entries(d)){
+    if(k === "acceptance" && v && typeof v === "object" && !Array.isArray(v)){
+      for(const [k2,v2] of Object.entries(v)){
+        addKV(`acceptance.${k2}`, v2);
+      }
+    }else{
+      addKV(k, v);
+    }
+  }
+
+  const used = new Set();
+  const ordered = [];
+  for(const k of known){
+    if(k in flat){
+      ordered.push(k);
+      used.add(k);
+    }
+  }
+  // add remaining keys (except remark history which is handled later)
+  const rest = Object.keys(flat).filter(k=>!used.has(k) && k !== "bemerkung_aktueller_stand").sort((a,b)=>a.localeCompare(b,'de'));
+  for(const k of rest) ordered.push(k);
+
+  // Editor HTML
+  let html = '';
+  html += `<div class="sectionTitle">Details</div>`;
+  html += `<div class="fieldGrid">`;
+
+  for(const key of ordered){
+    const domId = fieldKeyToDomId(key);
+    const v = flat[key];
+
+    // MAZ display normalization in UI
+    if(key === "nr_ht"){
+      html += `<div class="fieldLabel">${esc(labelFor(key))}</div>`;
+      html += `<div>
+        <input class="inputLike" id="${esc(domId)}" data-key="${esc(key)}" value="${esc(fmtMazDisplay(v))}" />
+        <div class="smallNote">Format: MAZ 001</div>
+        <div class="err" id="${esc(domId)}_err"></div>
+      </div>`;
+      continue;
+    }
+
+    // Date fields
+    if(isDateKey(key)){
+      html += `<div class="fieldLabel">${esc(labelFor(key))}</div>`;
+      html += `<div>
+        <input class="inputLike" id="${esc(domId)}" data-key="${esc(key)}" value="${esc(fmtDateDisplay(v))}" />
+        <div class="smallNote">Format: TT.MM.JJJJ</div>
+        <div class="err" id="${esc(domId)}_err"></div>
+      </div>`;
+      continue;
+    }
+
+    // Status select
+    if(key === "status"){
+      const cur = String(v ?? '').trim();
+      const allowed = STATE.editStatusAllowed || [];
+      const hasCur = allowed.includes(cur);
+      const opts = []
+      if(!hasCur && cur){
+        opts.push(`<option value="" selected disabled>Aktuell: ${esc(cur)}</option>`);
+      }
+      for(const o of allowed){
+        const sel = (o === cur) ? "selected" : "";
+        opts.push(`<option value="${esc(o)}" ${sel}>${esc(o)}</option>`);
+      }
+      html += `<div class="fieldLabel">${esc(labelFor(key))}</div>`;
+      html += `<div>
+        <select class="selectLike" id="${esc(domId)}" data-key="${esc(key)}">
+          ${opts.join("")}
+        </select>
+        <div class="err" id="${esc(domId)}_err"></div>
+      </div>`;
+      continue;
+    }
+
+    // Bearbeiter select
+    if(key === "zustaendigkeit"){
+      const cur = String(v ?? '').trim();
+      const allowed = STATE.editBearbeiterAllowed || [];
+      const hasCur = allowed.includes(cur);
+      const opts = []
+      if(!hasCur && cur){
+        opts.push(`<option value="" selected disabled>Aktuell: ${esc(cur)}</option>`);
+      }
+      for(const o of allowed){
+        const sel = (o === cur) ? "selected" : "";
+        opts.push(`<option value="${esc(o)}" ${sel}>${esc(o)}</option>`);
+      }
+      html += `<div class="fieldLabel">${esc(labelFor(key))}</div>`;
+      html += `<div>
+        <select class="selectLike" id="${esc(domId)}" data-key="${esc(key)}">
+          ${opts.join("")}
+        </select>
+        <div class="err" id="${esc(domId)}_err"></div>
+      </div>`;
+      continue;
+    }
+    // Complex values (JSON) are shown read-only
+    if(complex.has(key)){
+      html += `<div class="fieldLabel">${esc(labelFor(key))}</div>`;
+      html += `<div class="readonlyBox"><pre style="margin:0;white-space:pre-wrap;">${esc(String(v ?? ''))}</pre></div>`;
+      continue;
+    }
+
+
+
+    // Read-only keys
+    if(isReadOnlyKey(key)){
+      html += `<div class="fieldLabel">${esc(labelFor(key))}</div>`;
+      html += `<div class="readonlyBox">${esc(v ?? '')}</div>`;
+      continue;
+    }
+
+    // Default text fields: textarea for long ones, input otherwise
+    const s = String(v ?? '');
+    const isLong = s.length > 120 || key === "mangel" || key === "bearbeitungsstand" || key === "bemerkung";
+    html += `<div class="fieldLabel">${esc(labelFor(key))}</div>`;
+    if(isLong){
+      html += `<div>
+        <textarea class="textareaLike" id="${esc(domId)}" data-key="${esc(key)}">${esc(s)}</textarea>
+        <div class="err" id="${esc(domId)}_err"></div>
+      </div>`;
+    }else{
+      html += `<div>
+        <input class="inputLike" id="${esc(domId)}" data-key="${esc(key)}" value="${esc(s)}" />
+        <div class="err" id="${esc(domId)}_err"></div>
+      </div>`;
+    }
+  }
+
+  html += `</div>`; // fieldGrid
+
+  // Remarks history + composer (append-only)
+  const history = String(d.bemerkung_aktueller_stand || '').trim();
+  html += `<div class="hr"></div>`;
+  html += `<div class="sectionTitle">Bemerkungen</div>`;
+  html += `<div class="remarksBox" id="remarksHistory">${esc(history || "—")}</div>`;
+  html += `<div class="remarkComposer">
+    <div class="remarkTs" id="remarkTs">[${esc(currentTs())}]</div>
+    <textarea id="remarkInput" class="remarkInput" placeholder="Neue Bemerkung eingeben (Enter = speichern). Mind. 10 Worte."></textarea>
+    <div class="err" id="remarkErr"></div>
+  </div>`;
+
+  box.innerHTML = html;
+
+  // Bind autosave events for editable fields (no Save button)
+  box.querySelectorAll("[data-key]").forEach(el=>{
+    const key = el.getAttribute("data-key");
+    const errId = fieldKeyToDomId(key) + "_err";
+    const errEl = $(errId);
+
+    const save = async ()=>{
+      if(!STATE.selectedId) return;
+      let val;
+      if(el.tagName === "SELECT"){
+        val = el.value;
+        if(!val){
+          // disabled "Aktuell:" placeholder
+          return;
+        }
+      }else if(el.tagName === "TEXTAREA"){
+        val = el.value;
+      }else{
+        val = el.value;
+      }
+      // clear error
+      if(errEl) errEl.textContent = "";
+
+      const {res, j} = await apiPost("/api/update", {id: STATE.selectedId, patch: {[key]: val}});
+      if(!res.ok || !j.ok){
+        if(errEl) errEl.textContent = (j && j.error) ? j.error : "Speichern fehlgeschlagen.";
+        return;
+      }
+
+      // update state
+      STATE.fp = j.fingerprint || STATE.fp;
+      $("meta").textContent = `Fingerprint: ${STATE.fp || "—"}`;
+      STATE.selectedDefect = j.defect || STATE.selectedDefect;
+
+      // patch row in table
+      if(j.row){
+        const idx = STATE.rows.findIndex(r=>String(r.id||'')===String(j.row.id||''));
+        if(idx >= 0) STATE.rows[idx] = j.row;
+      }
+
+      // re-render table + panel (keeps UI consistent)
+      renderTable();
+      renderPanel();
+    };
+
+    // For selects: save immediately
+    if(el.tagName === "SELECT"){
+      el.addEventListener("change", save);
+      return;
+    }
+
+    // For inputs/textareas: save on blur
+    el.addEventListener("blur", save);
+
+    // Optional: save on Enter (input fields)
+    if(el.tagName === "INPUT"){
+      el.addEventListener("keydown", (e)=>{
+        if(e.key === "Enter"){
+          e.preventDefault();
+          el.blur();
+        }
+      });
+    }
+  });
+
+  // Bind remark composer
+  setupRemarkComposer();
+}
+
+// --- Remark composer logic ---
+let REMARK_TIMER = null;
+let REMARK_CAPTURED = null;
+
+function currentTs(){
+  const d = new Date();
+  const pad = (n)=>String(n).padStart(2,'0');
+  return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
+function setupRemarkComposer(){
+  const tsEl = $("remarkTs");
+  const input = $("remarkInput");
+  const err = $("remarkErr");
+  if(!tsEl || !input) return;
+
+  // reset
+  if(REMARK_TIMER) clearInterval(REMARK_TIMER);
+  REMARK_CAPTURED = null;
+  err.textContent = "";
+
+  const tick = ()=>{
+    if(REMARK_CAPTURED) return;
+    if(input.value.trim().length > 0) return;
+    tsEl.textContent = `[${currentTs()}]`;
+  };
+
+  tick();
+  REMARK_TIMER = setInterval(tick, 1000);
+
+  input.addEventListener("input", ()=>{
+    if(REMARK_CAPTURED) return;
+    if(input.value.trim().length === 0) return;
+    // first character typed -> capture timestamp
+    const m = tsEl.textContent.match(/^\[(.*)\]$/);
+    REMARK_CAPTURED = m ? m[1] : currentTs();
+    tsEl.textContent = `[${REMARK_CAPTURED}]`;
+  });
+
+  input.addEventListener("keydown", async (e)=>{
+    if(e.key === "Enter" && !e.shiftKey){
+      e.preventDefault();
+      err.textContent = "";
+
+      const text = input.value.trim();
+      if(!text){
+        err.textContent = "Bemerkung darf nicht leer sein.";
+        return;
+      }
+      // >= 10 words
+      const words = text.split(/\s+/).filter(Boolean);
+      if(words.length < 10){
+        err.textContent = "Mindestens 10 Worte erforderlich.";
+        return;
+      }
+
+      const ts = REMARK_CAPTURED || currentTs();
+
+      const {res, j} = await apiPost("/api/append_remark", {id: STATE.selectedId, ts, text});
+      if(!res.ok || !j.ok){
+        err.textContent = (j && j.error) ? j.error : "Speichern fehlgeschlagen.";
+        return;
+      }
+
+      // update state
+      STATE.fp = j.fingerprint || STATE.fp;
+      $("meta").textContent = `Fingerprint: ${STATE.fp || "—"}`;
+      STATE.selectedDefect = j.defect || STATE.selectedDefect;
+
+      if(j.row){
+        const idx = STATE.rows.findIndex(r=>String(r.id||'')===String(j.row.id||''));
+        if(idx >= 0) STATE.rows[idx] = j.row;
+      }
+
+      // reset composer
+      input.value = "";
+      REMARK_CAPTURED = null;
+      renderTable();
+      renderPanel();
+    }
+  });
+}
+
+// --- Init ---
+$("q").addEventListener("input", renderTable);
+$("statusFilter").addEventListener("change", renderTable);
+$("zustFilter").addEventListener("change", renderTable);
+
+setHeader();
+renderFilters();
+loadData();

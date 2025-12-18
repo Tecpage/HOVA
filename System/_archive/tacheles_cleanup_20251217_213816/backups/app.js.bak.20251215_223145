@@ -1,0 +1,220 @@
+const $ = (id)=>document.getElementById(id);
+const norm = (s)=>String(s??'').toLowerCase().replace(/[^a-z0-9äöüß]+/g,' ').trim();
+
+let STATE = { columns: [], rows: [], fp: "", selectedId: null };
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+function badge(v){
+  const s = String(v ?? '').trim().toLowerCase();
+  if(!s) return '';
+  const cls = s === 'open' ? 'badge badge-open' : (s === 'accepted' ? 'badge badge-accepted' : 'badge');
+  return `<span class="${cls}">${esc(s)}</span>`;
+}
+
+function passes(r){
+  const q = $("q").value.trim();
+  const st = $("statusFilter").value;
+  const zust = $("zustFilter").value;
+
+  if(st && String(r.status||'') !== st) return false;
+  if(zust && String(r.zustaendigkeit||'') !== zust) return false;
+
+  if(!q) return true;
+  const hay = [r.nr_apleona_wisag,r.nr_ht,r.object_code,r.gebaeude,r.mietbereich,r.mangel,r.status,r.zustaendigkeit,r.bearbeitungsstand,r.bemerkung_aktueller_stand]
+    .map(norm).join(' ');
+  return hay.includes(norm(q));
+}
+
+function setHeader(){
+  const tr = $("thead");
+  tr.innerHTML = STATE.columns.map(c=>`<th>${esc(c.label)}</th>`).join('');
+}
+
+function render(){
+  const rows = STATE.rows.filter(passes);
+  const tbody = $("tbody");
+  tbody.innerHTML = rows.map(r=>{
+    const isFreigemeldet = String(r.status||'') === 'freigemeldet';
+    const acc = isFreigemeldet ? (r.wisag_formal_acceptance || '') : '';
+    const needs = isFreigemeldet && String(acc).toLowerCase()==='open';
+    const cls = [
+      needs ? 'needs-accept' : '',
+      (STATE.selectedId && r.id === STATE.selectedId) ? 'selected' : ''
+    ].join(' ').trim();
+    return `<tr class="${cls}" data-id="${esc(r.id||'')}">
+      ${STATE.columns.map(c=>{
+        if(c.key === 'wisag_formal_acceptance'){
+          return `<td>${badge(acc)}</td>`;
+        }
+        const v = r[c.key];
+        return `<td title="${esc(v)}">${esc(v)}</td>`;
+      }).join('')}
+    </tr>`;
+  }).join('');
+
+  tbody.querySelectorAll("tr[data-id]").forEach(tr=>{
+    tr.addEventListener("click", ()=>{
+      STATE.selectedId = tr.getAttribute("data-id") || null;
+      render();
+      renderPanel();
+    });
+  });
+
+  renderPanel(); // keep panel in sync with filters
+}
+
+function findSelected(){
+  if(!STATE.selectedId) return null;
+  return STATE.rows.find(r => String(r.id||'') === String(STATE.selectedId)) || null;
+}
+
+function kv(k,v){
+  return `<div class="k">${esc(k)}</div><div class="v">${esc(v ?? '')}</div>`;
+}
+
+function renderPanel(){
+  const r = findSelected();
+  const box = $("panelBody");
+  if(!r){
+    box.innerHTML = `<div class="v">Keine Zeile ausgewählt.</div>`;
+    return;
+  }
+  const isFreigemeldet = String(r.status||'') === 'freigemeldet';
+  const acc = isFreigemeldet ? (r.wisag_formal_acceptance || 'open') : '';
+
+  box.innerHTML = `
+    <div class="kv">
+      ${kv("WISAG-Nr.", r.nr_apleona_wisag)}
+      ${kv("MAZ", r.nr_ht)}
+      ${kv("Objekt", r.object_code)}
+      ${kv("Gebäude", r.gebaeude)}
+      ${kv("Mietbereich", r.mietbereich)}
+      ${kv("Status", r.status)}
+      ${kv("Zuständigkeit", r.zustaendigkeit)}
+      ${kv("Frist", r.termin_mangelbeseitigung)}
+      ${kv("Freimeldung", r.termin_freimeldung)}
+      ${kv("WISAG Abnahme", acc)}
+    </div>
+    <div class="hr"></div>
+    <div class="k">Mangel</div><div class="v">${esc(r.mangel||'')}</div>
+    <div class="hr"></div>
+    <div class="k">Bearbeitungsstand</div><div class="v">${esc(r.bearbeitungsstand||'')}</div>
+    <div class="hr"></div>
+    <div class="k">Aktueller Stand</div><div class="v">${esc(r.bemerkung_aktueller_stand||'')}</div>
+  `;
+}
+
+async function load(){
+  const res = await fetch("/api/data", {cache:"no-store"});
+  const j = await res.json();
+  STATE.fp = j.fingerprint || "";
+  // Keep table columns compact; panel shows long texts
+  const wanted = [
+    {key:"nr_apleona_wisag", label:"WISAG-Nr."},
+    {key:"nr_ht", label:"MAZ"},
+    {key:"object_code", label:"Objekt"},
+    {key:"gebaeude", label:"Gebäude"},
+    {key:"mietbereich", label:"Mietbereich"},
+    {key:"status", label:"Status"},
+    {key:"zustaendigkeit", label:"Zuständigkeit"},
+    {key:"termin_mangelbeseitigung", label:"Frist"},
+    {key:"wisag_formal_acceptance", label:"WISAG Abnahme"},
+  ];
+  STATE.columns = wanted;
+  STATE.rows = (j.rows || []).map(r=>r);
+  $("meta").textContent = "Fingerprint: " + STATE.fp;
+  setHeader();
+  // auto-select first row if none selected and available
+  if(!STATE.selectedId && STATE.rows.length){
+    STATE.selectedId = STATE.rows[0].id || null;
+  }
+  render();
+}
+
+$("q").addEventListener("input", render);
+$("statusFilter").addEventListener("change", render);
+$("zustFilter").addEventListener("change", render);
+$("btnReload").addEventListener("click", load);
+$("btnExport").addEventListener("click", ()=>{ window.location.href="/api/export.xlsx"; });
+
+load();
+
+/* === TACHELES_WISAG_BADGE_PATCH_BEGIN === */
+(function() {
+  const TARGET = new Set(['72339','72427','72517','72580','72582','72646','72655']);
+  const BADGE_HTML = '<span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#c1121f;color:#fff;font-weight:600;font-size:12px;line-height:1.4;">Formelle Abnahme erbeten</span>';
+
+  function hitTarget(text) {
+    const t = String(text || '');
+    for (const n of TARGET) {
+      if (t.includes(n)) return true;
+    }
+    return false;
+  }
+
+  function ensureColIndex() {
+    const thead = document.getElementById('thead'); // <tr id="thead">
+    const tbody = document.getElementById('tbody'); // <tbody id="tbody">
+    if (!thead || !tbody) return -1;
+
+    const ths = Array.from(thead.children);
+    let idx = ths.findIndex(th => String(th.textContent || '').trim().toLowerCase() === 'wisag abnahme');
+
+    if (idx === -1) {
+      const th = document.createElement('th');
+      th.textContent = 'WISAG Abnahme';
+      thead.appendChild(th);
+      idx = ths.length;
+      for (const tr of tbody.querySelectorAll('tr')) tr.appendChild(document.createElement('td'));
+    }
+    return idx;
+  }
+
+  function applyBadges() {
+    const thead = document.getElementById('thead');
+    const tbody = document.getElementById('tbody');
+    if (!thead || !tbody) return;
+
+    const idx = ensureColIndex();
+    if (idx < 0) return;
+
+    for (const tr of tbody.querySelectorAll('tr')) {
+      while (tr.children.length <= idx) tr.appendChild(document.createElement('td'));
+      const td = tr.children[idx];
+
+      const rowText = tr.textContent || '';
+      if (!hitTarget(rowText)) continue;
+
+      const existing = String(td.textContent || '').trim().toLowerCase();
+      if (existing.includes('accepted') || existing.includes('abgenommen')) continue;
+
+      td.innerHTML = BADGE_HTML;
+    }
+  }
+
+  const debounce = (fn, ms) => {
+    let t; return () => { clearTimeout(t); t = setTimeout(fn, ms); };
+  };
+  const applyD = debounce(applyBadges, 50);
+
+  function observe() {
+    const thead = document.getElementById('thead');
+    const tbody = document.getElementById('tbody');
+    if (thead) new MutationObserver(applyD).observe(thead, { childList: true });
+    if (tbody) new MutationObserver(applyD).observe(tbody, { childList: true });
+  }
+
+  window.addEventListener('load', () => {
+    applyBadges();
+    observe();
+    setTimeout(applyBadges, 200);
+    setTimeout(applyBadges, 800);
+  });
+
+  try { applyBadges(); } catch(e){}
+})();
+/* === TACHELES_WISAG_BADGE_PATCH_END === */
+

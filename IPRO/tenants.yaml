@@ -1,0 +1,7241 @@
+organisations:
+- id: ORG-0001
+  name: IPRO Dresden Planungs- und Ingenieuraktiengesellschaft
+  role: verwaltung
+  legal_form: AG
+  city: Dresden
+  country: DE
+address_templates:
+  schnorr70: &id001
+    street: Schnorrstraße 70
+    postal_code: "01069"
+    city: Dresden
+    country: DE
+  schnorr71: &id003
+    street: Schnorrstraße 71
+    postal_code: "01069"
+    city: Dresden
+    country: DE
+  schnorr72: &id004
+    street: Schnorrstraße 72
+    postal_code: "01069"
+    city: Dresden
+    country: DE
+  schnorr73: &id005
+    street: Schnorrstraße 73
+    postal_code: "01069"
+    city: Dresden
+    country: DE
+  schnorr74: &id006
+    street: Schnorrstraße 74
+    postal_code: "01069"
+    city: Dresden
+    country: DE
+  schnorr75: &id007
+    street: Schnorrstraße 75
+    postal_code: "01069"
+    city: Dresden
+    country: DE
+  schnorr76: &id002
+    street: Schnorrstraße 76
+    postal_code: "01069"
+    city: Dresden
+    country: DE
+  acp_halle: &id009
+    street: Daniel-Vorländer-Str. 6
+    postal_code: "06120"
+    city: Halle (Saale)
+    country: DE
+  funk_hamburg: &id008
+    street: Valentinskamp 20
+    postal_code: '20354'
+    city: Hamburg
+    country: DE
+  spie_hannover: &id010
+    street: Oldenburger Allee 36
+    postal_code: '30659'
+    city: Hannover
+    country: DE
+  sib_dresden_01099: &id011
+    street: Königsbrücker Str. 80
+    postal_code: "01099"
+    city: Dresden
+    country: DE
+  wplus_wittorf: &id012
+    street: Hauptstraße 50
+    postal_code: '21357'
+    city: Wittorf
+    country: DE
+tenants:
+- id: TEN-0055
+  name: Chauffeur Service Dresden GmbH & Co. KG
+  legal_form: GmbH & Co. KG
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  - inactive
+  aliases:
+  - Chauffeur Company
+  - Chauffeur Company Jens Augustin & Thomas Baumgärtner GbR
+  notes: 'Auszug laut interner Liste; Stammdaten aus Branchen-/Firmenverzeichnissen
+    ergänzt. Website: chauffeur-company.de'
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - TENANT_NO_MISSING_MASTER
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_MISSING_MASTER
+      severity: warning
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: Tenant masterdata missing tenant_no.
+      details:
+        tenant_name: Chauffeur Service Dresden GmbH & Co. KG
+        tags:
+        - extern
+        - inactive
+      id: RF-0037
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+- id: TEN-0056
+  name: Hausverwalter24 UG (haftungsbeschränkt)
+  legal_form: UG (haftungsbeschränkt)
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  - inactive
+  notes: Auszug laut interner Liste; HRB 36629 (AG Leipzig) – Adresse Schnorrstraße
+    70, 01069 Dresden.
+  review:
+    needed: true
+    count: 2
+    severity:
+      warning: 2
+    codes:
+    - TENANT_NO_MISSING_MASTER
+    - TENANT_NO_SUGGESTED_FROM_EXCEL
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_MISSING_MASTER
+      severity: warning
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: Tenant masterdata missing tenant_no.
+      details:
+        tenant_name: Hausverwalter24 UG (haftungsbeschränkt)
+        tags:
+        - extern
+        - inactive
+      id: RF-0038
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: TENANT_NO_SUGGESTED_FROM_EXCEL
+      severity: warning
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: Excel provides a likely tenant number for this tenant; consider setting
+        tenant_no accordingly (manual decision).
+      details:
+        tenant_name: Hausverwalter24 UG (haftungsbeschränkt)
+        suggested_tenant_no: '94'
+        excel_sheet: '94 '
+      id: RF-0039
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '94 '
+      tenant_no_excel: '94'
+      tenant_no_system_guess: '94'
+      title: Hausverwalter24 UG
+      tenant_no_int: 94
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      - index: 2
+        label: ab 01.01.2025
+      totals:
+        all:
+        - 707.37
+        - 732.13
+        - 383.7
+        non_storage:
+        - 707.37
+        - 732.13
+        - 383.7
+        storage:
+        - 0.0
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II
+        floor: 2
+        room_no: 214
+        art: null
+        usage: UNKNOWN
+        area_sqm: 40.75
+        amounts:
+        - 264.88
+        - 274.15
+        - 274.15
+        rates:
+        - 6.5
+        - 6.727
+        - 6.727
+      - row: 12
+        ba: II
+        floor: 3
+        room_no: 315
+        art: null
+        usage: UNKNOWN
+        area_sqm: 28.29
+        amounts:
+        - 183.88
+        - 190.32
+        - null
+        rates:
+        - 6.5
+        - 6.727
+        - null
+      - row: 13
+        ba: II
+        floor: 3
+        room_no: 316
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.51
+        amounts:
+        - 152.81
+        - 158.16
+        - null
+        rates:
+        - 6.5
+        - 6.727
+        - null
+      - row: 14
+        ba: II
+        floor: 3
+        room_no: 318
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.51
+        amounts:
+        - 105.8
+        - 109.5
+        - 109.56
+        rates:
+        - 4.5
+        - 4.657
+        - 4.66
+      mapping:
+        tenant_id_by_no: null
+        tenant_id_by_title: TEN-0056
+        mapping_conflict: null
+      attached_via:
+      - title
+      selected: true
+- id: TEN-0057
+  name: Investitionsverwaltung Klinik am Tharandter Wald GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  - inactive
+  aliases:
+  - Invest. Tharandter Wald
+  - F&L Invest GmbH
+  notes: Auszug laut interner Liste; laut Registerhistorie Firmierung/Adresse später
+    geändert (F&L Invest GmbH, Sitz nach Freital).
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - TENANT_NO_MISSING_MASTER
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_MISSING_MASTER
+      severity: warning
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: Tenant masterdata missing tenant_no.
+      details:
+        tenant_name: Investitionsverwaltung Klinik am Tharandter Wald GmbH
+        tags:
+        - extern
+        - inactive
+      id: RF-0040
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+- id: TEN-0058
+  name: E.I.G.
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id002
+  tags:
+  - extern
+  - inactive
+  notes: Auszug laut interner Liste; Stammdaten (Rechtsform/Detailname) noch unklar
+    – bitte später präzisieren.
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - TENANT_NO_MISSING_MASTER
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_MISSING_MASTER
+      severity: warning
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: Tenant masterdata missing tenant_no.
+      details:
+        tenant_name: E.I.G.
+        tags:
+        - extern
+        - inactive
+      id: RF-0041
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+- id: TEN-0059
+  name: Lauck & Partner
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  - inactive
+  notes: Auszug laut interner Liste; Stammdaten (Rechtsform/Adresse) noch unklar –
+    bitte später präzisieren.
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - TENANT_NO_MISSING_MASTER
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_MISSING_MASTER
+      severity: warning
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: Tenant masterdata missing tenant_no.
+      details:
+        tenant_name: Lauck & Partner
+        tags:
+        - extern
+        - inactive
+      id: RF-0042
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+- id: TEN-0060
+  name: Leaders Academy Dresden
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  - active
+  notes: 'Aktiv laut interner Liste. Öffentliche Büroadresse laut Leaders-Academy-Website:
+    Augsburger Str. 32, 01309 Dresden (Standort Dresden).'
+  review:
+    needed: true
+    count: 1
+    severity:
+      error: 1
+    codes:
+    - TENANT_NO_MISSING_MASTER
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_MISSING_MASTER
+      severity: error
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: Tenant masterdata missing tenant_no.
+      details:
+        tenant_name: Leaders Academy Dresden
+        tags:
+        - extern
+        - active
+      id: RF-0015
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+- id: TEN-0061
+  tenant_no: '107'
+  name: Physiotherapie Bert Krüger
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  contact_person: Bert Krüger
+  email_notifications:
+  - bert.krueger@tsz-dresden.com
+  email_invoices:
+  - bert.krueger@tsz-dresden.com
+  review:
+    needed: true
+    count: 2
+    severity:
+      error: 2
+    codes:
+    - TENANT_NO_COLLISION
+    - TENANT_NO_CONFLICT_EXCEL
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_COLLISION
+      severity: error
+      tenant_no: '107'
+      scope: masterdata_vs_excel
+      field: tenant_no
+      message: 'Tenant number collision: tenant masterdata uses tenant_no 107, but
+        Excel sheet 107 is labeled ''INC''.'
+      details:
+        tenant_name: Physiotherapie Bert Krüger
+        master_tenant_no: '107'
+        excel_sheet: ' 107 '
+        excel_label: INC
+        conflicts_with_tenant_id: TEN-0051
+        conflicts_with_tenant_name: INC Ingenieurbüro Noske & Co. GmbH
+      id: RF-0007
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: TENANT_NO_CONFLICT_EXCEL
+      severity: error
+      tenant_no: '107'
+      scope: masterdata_vs_excel
+      field: tenant_no
+      message: 'Tenant number conflict: tenant masterdata uses tenant_no 107, but
+        Excel sheet 104 is labeled ''Bert Krüger''.'
+      details:
+        tenant_name: Physiotherapie Bert Krüger
+        master_tenant_no: '107'
+        excel_sheets_found:
+        - '104 '
+        excel_sheet_numbers:
+        - 104
+      id: RF-0008
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '104 '
+      tenant_no_excel: '104'
+      tenant_no_system_guess: '104'
+      title: Bert Krüger
+      tenant_no_int: 104
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 179.62
+        non_storage:
+        - 179.62
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 3
+        room_no: 343
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.66
+        amounts:
+        - 179.62
+        rates:
+        - 7.0
+      mapping:
+        tenant_id_by_no: null
+        tenant_id_by_title: TEN-0061
+        mapping_conflict: null
+      attached_via:
+      - title
+      selected: false
+    - sheet: ' 107 '
+      tenant_no_excel: '107'
+      tenant_no_system_guess: '107'
+      title: INC, Anlage 1 zum Mietvertrag ab 15.04.2024
+      tenant_no_int: 107
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 269.81
+        non_storage:
+        - 269.81
+        storage:
+        - 0.0
+      spaces:
+      - row: 12
+        ba: III
+        floor: 5
+        room_no: 532
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.46
+        amounts:
+        - 179.68
+        rates:
+        - 8.0
+      - row: 13
+        ba: III
+        floor: 5
+        room_no: Vorraum
+        art: Küche
+        usage: OTHER
+        area_sqm: 11.267
+        amounts:
+        - 90.13
+        rates:
+        - 8.0
+      mapping:
+        tenant_id_by_no: TEN-0061
+        tenant_id_by_title: TEN-0051
+        mapping_conflict: true
+      attached_via:
+      - tenant_no
+      selected: false
+- id: TEN-0062
+  tenant_no: '108'
+  name: Dr. Eric J. Schöne
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - intern
+  - active
+  notes: Aktiv laut interner Liste; Stammdaten (Kontakt/Rechtsform) nachtragen.
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '108'
+      tenant_no_excel: '108'
+      tenant_no_system_guess: '108'
+      title: Angebot Dr. Eric J. Schöne
+      tenant_no_int: 108
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 179.68
+        non_storage:
+        - 179.68
+        storage:
+        - 0.0
+      spaces:
+      - row: 13
+        ba: III
+        floor: 3
+        room_no: 338
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.46
+        amounts:
+        - 179.68
+        rates:
+        - 8.0
+      mapping:
+        tenant_id_by_no: TEN-0062
+        tenant_id_by_title: TEN-0062
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0001
+  tenant_no: '27'
+  name: Bildungsinstitut des Handels e. V.
+  legal_form: e.V.
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - post@bdhdd.de
+  email_invoices:
+  - post@bdhdd.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 1261.8
+      storage_sqm: 15.0
+    rent_per_sqm:
+      office_eur: 5.75
+      storage_eur: 2.5
+  review:
+    needed: true
+    count: 1
+    severity:
+      error: 1
+    codes:
+    - EXCEL_SHEET_MISSING
+    fields:
+    - sheet
+    flags:
+    - code: EXCEL_SHEET_MISSING
+      severity: error
+      tenant_no: '27'
+      scope: excel
+      field: sheet
+      message: No matching Excel tenant sheet found for this tenant_no; unit/space
+        data cannot be imported.
+      details:
+        tenant_name: Bildungsinstitut des Handels e. V.
+        expected_no: '27'
+      id: RF-0002
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+- id: TEN-0002
+  tenant_no: '38'
+  name: H & H Bürodienstleistungen und Reisebüro Hai Vu Dinh
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - hhddreisen@yahoo.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 61.72
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 6.72
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '38 '
+      tenant_no_excel: '38'
+      tenant_no_system_guess: '38'
+      title: Bürodienstleistung VU DINH Hai
+      tenant_no_int: 38
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      - index: 2
+        label: Miete ab 01.07.2025
+      totals:
+        all:
+        - 328.58
+        - 406.46
+        - 414.99
+        non_storage:
+        - 328.58
+        - 406.46
+        - 414.99
+        storage:
+        - 0.0
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III / 1
+        floor: EG
+        room_no: 123
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.63
+        amounts:
+        - 123.82
+        - 153.17
+        - 156.38
+        rates:
+        - 5.24
+        - 6.482
+        - 6.618
+      - row: 12
+        ba: III / 1
+        floor: EG
+        room_no: 124
+        art: null
+        usage: UNKNOWN
+        area_sqm: 18.94
+        amounts:
+        - 99.25
+        - 122.77
+        - 125.34
+        rates:
+        - 5.24
+        - 6.482
+        - 6.618
+      - row: 13
+        ba: III / 1
+        floor: EG
+        room_no: 125
+        art: null
+        usage: UNKNOWN
+        area_sqm: 19.15
+        amounts:
+        - 105.52
+        - 130.52
+        - 133.26
+        rates:
+        - 5.51
+        - 6.816
+        - 6.959
+      mapping:
+        tenant_id_by_no: TEN-0002
+        tenant_id_by_title: TEN-0002
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0003
+  tenant_no: "02"
+  name: B & A Gebäudeservice GmbH
+  legal_form: UG
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  contact_person: Katrin Wegener
+  email_notifications:
+  - wegener.katrin@t-online.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 18.37
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 5.5
+      storage_eur: 0.0
+  review:
+    needed: false
+    count: 1
+    severity:
+      info: 1
+    codes:
+    - EXCEL_SHEET_MULTIPLE_CANDIDATES
+    fields:
+    - sheet
+    flags:
+    - code: EXCEL_SHEET_MULTIPLE_CANDIDATES
+      severity: info
+      tenant_no: "02"
+      scope: excel
+      field: sheet
+      message: Multiple Excel sheets match this tenant_no; best match was selected
+        automatically.
+      details:
+        candidates:
+        - '2 '
+        - 02 B & A Gebäudeservice
+        selected: '2 '
+        selected_delta: 0.0
+      id: RF-0043
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '2 '
+      tenant_no_excel: '2'
+      tenant_no_system_guess: "02"
+      title: B & A Gebäudeservice
+      tenant_no_int: 2
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 101.04
+        non_storage:
+        - 101.04
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 3
+        room_no: 342
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.37
+        amounts:
+        - 101.04
+        rates:
+        - 5.5
+      mapping:
+        tenant_id_by_no: TEN-0003
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+    - sheet: 02 B & A Gebäudeservice
+      tenant_no_excel: "02"
+      tenant_no_system_guess: "02"
+      title: null
+      tenant_no_int: 2
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 204.82
+        non_storage:
+        - 137.78
+        storage:
+        - 67.05
+      spaces:
+      - row: 10
+        ba: III
+        floor: 3
+        room_no: 342
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.37
+        amounts:
+        - 137.78
+        rates:
+        - 7.5
+      - row: 11
+        ba: III
+        floor: 0
+        room_no: 13
+        art: Keller
+        usage: STORAGE
+        area_sqm: 14.9
+        amounts:
+        - 67.05
+        rates:
+        - 4.5
+      mapping:
+        tenant_id_by_no: TEN-0003
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: false
+- id: TEN-0004
+  tenant_no: '56'
+  name: BPS Bildungsportal Sachsen GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - dresden@bps-system.de
+  email_invoices:
+  - dresden@bps-system.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 48.15
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 6.59
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '56 '
+      tenant_no_excel: '56'
+      tenant_no_system_guess: '56'
+      title: BPS Bildungsportal Sachsen
+      tenant_no_int: 56
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.07.2024
+      - index: 2
+        label: Miete ab 01.07.2025
+      totals:
+        all:
+        - 282.64
+        - 310.9
+        - 317.43
+        non_storage:
+        - 282.64
+        - 310.9
+        - 317.43
+        storage:
+        - 0.0
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 4
+        room_no: 431
+        art: null
+        usage: UNKNOWN
+        area_sqm: 22.57
+        amounts:
+        - 132.49
+        - 145.73
+        - 148.79
+        rates:
+        - 5.87
+        - 6.457
+        - 6.593
+      - row: 12
+        ba: III
+        floor: 4
+        room_no: 432
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.58
+        amounts:
+        - 150.15
+        - 165.17
+        - 168.64
+        rates:
+        - 5.87
+        - 6.457
+        - 6.593
+      mapping:
+        tenant_id_by_no: TEN-0004
+        tenant_id_by_title: TEN-0004
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0005
+  tenant_no: '16'
+  name: Latchezar Bossev Weinmarketing Dresden
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id003
+  tags:
+  - extern
+  email_notifications:
+  - bossev@bulgarien-weine.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 56.57
+      storage_sqm: 13.5
+    rent_per_sqm:
+      office_eur: 4.95
+      storage_eur: 2.44
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - STORAGE_ROWS_MISSING
+    fields:
+    - storage_cellar
+    flags:
+    - code: STORAGE_ROWS_MISSING
+      severity: warning
+      tenant_no: '16'
+      scope: spaces
+      field: storage_cellar
+      message: System has storage_cellar component but no storage space rows were
+        identified in Excel.
+      details:
+        sheet: '16 '
+        system_storage_cellar: 32.93
+      id: RF-0020
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '16 '
+      tenant_no_excel: '16'
+      tenant_no_system_guess: '16'
+      title: Bossev Weinmarketing
+      tenant_no_int: 16
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2025
+      - index: 2
+        label: ab 01.07.2025
+      - index: 3
+        label: ab 01.07.2025
+      totals:
+        all:
+        - 312.95
+        - 378.93
+        - 410.51
+        - 523.05
+        non_storage:
+        - 312.95
+        - 378.93
+        - 410.51
+        - 523.05
+        storage:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II
+        floor: 2
+        room_no: 205
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.54
+        amounts:
+        - 81.87
+        - 99.24
+        - 107.51
+        - 124.05
+        rates:
+        - 4.95
+        - 6.0
+        - 6.5
+        - 7.5
+      - row: 12
+        ba: II
+        floor: 2
+        room_no: 206
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.49
+        amounts:
+        - 116.28
+        - 140.94
+        - 152.69
+        - 176.17
+        rates:
+        - 4.95
+        - 6.0
+        - 6.5
+        - 7.5
+      - row: 13
+        ba: II
+        floor: 2
+        room_no: 207
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.54
+        amounts:
+        - 81.87
+        - 99.24
+        - 107.51
+        - 124.05
+        rates:
+        - 4.95
+        - 6.0
+        - 6.5
+        - 7.5
+      - row: 14
+        ba: II
+        floor: 2
+        room_no: 204
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.17
+        amounts:
+        - 32.93
+        - 39.51
+        - 42.8
+        - 98.78
+        rates:
+        - 2.5
+        - 3.0
+        - 3.25
+        - 7.5
+      mapping:
+        tenant_id_by_no: TEN-0005
+        tenant_id_by_title: TEN-0005
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0006
+  tenant_no: '21'
+  name: Dussmann Service Deutschland GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id004
+  tags:
+  - extern
+  contact_person: Carmen Bormann
+  email_notifications:
+  - Carmen.Bormann@dussmann.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 0.0
+      storage_sqm: 102.57
+    rent_per_sqm:
+      office_eur: 0.0
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '21 '
+      tenant_no_excel: '21'
+      tenant_no_system_guess: '21'
+      title: Dussmann AG & Co.KG
+      tenant_no_int: 21
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 486.96
+        non_storage:
+        - 486.96
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: 2
+        floor: 1
+        room_no: 114
+        art: null
+        usage: UNKNOWN
+        area_sqm: 105.46
+        amounts:
+        - 430.94
+        rates:
+        - 4.086
+      - row: 12
+        ba: 2
+        floor: 1
+        room_no: '114.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.71
+        amounts:
+        - 56.02
+        rates:
+        - 4.086
+      mapping:
+        tenant_id_by_no: TEN-0006
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0007
+  tenant_no: '70'
+  name: Dresdner Reisezentrum GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id005
+  tags:
+  - extern
+  email_notifications:
+  - anke.kluth@lcc-dd.de
+  - info@lcc-dd.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 201.84
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 6.34
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '70 '
+      tenant_no_excel: '70'
+      tenant_no_system_guess: '70'
+      title: Dresdner Reisezentrum GmbH
+      tenant_no_int: 70
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 1110.13
+        - 1278.86
+        non_storage:
+        - 1110.13
+        - 1278.86
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II
+        floor: 2
+        room_no: 209
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.57
+        amounts:
+        - 91.14
+        - 104.99
+        rates:
+        - 5.5
+        - 6.336
+      - row: 12
+        ba: II
+        floor: 2
+        room_no: 210
+        art: null
+        usage: UNKNOWN
+        area_sqm: 141.34
+        amounts:
+        - 777.37
+        - 895.53
+        rates:
+        - 5.5
+        - 6.336
+      - row: 13
+        ba: II
+        floor: 2
+        room_no: 211
+        art: null
+        usage: UNKNOWN
+        area_sqm: 43.93
+        amounts:
+        - 241.62
+        - 278.34
+        rates:
+        - 5.5
+        - 6.336
+      mapping:
+        tenant_id_by_no: TEN-0007
+        tenant_id_by_title: TEN-0007
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0008
+  tenant_no: '84'
+  name: DC International Business Kultur und Service GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id006
+  tags:
+  - extern
+  email_notifications:
+  - lian.liu@hotmail.com
+  indexation:
+    type: VPI
+    direction: upward_only
+    threshold_percent: 3
+    effective_from: "2024-08-01"
+    base_net_amount: 96.57
+    currency: EUR
+    base_index_month: 2024-08
+    base_index_value: 119.7
+    adjustment_frequency: on_threshold
+    check_interval: monthly
+    adjustment_trigger: immediate_on_exceedance
+    notes: Indexierung ab 01.08.2024; Anpassung sofort bei Überschreiten von 3 % VPI
+      (monatliche Prüfung).
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 11.61
+      storage_sqm: 20.0
+    rent_per_sqm:
+      office_eur: 8.32
+      storage_eur: 2.5
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - SPACE_AREA_MISSING
+    fields:
+    - area_sqm
+    flags:
+    - code: SPACE_AREA_MISSING
+      severity: warning
+      tenant_no: '84'
+      scope: spaces
+      field: area_sqm
+      message: One or more space rows have no Mietfläche (sqm) in Excel; calculations/allocations
+        may be incomplete.
+      details:
+        sheet: '84 '
+        rows:
+        - row: 12
+          room_no: 10
+          art: Keller
+        count: 1
+      id: RF-0028
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '84 '
+      tenant_no_excel: '84'
+      tenant_no_system_guess: '84'
+      title: DC Int.Bks GmbH
+      tenant_no_int: 84
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: '2024-08-01 00:00:00'
+      totals:
+        all:
+        - 128.26
+        - 146.57
+        non_storage:
+        - 78.26
+        - 96.57
+        storage:
+        - 50.0
+        - 50.0
+      spaces:
+      - row: 11
+        ba: I / 1
+        floor: null
+        room_no: 110
+        art: Büro
+        usage: OFFICE
+        area_sqm: 11.61
+        amounts:
+        - 78.26
+        - 96.57
+        rates:
+        - 6.741
+        - 8.318
+      - row: 12
+        ba: Keller
+        floor: null
+        room_no: 10
+        art: Keller
+        usage: STORAGE
+        area_sqm: null
+        amounts:
+        - 50.0
+        - 50.0
+        rates:
+        - null
+        - null
+      mapping:
+        tenant_id_by_no: TEN-0008
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0009
+  tenant_no: '53'
+  name: EDV Medienconsult & Journalistik
+  legal_form: Einzelunternehmen
+  managed_by: ORG-0001
+  address: *id007
+  tags:
+  - extern
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 16.54
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.38
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '53 '
+      tenant_no_excel: '53'
+      tenant_no_system_guess: '53'
+      title: EDV Medienconsult & Journalistik
+      tenant_no_int: 53
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      - index: 2
+        label: ab 01.07.2025
+      totals:
+        all:
+        - 100.43
+        - 119.67
+        - 122.08
+        non_storage:
+        - 100.43
+        - 119.67
+        - 122.08
+        storage:
+        - 0.0
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: I
+        floor: 7
+        room_no: 706
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.54
+        amounts:
+        - 100.43
+        - 119.67
+        - 122.08
+        rates:
+        - 6.07
+        - 7.235
+        - 7.381
+      mapping:
+        tenant_id_by_no: TEN-0009
+        tenant_id_by_title: TEN-0009
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0010
+  tenant_no: '46'
+  name: Helga Eckert
+  legal_form: Freiberuflich
+  managed_by: ORG-0001
+  address: *id002
+  tags:
+  - extern
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 0.0
+      storage_sqm: 51.8
+    rent_per_sqm:
+      office_eur: 0.0
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - PAYMENT_TENANT_NO_MISSING
+    fields:
+    - tenant_no
+    flags:
+    - code: PAYMENT_TENANT_NO_MISSING
+      severity: warning
+      tenant_no: '46'
+      scope: payments
+      field: tenant_no
+      message: Payment entry missing tenant_no; mapping to Excel/units is ambiguous.
+      details:
+        payment_id: PAY-2025-11-01-TEN-0010
+        period: 2025-11
+      id: RF-0025
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '46 '
+      tenant_no_excel: '46'
+      tenant_no_system_guess: '46'
+      title: Helga Eckert
+      tenant_no_int: 46
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: '2025-02-01 00:00:00'
+      totals:
+        all:
+        - 82.85
+        - 150.0
+        non_storage:
+        - 82.85
+        - 150.0
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: I
+        floor: 4
+        room_no: 407
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.57
+        amounts:
+        - 82.85
+        - null
+        rates:
+        - 5.0
+        - null
+      - row: 12
+        ba: null
+        floor: 3
+        room_no: 314
+        art: null
+        usage: UNKNOWN
+        area_sqm: 28.29
+        amounts:
+        - null
+        - 150.0
+        rates:
+        - 4.5
+        - null
+      - row: 13
+        ba: null
+        floor: 3
+        room_no: 315
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.51
+        amounts:
+        - null
+        - null
+        rates:
+        - 4.5
+        - null
+      mapping:
+        tenant_id_by_no: TEN-0010
+        tenant_id_by_title: TEN-0010
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0011
+  tenant_no: '83'
+  name: Funk Versicherungsmakler GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id008
+  tags:
+  - extern
+  contact_person: Linda Albrecht
+  email_notifications:
+  - c.richter@funk-gruppe.de
+  email_invoices:
+  - c.richter@funk-gruppe.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 740.61
+      storage_sqm: 50.27
+    rent_per_sqm:
+      office_eur: 10.69
+      storage_eur: 5.95
+  review:
+    needed: true
+    count: 2
+    severity:
+      error: 1
+      warning: 1
+    codes:
+    - RECONCILIATION_MISMATCH
+    - STORAGE_ROWS_MISSING
+    fields:
+    - base_rent_net
+    - storage_cellar
+    flags:
+    - code: RECONCILIATION_MISMATCH
+      severity: error
+      tenant_no: '83'
+      scope: reconciliation
+      field: base_rent_net
+      message: Excel-derived sum does not match leading system payment amount (base
+        or base+storage) within tolerance.
+      details:
+        sheet: '83 '
+        best_match:
+          segment_index: 0
+          target: base_rent_net
+          total_kind: all
+          total: 6206.3
+          target_value: 7915.91
+          delta: 1709.6099999999997
+        system_base_rent_net: 7915.91
+        system_storage_cellar: 299.11
+      id: RF-0005
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: STORAGE_ROWS_MISSING
+      severity: warning
+      tenant_no: '83'
+      scope: spaces
+      field: storage_cellar
+      message: System has storage_cellar component but no storage space rows were
+        identified in Excel.
+      details:
+        sheet: '83 '
+        system_storage_cellar: 299.11
+      id: RF-0027
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '83 '
+      tenant_no_excel: '83'
+      tenant_no_system_guess: '83'
+      title: Funk & Söhne Versicherung
+      tenant_no_int: 83
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 6206.3
+        non_storage:
+        - 6206.3
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II / 4
+        floor: 4
+        room_no: 410
+        art: null
+        usage: UNKNOWN
+        area_sqm: 21.54
+        amounts:
+        - 210.23
+        rates:
+        - 9.76
+      - row: 12
+        ba: II / 4
+        floor: 4
+        room_no: 411
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.17
+        amounts:
+        - 128.54
+        rates:
+        - 9.76
+      - row: 13
+        ba: II / 4
+        floor: 4
+        room_no: 413
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.51
+        amounts:
+        - 229.46
+        rates:
+        - 9.76
+      - row: 14
+        ba: I / 4
+        floor: 4
+        room_no: '423.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 29.65
+        amounts:
+        - 289.38
+        rates:
+        - 9.76
+      - row: 15
+        ba: I / 4
+        floor: 4
+        room_no: '423.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 27.58
+        amounts:
+        - 269.18
+        rates:
+        - 9.76
+      - row: 16
+        ba: I / 4
+        floor: 4
+        room_no: '423.3'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 57.31
+        amounts:
+        - 559.35
+        rates:
+        - 9.76
+      - row: 17
+        ba: I / 4
+        floor: 4
+        room_no: '423.5'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 46.85
+        amounts:
+        - 457.26
+        rates:
+        - 9.76
+      - row: 18
+        ba: I / 4
+        floor: 4
+        room_no: '424.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 32.72
+        amounts:
+        - 319.35
+        rates:
+        - 9.76
+      - row: 19
+        ba: I / 4
+        floor: 4
+        room_no: '424.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 60.95
+        amounts:
+        - 594.87
+        rates:
+        - 9.76
+      - row: 20
+        ba: II / 4
+        floor: 4
+        room_no: 412
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.57
+        amounts:
+        - 161.72
+        rates:
+        - 9.76
+      - row: 21
+        ba: I / 4
+        floor: 4
+        room_no: '424.3'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 30.7
+        amounts:
+        - 299.53
+        rates:
+        - 9.76
+      - row: 22
+        ba: I / 4
+        floor: 4
+        room_no: '424.4'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 58.36
+        amounts:
+        - 569.69
+        rates:
+        - 9.76
+      - row: 23
+        ba: I / 4
+        floor: 4
+        room_no: '424.5'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.81
+        amounts:
+        - 134.79
+        rates:
+        - 9.76
+      - row: 24
+        ba: I / 4
+        floor: 4
+        room_no: '424.7'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 21.52
+        amounts:
+        - 210.04
+        rates:
+        - 9.76
+      - row: 25
+        ba: I / 4
+        floor: 4
+        room_no: 425
+        art: null
+        usage: UNKNOWN
+        area_sqm: 60.32
+        amounts:
+        - 588.72
+        rates:
+        - 9.76
+      - row: 26
+        ba: I / 4
+        floor: 4
+        room_no: '425.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 31.64
+        amounts:
+        - 308.81
+        rates:
+        - 9.76
+      - row: 27
+        ba: I / 4
+        floor: 4
+        room_no: '425.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 30.8
+        amounts:
+        - 300.61
+        rates:
+        - 9.76
+      - row: 28
+        ba: I / 4
+        floor: 4
+        room_no: '425.3'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 11.75
+        amounts:
+        - 114.68
+        rates:
+        - 9.76
+      - row: 29
+        ba: I / 4
+        floor: 4
+        room_no: 426
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.12
+        amounts:
+        - 245.17
+        rates:
+        - 9.76
+      - row: 30
+        ba: I / 4
+        floor: null
+        room_no: '423.4'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.87
+        amounts:
+        - 82.53
+        rates:
+        - 5.95
+      - row: 31
+        ba: I / 4
+        floor: null
+        room_no: '424.6'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 12.25
+        amounts:
+        - 72.89
+        rates:
+        - 5.95
+      - row: 32
+        ba: I / 4
+        floor: null
+        room_no: '425.4'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 10.0
+        amounts:
+        - 59.5
+        rates:
+        - 5.95
+      mapping:
+        tenant_id_by_no: TEN-0011
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0012
+  tenant_no: "05"
+  name: Maik Rother Maler Rother
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - maler.rother@googlemail.com
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 40.9
+      storage_sqm: 13.82
+    rent_per_sqm:
+      office_eur: 7.5
+      storage_eur: 3.0
+  review:
+    needed: true
+    count: 2
+    severity:
+      warning: 2
+    codes:
+    - SPACE_AREA_MISSING
+    - STORAGE_MISMATCH
+    fields:
+    - area_sqm
+    - storage_cellar
+    flags:
+    - code: SPACE_AREA_MISSING
+      severity: warning
+      tenant_no: "05"
+      scope: spaces
+      field: area_sqm
+      message: One or more space rows have no Mietfläche (sqm) in Excel; calculations/allocations
+        may be incomplete.
+      details:
+        sheet: '5'
+        rows:
+        - row: 14
+          room_no: 13
+          art: null
+        count: 1
+      id: RF-0016
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: STORAGE_MISMATCH
+      severity: warning
+      tenant_no: "05"
+      scope: reconciliation
+      field: storage_cellar
+      message: Storage derived from Excel does not match system storage_cellar; manual
+        review needed.
+      details:
+        sheet: '5'
+        segment_index: 0
+        excel_storage_total: 30.31
+        system_storage_cellar: 41.46
+        storage_rows:
+        - row: 13
+          room_no: 11
+          area_sqm: 13.47
+          amount: 30.31
+      id: RF-0017
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '5'
+      tenant_no_excel: '5'
+      tenant_no_system_guess: "05"
+      title: Maik Rother
+      tenant_no_int: 5
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.02.2025
+      totals:
+        all:
+        - 185.14
+        - 308.4
+        non_storage:
+        - 154.83
+        - 308.4
+        storage:
+        - 30.31
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 3
+        room_no: 346
+        art: 'Büro '
+        usage: OFFICE
+        area_sqm: 15.9
+        amounts:
+        - 83.48
+        - null
+        rates:
+        - 5.25
+        - null
+      - row: 12
+        ba: III
+        floor: 3
+        room_no: 347
+        art: 'Büro '
+        usage: OFFICE
+        area_sqm: 13.59
+        amounts:
+        - 71.35
+        - null
+        rates:
+        - 5.25
+        - null
+      - row: 13
+        ba: II
+        floor: 0
+        room_no: 11
+        art: Lager
+        usage: STORAGE
+        area_sqm: 13.47
+        amounts:
+        - 30.31
+        - null
+        rates:
+        - 2.25
+        - null
+      - row: 14
+        ba: null
+        floor: null
+        room_no: 13
+        art: null
+        usage: UNKNOWN
+        area_sqm: null
+        amounts:
+        - null
+        - null
+        rates:
+        - null
+        - null
+      - row: 16
+        ba: null
+        floor: null
+        room_no: 218
+        art: Büro
+        usage: OFFICE
+        area_sqm: 24.827
+        amounts:
+        - null
+        - 186.2
+        rates:
+        - null
+        - 7.5
+      - row: 17
+        ba: null
+        floor: null
+        room_no: 218 (Sek)
+        art: Büro Sek
+        usage: OFFICE
+        area_sqm: 10.075
+        amounts:
+        - null
+        - 75.56
+        rates:
+        - null
+        - 7.5
+      - row: 18
+        ba: null
+        floor: null
+        room_no: 218 VZ
+        art: VZ
+        usage: OTHER
+        area_sqm: 6.218
+        amounts:
+        - null
+        - 46.63
+        rates:
+        - null
+        - 7.5
+      mapping:
+        tenant_id_by_no: TEN-0012
+        tenant_id_by_title: TEN-0012
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0013
+  tenant_no: '15'
+  name: Landschaftsarchitekten Lagotzki Starke Grütze
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  contact_person: Ines Starke
+  email_notifications:
+  - mail@la-lsg.de
+  email_invoices:
+  - mail@la-lsg.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 41.44
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 8.08
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - PAYMENT_TENANT_NO_MISSING
+    fields:
+    - tenant_no
+    flags:
+    - code: PAYMENT_TENANT_NO_MISSING
+      severity: warning
+      tenant_no: '15'
+      scope: payments
+      field: tenant_no
+      message: Payment entry missing tenant_no; mapping to Excel/units is ambiguous.
+      details:
+        payment_id: PAY-2025-11-01-TEN-0013
+        period: 2025-11
+      id: RF-0019
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '15 '
+      tenant_no_excel: '15'
+      tenant_no_system_guess: '15'
+      title: Landschaftsarchitektur Lagotzki
+      tenant_no_int: 15
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 274.33
+        - 334.69
+        non_storage:
+        - 274.33
+        - 334.69
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 1
+        room_no: 127
+        art: null
+        usage: UNKNOWN
+        area_sqm: 19.0
+        amounts:
+        - 125.78
+        - 153.45
+        rates:
+        - 6.62
+        - 8.076
+      - row: 12
+        ba: III
+        floor: 1
+        room_no: 128
+        art: null
+        usage: UNKNOWN
+        area_sqm: 22.44
+        amounts:
+        - 148.55
+        - 181.23
+        rates:
+        - 6.62
+        - 8.076
+      mapping:
+        tenant_id_by_no: TEN-0013
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0014
+  tenant_no: '35'
+  name: Heidelmann & Klingebiel Planungsgesellschaft mbH
+  legal_form: mbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - info@heidelmann-klingebiel.de
+  email_invoices:
+  - sven.klingebiel@heidelmann-klingebiel.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 251.84
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 8.31
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 3
+    severity:
+      warning: 2
+      info: 1
+    codes:
+    - EXCEL_SHEET_MULTIPLE_CANDIDATES
+    - SPACE_AREA_MISSING
+    - STORAGE_MISMATCH
+    fields:
+    - area_sqm
+    - sheet
+    - storage_cellar
+    flags:
+    - code: SPACE_AREA_MISSING
+      severity: warning
+      tenant_no: '35'
+      scope: spaces
+      field: area_sqm
+      message: One or more space rows have no Mietfläche (sqm) in Excel; calculations/allocations
+        may be incomplete.
+      details:
+        sheet: '35 '
+        rows:
+        - row: 21
+          room_no: 13
+          art: Lagerraum
+        - row: 22
+          room_no: 8
+          art: Lagerraum
+        count: 2
+      id: RF-0022
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: STORAGE_MISMATCH
+      severity: warning
+      tenant_no: '35'
+      scope: reconciliation
+      field: storage_cellar
+      message: Storage derived from Excel does not match system storage_cellar; manual
+        review needed.
+      details:
+        sheet: '35 '
+        segment_index: 1
+        excel_storage_total: 0.0
+        system_storage_cellar: 38.38
+        storage_rows:
+        - row: 21
+          room_no: 13
+          area_sqm: null
+          amount: 0
+        - row: 22
+          room_no: 8
+          area_sqm: null
+          amount: null
+      id: RF-0023
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: EXCEL_SHEET_MULTIPLE_CANDIDATES
+      severity: info
+      tenant_no: '35'
+      scope: excel
+      field: sheet
+      message: Multiple Excel sheets match this tenant_no; best match was selected
+        automatically.
+      details:
+        candidates:
+        - '35 '
+        - 35 H&K
+        selected: '35 '
+        selected_delta: 0.003948500000205968
+      id: RF-0044
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '35 '
+      tenant_no_excel: '35'
+      tenant_no_system_guess: '35'
+      title: Heidelmann & Klingebiel
+      tenant_no_int: 35
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 1847.93
+        - 2092.28
+        non_storage:
+        - 1763.33
+        - 2092.28
+        storage:
+        - 84.6
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III / 7
+        floor: null
+        room_no: 733b
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.4
+        amounts:
+        - 116.76
+        - 138.69
+        rates:
+        - 4.6
+        - 5.46
+      - row: 12
+        ba: III / 7
+        floor: null
+        room_no: 734
+        art: null
+        usage: UNKNOWN
+        area_sqm: 22.57
+        amounts:
+        - 175.02
+        - 207.63
+        rates:
+        - 7.75
+        - 9.199
+      - row: 13
+        ba: III / 7
+        floor: null
+        room_no: '733.5'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.58
+        amounts:
+        - 198.36
+        - 235.32
+        rates:
+        - 7.75
+        - 9.199
+      - row: 14
+        ba: III / 7
+        floor: null
+        room_no: '733.4'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 24.1
+        amounts:
+        - 186.88
+        - 221.7
+        rates:
+        - 7.75
+        - 9.199
+      - row: 15
+        ba: III / 7
+        floor: null
+        room_no: 733.4a
+        art: null
+        usage: UNKNOWN
+        area_sqm: 10.76
+        amounts:
+        - 83.44
+        - 98.98
+        rates:
+        - 7.75
+        - 9.199
+      - row: 16
+        ba: III / 7
+        floor: null
+        room_no: '733.3'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 24.93
+        amounts:
+        - 193.32
+        - 229.34
+        rates:
+        - 7.75
+        - 9.199
+      - row: 17
+        ba: III / 7
+        floor: null
+        room_no: '733.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 35.69
+        amounts:
+        - 276.76
+        - 328.32
+        rates:
+        - 7.75
+        - 9.199
+      - row: 18
+        ba: III / 7
+        floor: null
+        room_no: '733.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.61
+        amounts:
+        - 198.59
+        - 235.59
+        rates:
+        - 7.75
+        - 9.199
+      - row: 19
+        ba: III / 7
+        floor: null
+        room_no: 732
+        art: null
+        usage: UNKNOWN
+        area_sqm: 22.57
+        amounts:
+        - 175.02
+        - 207.63
+        rates:
+        - 7.75
+        - 9.199
+      - row: 20
+        ba: III / 7
+        floor: null
+        room_no: 733a
+        art: null
+        usage: UNKNOWN
+        area_sqm: 34.63
+        amounts:
+        - 159.18
+        - 189.09
+        rates:
+        - 4.6
+        - 5.46
+      - row: 21
+        ba: I / 0 Abgabe 30.04.2024
+        floor: null
+        room_no: 13
+        art: Lagerraum
+        usage: STORAGE
+        area_sqm: null
+        amounts:
+        - 0.0
+        - 0.0
+        rates:
+        - 2.17
+        - 2.576
+      - row: 22
+        ba: I / 0 Abgabe 30.04.2024
+        floor: null
+        room_no: 8
+        art: Lagerraum
+        usage: STORAGE
+        area_sqm: null
+        amounts:
+        - 84.6
+        - null
+        rates:
+        - 4.23
+        - null
+      mapping:
+        tenant_id_by_no: TEN-0014
+        tenant_id_by_title: TEN-0014
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+    - sheet: 35 H&K
+      tenant_no_excel: '35'
+      tenant_no_system_guess: '35'
+      title: 4. Nachtrag vom 01.01.2024
+      tenant_no_int: 35
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 1847.27
+        non_storage:
+        - 1762.67
+        storage:
+        - 84.6
+      spaces:
+      - row: 7
+        ba: null
+        floor: 7
+        room_no: 733b
+        art: Büro
+        usage: OFFICE
+        area_sqm: 25.4
+        amounts:
+        - 116.84
+        rates:
+        - 4.6
+      - row: 8
+        ba: null
+        floor: 7
+        room_no: 734
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.57
+        amounts:
+        - 174.92
+        rates:
+        - 7.75
+      - row: 9
+        ba: null
+        floor: 7
+        room_no: '733.5'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 25.58
+        amounts:
+        - 198.24
+        rates:
+        - 7.75
+      - row: 10
+        ba: null
+        floor: 7
+        room_no: '733.4'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 24.1
+        amounts:
+        - 186.78
+        rates:
+        - 7.75
+      - row: 11
+        ba: null
+        floor: 7
+        room_no: 733.4a
+        art: Büro
+        usage: OFFICE
+        area_sqm: 10.76
+        amounts:
+        - 83.39
+        rates:
+        - 7.75
+      - row: 12
+        ba: null
+        floor: 7
+        room_no: '733.3'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 24.93
+        amounts:
+        - 193.21
+        rates:
+        - 7.75
+      - row: 13
+        ba: null
+        floor: 7
+        room_no: '733.2'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 35.69
+        amounts:
+        - 276.6
+        rates:
+        - 7.75
+      - row: 14
+        ba: null
+        floor: 7
+        room_no: '733.1'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 25.61
+        amounts:
+        - 198.48
+        rates:
+        - 7.75
+      - row: 15
+        ba: null
+        floor: 7
+        room_no: 732
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.57
+        amounts:
+        - 174.92
+        rates:
+        - 7.75
+      - row: 16
+        ba: null
+        floor: 7
+        room_no: 733a
+        art: Büro
+        usage: OFFICE
+        area_sqm: 34.63
+        amounts:
+        - 159.3
+        rates:
+        - 4.6
+      - row: 17
+        ba: null
+        floor: 0
+        room_no: 8
+        art: Lager
+        usage: STORAGE
+        area_sqm: 20.0
+        amounts:
+        - 84.6
+        rates:
+        - 4.23
+      mapping:
+        tenant_id_by_no: TEN-0014
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: false
+- id: TEN-0015
+  tenant_no: '34'
+  name: Christoph Hein Restauratorengesellschaft mbH
+  legal_form: mbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - hein@restauratoren-gmbh.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 216.71
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 2.5
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - SPACE_AREA_MISSING
+    fields:
+    - area_sqm
+    flags:
+    - code: SPACE_AREA_MISSING
+      severity: warning
+      tenant_no: '34'
+      scope: spaces
+      field: area_sqm
+      message: One or more space rows have no Mietfläche (sqm) in Excel; calculations/allocations
+        may be incomplete.
+      details:
+        sheet: '34 '
+        rows:
+        - row: 11
+          room_no: null
+          art: Büro
+        - row: 12
+          room_no: null
+          art: Produktion
+        - row: 13
+          room_no: null
+          art: Lager
+        count: 3
+      id: RF-0021
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '34 '
+      tenant_no_excel: '34'
+      tenant_no_system_guess: '34'
+      title: Christoph Hein Restauratorenges. mbH
+      tenant_no_int: 34
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 541.8
+        non_storage:
+        - 375.07
+        storage:
+        - 166.73
+      spaces:
+      - row: 11
+        ba: null
+        floor: null
+        room_no: null
+        art: Büro
+        usage: OFFICE
+        area_sqm: null
+        amounts:
+        - 65.43
+        rates:
+        - null
+      - row: 12
+        ba: null
+        floor: null
+        room_no: null
+        art: Produktion
+        usage: OTHER
+        area_sqm: null
+        amounts:
+        - 309.64
+        rates:
+        - null
+      - row: 13
+        ba: null
+        floor: null
+        room_no: null
+        art: Lager
+        usage: STORAGE
+        area_sqm: null
+        amounts:
+        - 166.73
+        rates:
+        - null
+      mapping:
+        tenant_id_by_no: TEN-0015
+        tenant_id_by_title: TEN-0015
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0016
+  tenant_no: '45'
+  name: Ingenieurbüro Kirsten
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - bauing-f.kirsten@web.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 18.46
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 5.5
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '45 '
+      tenant_no_excel: '45'
+      tenant_no_system_guess: '45'
+      title: Herr Kirsten (ab 15.03.2023)
+      tenant_no_int: 45
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 101.53
+        non_storage:
+        - 101.53
+        storage:
+        - 0.0
+      spaces:
+      - row: 12
+        ba: III
+        floor: 3
+        room_no: 337
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.46
+        amounts:
+        - 101.53
+        rates:
+        - 5.5
+      mapping:
+        tenant_id_by_no: TEN-0016
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0017
+  tenant_no: "08"
+  name: ACP IT Solutions GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id009
+  tags:
+  - extern
+  email_notifications:
+  - claudia.kreschel@acp.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 1100.0
+      storage_sqm: 75.37
+    rent_per_sqm:
+      office_eur: 5.74
+      storage_eur: 2.1
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - STORAGE_MISMATCH
+    fields:
+    - storage_cellar
+    flags:
+    - code: STORAGE_MISMATCH
+      severity: warning
+      tenant_no: "08"
+      scope: reconciliation
+      field: storage_cellar
+      message: Storage derived from Excel does not match system storage_cellar; manual
+        review needed.
+      details:
+        sheet: '8'
+        segment_index: 1
+        excel_storage_total: 139.638
+        system_storage_cellar: 157.98
+        storage_rows:
+        - row: 11
+          room_no: 118
+          area_sqm: 13.33
+          amount: 27.1932
+        - row: 12
+          room_no: '118.2'
+          area_sqm: 9.86
+          amount: 20.1144
+        - row: 16
+          room_no: '118.8'
+          area_sqm: 3.55
+          amount: 7.242
+        - row: 17
+          room_no: '118.9'
+          area_sqm: 6.74
+          amount: 13.749600000000001
+        - row: 48
+          room_no: '118.6'
+          area_sqm: 24.48
+          amount: 49.9392
+        - row: 49
+          room_no: '118.7'
+          area_sqm: 10.49
+          amount: 21.3996
+      id: RF-0018
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '8'
+      tenant_no_excel: '8'
+      tenant_no_system_guess: "08"
+      title: ACP IT Solutions GmbH
+      tenant_no_int: 8
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.01.2025
+      totals:
+        all:
+        - 6348.43
+        - 6475.4
+        non_storage:
+        - 6211.53
+        - 6335.76
+        storage:
+        - 136.9
+        - 139.64
+      spaces:
+      - row: 11
+        ba: 1
+        floor: 1
+        room_no: 118
+        art: Lager
+        usage: STORAGE
+        area_sqm: 13.33
+        amounts:
+        - 26.66
+        - 27.19
+        rates:
+        - 2.0
+        - 26.66
+      - row: 12
+        ba: 1
+        floor: 1
+        room_no: '118.2'
+        art: Lager
+        usage: STORAGE
+        area_sqm: 9.86
+        amounts:
+        - 19.72
+        - 20.11
+        rates:
+        - 2.0
+        - 19.72
+      - row: 13
+        ba: 1
+        floor: 1
+        room_no: '118.3'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 25.0
+        amounts:
+        - 125.0
+        - 127.5
+        rates:
+        - 5.0
+        - 125.0
+      - row: 14
+        ba: 1
+        floor: 1
+        room_no: '118.4'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.1
+        amounts:
+        - 90.5
+        - 92.31
+        rates:
+        - 5.0
+        - 90.5
+      - row: 15
+        ba: 1
+        floor: 1
+        room_no: '118.5'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 24.61
+        amounts:
+        - 123.05
+        - 125.51
+        rates:
+        - 5.0
+        - 123.05
+      - row: 16
+        ba: 1
+        floor: 1
+        room_no: '118.8'
+        art: Lager
+        usage: STORAGE
+        area_sqm: 3.55
+        amounts:
+        - 7.1
+        - 7.24
+        rates:
+        - 2.0
+        - 7.1
+      - row: 17
+        ba: 1
+        floor: 1
+        room_no: '118.9'
+        art: Lager
+        usage: STORAGE
+        area_sqm: 6.74
+        amounts:
+        - 13.48
+        - 13.75
+        rates:
+        - 2.0
+        - 13.48
+      - row: 18
+        ba: 1
+        floor: 1
+        room_no: '117.1'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 69.48
+        amounts:
+        - 347.4
+        - 354.35
+        rates:
+        - 5.0
+        - 347.4
+      - row: 19
+        ba: 1
+        floor: 1
+        room_no: 116
+        art: Büro
+        usage: OFFICE
+        area_sqm: 102.76
+        amounts:
+        - 513.8
+        - 524.08
+        rates:
+        - 5.0
+        - 513.8
+      - row: 20
+        ba: 1
+        floor: 1
+        room_no: '116.1'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 19.9
+        amounts:
+        - 99.5
+        - 101.49
+        rates:
+        - 5.0
+        - 99.5
+      - row: 21
+        ba: 1
+        floor: 1
+        room_no: '116.2'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 9.45
+        amounts:
+        - 51.97
+        - 53.01
+        rates:
+        - 5.5
+        - 51.975
+      - row: 22
+        ba: 1
+        floor: 1
+        room_no: '116.3'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 26.04
+        amounts:
+        - 143.22
+        - 146.08
+        rates:
+        - 5.5
+        - 143.22
+      - row: 23
+        ba: 1
+        floor: 1
+        room_no: '116.4'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 100.76
+        amounts:
+        - 503.8
+        - 513.88
+        rates:
+        - 5.0
+        - 503.8
+      - row: 24
+        ba: 1
+        floor: 1
+        room_no: '116.5'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 25.33
+        amounts:
+        - 126.65
+        - 129.18
+        rates:
+        - 5.0
+        - 126.65
+      - row: 25
+        ba: 1
+        floor: 1
+        room_no: '116.6'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 2.78
+        amounts:
+        - 13.9
+        - 14.18
+        rates:
+        - 5.0
+        - 13.9
+      - row: 26
+        ba: 1
+        floor: 1
+        room_no: '724.4'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 33.95
+        amounts:
+        - 203.7
+        - 207.77
+        rates:
+        - 6.0
+        - 203.7
+      - row: 27
+        ba: 1
+        floor: 1
+        room_no: '724.31'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 20.48
+        amounts:
+        - 122.88
+        - 125.34
+        rates:
+        - 6.0
+        - 122.88
+      - row: 28
+        ba: 1
+        floor: 1
+        room_no: '724.3'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 62.68
+        amounts:
+        - 376.08
+        - 383.6
+        rates:
+        - 6.0
+        - 376.08
+      - row: 29
+        ba: 1
+        floor: 1
+        room_no: '724.2'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 37.53
+        amounts:
+        - 225.18
+        - 229.68
+        rates:
+        - 6.0
+        - 225.18
+      - row: 30
+        ba: 1
+        floor: 1
+        room_no: '724.1'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 55.94
+        amounts:
+        - 335.64
+        - 342.35
+        rates:
+        - 6.0
+        - 335.64
+      - row: 31
+        ba: 1
+        floor: 1
+        room_no: '724.6'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 12.32
+        amounts:
+        - 73.92
+        - 75.4
+        rates:
+        - 6.0
+        - 73.92
+      - row: 32
+        ba: 1
+        floor: 1
+        room_no: 724
+        art: Büro
+        usage: OFFICE
+        area_sqm: 8.42
+        amounts:
+        - 50.52
+        - 51.53
+        rates:
+        - 6.0
+        - 50.52
+      - row: 33
+        ba: 1
+        floor: 1
+        room_no: '724.7'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 13.87
+        amounts:
+        - 83.22
+        - 84.88
+        rates:
+        - 6.0
+        - 83.22
+      - row: 34
+        ba: 1
+        floor: 1
+        room_no: '724.5'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 13.86
+        amounts:
+        - 83.16
+        - 84.82
+        rates:
+        - 6.0
+        - 83.16
+      - row: 35
+        ba: 1
+        floor: 1
+        room_no: '705.1'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 23.51
+        amounts:
+        - 141.06
+        - 143.88
+        rates:
+        - 6.0
+        - 141.06
+      - row: 36
+        ba: 1
+        floor: 1
+        room_no: 706
+        art: Büro
+        usage: OFFICE
+        area_sqm: 23.51
+        amounts:
+        - 141.06
+        - 143.88
+        rates:
+        - 6.0
+        - 141.06
+      - row: 37
+        ba: 1
+        floor: 1
+        room_no: 707
+        art: Büro
+        usage: OFFICE
+        area_sqm: 25.22
+        amounts:
+        - 151.32
+        - 154.35
+        rates:
+        - 6.0
+        - 151.32
+      - row: 38
+        ba: 1
+        floor: 1
+        room_no: 712
+        art: Büro
+        usage: OFFICE
+        area_sqm: 28.29
+        amounts:
+        - 169.74
+        - 173.13
+        rates:
+        - 6.0
+        - 169.74
+      - row: 39
+        ba: 1
+        floor: 1
+        room_no: 713
+        art: Büro
+        usage: OFFICE
+        area_sqm: 47.55
+        amounts:
+        - 285.3
+        - 291.01
+        rates:
+        - 6.0
+        - 285.3
+      - row: 40
+        ba: 1
+        floor: 1
+        room_no: 715
+        art: Büro
+        usage: OFFICE
+        area_sqm: 57.93
+        amounts:
+        - 347.58
+        - 354.53
+        rates:
+        - 6.0
+        - 347.58
+      - row: 41
+        ba: 1
+        floor: 1
+        room_no: 716
+        art: Büro
+        usage: OFFICE
+        area_sqm: 64.81
+        amounts:
+        - 388.86
+        - 396.64
+        rates:
+        - 6.0
+        - 388.86
+      - row: 42
+        ba: 3
+        floor: 1
+        room_no: 328
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.52
+        amounts:
+        - 111.12
+        - 113.34
+        rates:
+        - 6.0
+        - 111.12
+      - row: 43
+        ba: 3
+        floor: 1
+        room_no: 330
+        art: Büro
+        usage: OFFICE
+        area_sqm: 41.39
+        amounts:
+        - 248.34
+        - 253.31
+        rates:
+        - 6.0
+        - 248.34
+      - row: 44
+        ba: 3
+        floor: 1
+        room_no: 331
+        art: Büro
+        usage: OFFICE
+        area_sqm: 15.32
+        amounts:
+        - 91.92
+        - 93.76
+        rates:
+        - 6.0
+        - 91.92
+      - row: 45
+        ba: 3
+        floor: 1
+        room_no: 332
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.46
+        amounts:
+        - 134.76
+        - 137.46
+        rates:
+        - 6.0
+        - 134.76
+      - row: 46
+        ba: 3
+        floor: 1
+        room_no: 333
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.46
+        amounts:
+        - 110.76
+        - 112.98
+        rates:
+        - 6.0
+        - 110.76
+      - row: 47
+        ba: 3
+        floor: 1
+        room_no: '334.1'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 29.77
+        amounts:
+        - 178.62
+        - 182.19
+        rates:
+        - 6.0
+        - 178.62
+      - row: 48
+        ba: 1
+        floor: 1
+        room_no: '118.6'
+        art: Lager
+        usage: STORAGE
+        area_sqm: 24.48
+        amounts:
+        - 48.96
+        - 49.94
+        rates:
+        - 2.0
+        - 48.96
+      - row: 49
+        ba: 1
+        floor: 1
+        room_no: '118.7'
+        art: Lager
+        usage: STORAGE
+        area_sqm: 10.49
+        amounts:
+        - 20.98
+        - 21.4
+        rates:
+        - 2.0
+        - 20.98
+      - row: 50
+        ba: 1
+        floor: 1
+        room_no: '423.6'
+        art: Server
+        usage: OTHER
+        area_sqm: 6.92
+        amounts:
+        - 17.99
+        - 18.35
+        rates:
+        - 2.6
+        - 17.992
+      mapping:
+        tenant_id_by_no: TEN-0017
+        tenant_id_by_title: TEN-0017
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0018
+  tenant_no: "07"
+  name: Gunar Bach Hausverwaltung/Immobilien
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - gunar-bach@t-online.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 29.71
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 6.25
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '7'
+      tenant_no_excel: '7'
+      tenant_no_system_guess: "07"
+      title: HV Gunar Bach
+      tenant_no_int: 7
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 185.68
+        non_storage:
+        - 185.68
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II
+        floor: 2
+        room_no: 215
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.54
+        amounts:
+        - 103.37
+        rates:
+        - 6.25
+      - row: 12
+        ba: II
+        floor: 2
+        room_no: '215.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.17
+        amounts:
+        - 82.31
+        rates:
+        - 6.25
+      mapping:
+        tenant_id_by_no: TEN-0018
+        tenant_id_by_title: TEN-0018
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0019
+  tenant_no: '22'
+  name: Ingenieurbüro Dr. Elisabeth Seveke
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  contact_person: Jean-Pierre Kunath
+  email_notifications:
+  - info@dr-seveke.de
+  email_invoices:
+  - info@dr-seveke.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 131.89
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 5.81
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '22 '
+      tenant_no_excel: '22'
+      tenant_no_system_guess: '22'
+      title: null
+      tenant_no_int: 22
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 628.17
+        - 766.37
+        non_storage:
+        - 628.17
+        - 766.37
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II / 1
+        floor: null
+        room_no: 108
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.66
+        amounts:
+        - 132.92
+        - 162.16
+        rates:
+        - 5.18
+        - 6.32
+      - row: 12
+        ba: II / 1
+        floor: null
+        room_no: 109
+        art: null
+        usage: UNKNOWN
+        area_sqm: 18.2
+        amounts:
+        - 75.53
+        - 92.15
+        rates:
+        - 4.15
+        - 5.063
+      - row: 13
+        ba: II / 5
+        floor: null
+        room_no: 528
+        art: null
+        usage: UNKNOWN
+        area_sqm: 18.37
+        amounts:
+        - 104.71
+        - 127.74
+        rates:
+        - 5.7
+        - 6.954
+      - row: 14
+        ba: II / 5
+        floor: null
+        room_no: 529
+        art: null
+        usage: UNKNOWN
+        area_sqm: 22.57
+        amounts:
+        - 128.65
+        - 156.95
+        rates:
+        - 5.7
+        - 6.954
+      - row: 15
+        ba: II / 5
+        floor: null
+        room_no: 530
+        art: null
+        usage: UNKNOWN
+        area_sqm: 15.41
+        amounts:
+        - 87.84
+        - 107.16
+        rates:
+        - 5.7
+        - 6.954
+      - row: 16
+        ba: III / 5
+        floor: null
+        room_no: 527
+        art: null
+        usage: UNKNOWN
+        area_sqm: 31.68
+        amounts:
+        - 98.52
+        - 120.2
+        rates:
+        - 3.11
+        - 3.794
+      mapping:
+        tenant_id_by_no: TEN-0019
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0020
+  tenant_no: '37'
+  name: Ländliche Erwachsenenbildung im Freistaat Sachsen e. V.
+  legal_form: e.V.
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - dd@leb-sachsen.de
+  email_invoices:
+  - rechnungen@leb-sachsen.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 129.18
+      storage_sqm: 52.13
+    rent_per_sqm:
+      office_eur: 8.52
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '37 '
+      tenant_no_excel: '37'
+      tenant_no_system_guess: '37'
+      title: LEB Ländliche Erwachsenenbildung
+      tenant_no_int: 37
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 901.89
+        - 1100.31
+        non_storage:
+        - 901.89
+        - 1100.31
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III / 4
+        floor: null
+        room_no: 441
+        art: null
+        usage: UNKNOWN
+        area_sqm: 48.15
+        amounts:
+        - 318.75
+        - 388.88
+        rates:
+        - 6.62
+        - 8.076
+      - row: 12
+        ba: III / 4
+        floor: null
+        room_no: 443
+        art: null
+        usage: UNKNOWN
+        area_sqm: 15.98
+        amounts:
+        - 97.0
+        - 118.34
+        rates:
+        - 6.07
+        - 7.405
+      - row: 13
+        ba: III / 4
+        floor: null
+        room_no: '443.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 18.23
+        amounts:
+        - 110.66
+        - 135.0
+        rates:
+        - 6.07
+        - 7.405
+      - row: 14
+        ba: III / 4
+        floor: null
+        room_no: '433.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 26.97
+        amounts:
+        - 163.71
+        - 199.72
+        rates:
+        - 6.07
+        - 7.405
+      - row: 15
+        ba: III / 4
+        floor: null
+        room_no: 445
+        art: null
+        usage: UNKNOWN
+        area_sqm: 19.85
+        amounts:
+        - 98.65
+        - 120.36
+        rates:
+        - 4.97
+        - 6.063
+      - row: 16
+        ba: II / 0
+        floor: null
+        room_no: 16
+        art: null
+        usage: UNKNOWN
+        area_sqm: 40.0
+        amounts:
+        - 86.8
+        - 105.9
+        rates:
+        - 2.17
+        - 2.647
+      - row: 17
+        ba: III / 4
+        floor: null
+        room_no: 446
+        art: null
+        usage: UNKNOWN
+        area_sqm: 12.13
+        amounts:
+        - 26.32
+        - 32.11
+        rates:
+        - 2.17
+        - 2.647
+      mapping:
+        tenant_id_by_no: TEN-0020
+        tenant_id_by_title: TEN-0020
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0021
+  tenant_no: '40'
+  name: Linguwerk GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - rico.petrick@linguwerk.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 628.47
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 8.71
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 1
+    severity:
+      error: 1
+    codes:
+    - RECONCILIATION_MISMATCH
+    fields:
+    - base_rent_net
+    flags:
+    - code: RECONCILIATION_MISMATCH
+      severity: error
+      tenant_no: '40'
+      scope: reconciliation
+      field: base_rent_net
+      message: Excel-derived sum does not match leading system payment amount (base
+        or base+storage) within tolerance.
+      details:
+        sheet: '40'
+        best_match:
+          segment_index: 1
+          target: base_rent_net
+          total_kind: all
+          total: 4552.695
+          target_value: 5473.25
+          delta: 920.5550000000003
+        system_base_rent_net: 5473.25
+        system_storage_cellar: 0.0
+      id: RF-0004
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '40'
+      tenant_no_excel: '40'
+      tenant_no_system_guess: '40'
+      title: Linguwerk
+      tenant_no_int: 40
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: '2024-09-01 00:00:00'
+      totals:
+        all:
+        - 3743.23
+        - 4552.69
+        non_storage:
+        - 3743.23
+        - 4552.69
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 12
+        ba: III
+        floor: 7
+        room_no: '725.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 20.74
+        amounts:
+        - 133.36
+        - 155.55
+        rates:
+        - 6.43
+        - 7.5
+      - row: 13
+        ba: III
+        floor: 7
+        room_no: '725.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 37.28
+        amounts:
+        - 239.71
+        - 279.6
+        rates:
+        - 6.43
+        - 7.5
+      - row: 14
+        ba: III
+        floor: 7
+        room_no: '725.3'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 21.8
+        amounts:
+        - 140.17
+        - 163.5
+        rates:
+        - 6.43
+        - 7.5
+      - row: 15
+        ba: III
+        floor: 7
+        room_no: '725.4'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 22.39
+        amounts:
+        - 143.97
+        - 167.93
+        rates:
+        - 6.43
+        - 7.5
+      - row: 16
+        ba: III
+        floor: 7
+        room_no: '725.5'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 12.48
+        amounts:
+        - 80.25
+        - 93.6
+        rates:
+        - 6.43
+        - 7.5
+      - row: 17
+        ba: III
+        floor: 7
+        room_no: '725.6'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 27.15
+        amounts:
+        - 174.57
+        - 203.62
+        rates:
+        - 6.43
+        - 7.5
+      - row: 18
+        ba: III
+        floor: 7
+        room_no: 719
+        art: null
+        usage: UNKNOWN
+        area_sqm: 39.59
+        amounts:
+        - 254.53
+        - 296.93
+        rates:
+        - 6.43
+        - 7.5
+      - row: 19
+        ba: III
+        floor: 7
+        room_no: '719.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 26.03
+        amounts:
+        - 167.37
+        - 195.23
+        rates:
+        - 6.43
+        - 7.5
+      - row: 20
+        ba: III
+        floor: 7
+        room_no: 721
+        art: null
+        usage: UNKNOWN
+        area_sqm: 8.42
+        amounts:
+        - 22.57
+        - 25.26
+        rates:
+        - 2.68
+        - 3.0
+      - row: 21
+        ba: III
+        floor: 7
+        room_no: '721.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 29.05
+        amounts:
+        - 186.79
+        - 217.88
+        rates:
+        - 6.43
+        - 7.5
+      - row: 22
+        ba: III
+        floor: 7
+        room_no: '721.11'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.76
+        amounts:
+        - 107.77
+        - 125.7
+        rates:
+        - 6.43
+        - 7.5
+      - row: 23
+        ba: III
+        floor: 7
+        room_no: '721.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 37.53
+        amounts:
+        - 241.32
+        - 281.48
+        rates:
+        - 6.43
+        - 7.5
+      - row: 24
+        ba: III
+        floor: 7
+        room_no: '721.3'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 61.98
+        amounts:
+        - 398.53
+        - 464.85
+        rates:
+        - 6.43
+        - 7.5
+      - row: 25
+        ba: III
+        floor: 7
+        room_no: '721.5'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.86
+        amounts:
+        - 37.14
+        - 41.58
+        rates:
+        - 2.68
+        - 3.0
+      - row: 26
+        ba: III
+        floor: 7
+        room_no: 723
+        art: null
+        usage: UNKNOWN
+        area_sqm: 8.42
+        amounts:
+        - 54.14
+        - 63.15
+        rates:
+        - 6.43
+        - 7.5
+      - row: 27
+        ba: III
+        floor: 7
+        room_no: '723.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 53.43
+        amounts:
+        - 343.55
+        - 400.73
+        rates:
+        - 6.43
+        - 7.5
+      - row: 28
+        ba: III
+        floor: 7
+        room_no: '723.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 37.53
+        amounts:
+        - 241.32
+        - 281.48
+        rates:
+        - 6.43
+        - 7.5
+      - row: 29
+        ba: III
+        floor: 7
+        room_no: '723.4'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.87
+        amounts:
+        - 89.18
+        - 104.02
+        rates:
+        - 6.43
+        - 7.5
+      - row: 30
+        ba: III
+        floor: 7
+        room_no: '723.5'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.86
+        amounts:
+        - 89.12
+        - 103.95
+        rates:
+        - 6.43
+        - 7.5
+      - row: 31
+        ba: III
+        floor: 7
+        room_no: '723.3'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 61.44
+        amounts:
+        - 329.32
+        - 460.8
+        rates:
+        - 5.36
+        - 7.5
+      - row: 32
+        ba: III
+        floor: 7
+        room_no: '723.6'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.46
+        amounts:
+        - 14.4
+        - 40.38
+        rates:
+        - 1.07
+        - 3.0
+      - row: 33
+        ba: II
+        floor: 7
+        room_no: '721.4'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.87
+        amounts:
+        - 104.03
+        - 104.02
+        rates:
+        - 7.5
+        - 7.5
+      - row: 34
+        ba: III
+        floor: 7
+        room_no: 742
+        art: null
+        usage: UNKNOWN
+        area_sqm: 37.53
+        amounts:
+        - 150.12
+        - 281.48
+        rates:
+        - 4.0
+        - 7.5
+      mapping:
+        tenant_id_by_no: TEN-0021
+        tenant_id_by_title: TEN-0021
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0022
+  tenant_no: '54'
+  name: Sachverständigenbüro Thomas Frick
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - svb-frick@saxonia.net
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 68.69
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 5.86
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '54 '
+      tenant_no_excel: '54'
+      tenant_no_system_guess: '54'
+      title: null
+      tenant_no_int: 54
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 341.39
+        - 402.84
+        non_storage:
+        - 341.39
+        - 402.84
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 10
+        ba: III / 5
+        floor: null
+        room_no: 534
+        art: null
+        usage: UNKNOWN
+        area_sqm: 7.42
+        amounts:
+        - 36.88
+        - 43.52
+        rates:
+        - 4.97
+        - 5.865
+      - row: 11
+        ba: III / 5
+        floor: null
+        room_no: '534.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 35.69
+        amounts:
+        - 177.38
+        - 209.31
+        rates:
+        - 4.97
+        - 5.865
+      - row: 12
+        ba: III / 5
+        floor: null
+        room_no: '534.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.58
+        amounts:
+        - 127.13
+        - 150.02
+        rates:
+        - 4.97
+        - 5.865
+      mapping:
+        tenant_id_by_no: TEN-0022
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0023
+  tenant_no: '86'
+  name: Obergerichtsvollzieher Kluge
+  legal_form: Hoheitlich
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - ogvkluge@gmx.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 37.79
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 6.0
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '86 '
+      tenant_no_excel: '86'
+      tenant_no_system_guess: '86'
+      title: Obergerichtsvollzieher Kluge
+      tenant_no_int: 86
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 226.74
+        non_storage:
+        - 226.74
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 4
+        room_no: '432.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.54
+        amounts:
+        - 141.24
+        rates:
+        - 6.0
+      - row: 12
+        ba: III
+        floor: 4
+        room_no: 433
+        art: null
+        usage: UNKNOWN
+        area_sqm: 14.25
+        amounts:
+        - 85.5
+        rates:
+        - 6.0
+      mapping:
+        tenant_id_by_no: TEN-0023
+        tenant_id_by_title: TEN-0023
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0024
+  tenant_no: '75'
+  name: Energie – Solar – Beratung Dipl.-Ing. (FH) Stephan Mücke
+  legal_form: Freiberuflich
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - info@esb-muecke.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 32.36
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 6.0
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '75 '
+      tenant_no_excel: '75'
+      tenant_no_system_guess: '75'
+      title: Energie Solar Beratung Mücke
+      tenant_no_int: 75
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 194.16
+        non_storage:
+        - 194.16
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 4
+        room_no: 435
+        art: null
+        usage: UNKNOWN
+        area_sqm: 14.16
+        amounts:
+        - 84.96
+        rates:
+        - 6.0
+      - row: 12
+        ba: III
+        floor: 4
+        room_no: '435.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 18.2
+        amounts:
+        - 109.2
+        rates:
+        - 6.0
+      mapping:
+        tenant_id_by_no: TEN-0024
+        tenant_id_by_title: TEN-0024
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0025
+  tenant_no: '11'
+  name: PBM Projekt Büro Management
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - ingo.voigt@aufbau-profis.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 23.51
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 5.5
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '11 '
+      tenant_no_excel: '11'
+      tenant_no_system_guess: '11'
+      title: PBM Projekt Büro Management
+      tenant_no_int: 11
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 129.31
+        non_storage:
+        - 129.31
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: I
+        floor: 4
+        room_no: 401
+        art: Büro
+        usage: OFFICE
+        area_sqm: 23.51
+        amounts:
+        - 129.31
+        rates:
+        - 5.5
+      mapping:
+        tenant_id_by_no: TEN-0025
+        tenant_id_by_title: TEN-0025
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0026
+  tenant_no: '36'
+  name: SPIE Fleischhauer GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id010
+  tags:
+  - extern
+  contact_person: André Wünsch
+  email_notifications:
+  - andre.wuensch@spie.com
+  email_invoices:
+  - eingangsrechnungen.icsde@spie.com
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 405.25
+      storage_sqm: 33.0
+    rent_per_sqm:
+      office_eur: 5.15
+      storage_eur: 3.96
+  review:
+    needed: true
+    count: 2
+    severity:
+      error: 1
+      warning: 1
+    codes:
+    - RECONCILIATION_MISMATCH
+    - STORAGE_ROWS_MISSING
+    fields:
+    - base_rent_net
+    - storage_cellar
+    flags:
+    - code: RECONCILIATION_MISMATCH
+      severity: error
+      tenant_no: '36'
+      scope: reconciliation
+      field: base_rent_net
+      message: Excel-derived sum does not match leading system payment amount (base
+        or base+storage) within tolerance.
+      details:
+        sheet: '36 '
+        best_match:
+          segment_index: 0
+          target: base_plus_storage
+          total_kind: all
+          total: 2357.38714
+          target_value: 2218.4300000000003
+          delta: 138.95713999999953
+        system_base_rent_net: 2087.76
+        system_storage_cellar: 130.67
+      id: RF-0003
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: STORAGE_ROWS_MISSING
+      severity: warning
+      tenant_no: '36'
+      scope: spaces
+      field: storage_cellar
+      message: System has storage_cellar component but no storage space rows were
+        identified in Excel.
+      details:
+        sheet: '36 '
+        system_storage_cellar: 130.67
+      id: RF-0024
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '36 '
+      tenant_no_excel: '36'
+      tenant_no_system_guess: '36'
+      title: SPIE Fleischhauer GmbH
+      tenant_no_int: 36
+      segments:
+      - index: 0
+        label: ab 01.04.2025
+      - index: 1
+        label: ab 01.06.2025
+      - index: 2
+        label: ab 01.10.2025
+      - index: 3
+        label: ab 01.01.2026
+      totals:
+        all:
+        - 2357.39
+        - 2604.87
+        - 2852.35
+        - 3099.83
+        non_storage:
+        - 2357.39
+        - 2604.87
+        - 2852.35
+        - 3099.83
+        storage:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: iV / 1
+        floor: null
+        room_no: 851
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.66
+        amounts:
+        - 141.96
+        - 153.79
+        - 165.62
+        - 177.45
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 12
+        ba: iV / 1
+        floor: null
+        room_no: 852
+        art: null
+        usage: UNKNOWN
+        area_sqm: 10.17
+        amounts:
+        - 61.02
+        - 66.11
+        - 71.19
+        - 76.28
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 13
+        ba: iV / 1
+        floor: null
+        room_no: 853
+        art: null
+        usage: UNKNOWN
+        area_sqm: 6.1
+        amounts:
+        - 36.6
+        - 39.65
+        - 42.7
+        - 45.75
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 14
+        ba: iV / 1
+        floor: null
+        room_no: 854
+        art: null
+        usage: UNKNOWN
+        area_sqm: 59.83
+        amounts:
+        - 358.98
+        - 388.89
+        - 418.81
+        - 448.72
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 15
+        ba: iV / 1
+        floor: null
+        room_no: 855
+        art: null
+        usage: UNKNOWN
+        area_sqm: 24.2
+        amounts:
+        - 145.2
+        - 157.3
+        - 169.4
+        - 181.5
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 16
+        ba: iV / 1
+        floor: null
+        room_no: 856
+        art: null
+        usage: UNKNOWN
+        area_sqm: 2.75
+        amounts:
+        - 16.5
+        - 17.88
+        - 19.25
+        - 20.62
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 17
+        ba: iV / 1
+        floor: null
+        room_no: 862
+        art: null
+        usage: UNKNOWN
+        area_sqm: 7.57
+        amounts:
+        - 45.42
+        - 49.2
+        - 52.99
+        - 56.78
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 18
+        ba: iV / 1
+        floor: null
+        room_no: 864
+        art: null
+        usage: UNKNOWN
+        area_sqm: 15.94
+        amounts:
+        - 95.64
+        - 103.61
+        - 111.58
+        - 119.55
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 19
+        ba: iV / 1
+        floor: null
+        room_no: 865
+        art: null
+        usage: UNKNOWN
+        area_sqm: 27.56
+        amounts:
+        - 165.36
+        - 179.14
+        - 192.92
+        - 206.7
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 20
+        ba: iV / 1
+        floor: null
+        room_no: 867
+        art: null
+        usage: UNKNOWN
+        area_sqm: 34.93
+        amounts:
+        - 209.58
+        - 227.04
+        - 244.51
+        - 261.98
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 21
+        ba: iV / 1
+        floor: null
+        room_no: 868
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.87
+        amounts:
+        - 101.22
+        - 109.66
+        - 118.09
+        - 126.53
+        rates:
+        - 6.0
+        - 6.5
+        - 7.0
+        - 7.5
+      - row: 22
+        ba: iV / 1
+        floor: null
+        room_no: 863
+        art: null
+        usage: UNKNOWN
+        area_sqm: 11.0
+        amounts:
+        - 26.95
+        - 32.45
+        - 37.95
+        - 43.45
+        rates:
+        - 2.45
+        - 2.95
+        - 3.45
+        - 3.95
+      - row: 23
+        ba: IV/ 0
+        floor: null
+        room_no: 834
+        art: null
+        usage: UNKNOWN
+        area_sqm: 18.86
+        amounts:
+        - 37.72
+        - 47.15
+        - 56.58
+        - 66.01
+        rates:
+        - 2.0
+        - 2.5
+        - 3.0
+        - 3.5
+      - row: 24
+        ba: II / 1
+        floor: null
+        room_no: 115
+        art: null
+        usage: UNKNOWN
+        area_sqm: 7.51
+        amounts:
+        - 18.78
+        - 22.53
+        - 26.29
+        - 30.04
+        rates:
+        - 2.5
+        - 3.0
+        - 3.5
+        - 4.0
+      - row: 25
+        ba: II / 1
+        floor: null
+        room_no: '115.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 36.15
+        amounts:
+        - 180.75
+        - 198.82
+        - 216.9
+        - 234.97
+        rates:
+        - 5.0
+        - 5.5
+        - 6.0
+        - 6.5
+      - row: 26
+        ba: II / 1
+        floor: null
+        room_no: '115.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 56.25
+        amounts:
+        - 281.25
+        - 309.38
+        - 337.5
+        - 365.62
+        rates:
+        - 5.0
+        - 5.5
+        - 6.0
+        - 6.5
+      - row: 27
+        ba: II / 1
+        floor: null
+        room_no: '115.3'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 30.72
+        amounts:
+        - 153.6
+        - 168.96
+        - 184.32
+        - 199.68
+        rates:
+        - 5.0
+        - 5.5
+        - 6.0
+        - 6.5
+      - row: 28
+        ba: II / 1
+        floor: null
+        room_no: '115.4'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 15.18
+        amounts:
+        - 75.9
+        - 83.49
+        - 91.08
+        - 98.67
+        rates:
+        - 5.0
+        - 5.5
+        - 6.0
+        - 6.5
+      - row: 29
+        ba: II / 0
+        floor: null
+        room_no: 22
+        art: null
+        usage: UNKNOWN
+        area_sqm: 33.0
+        amounts:
+        - 66.0
+        - 82.5
+        - 99.0
+        - 115.5
+        rates:
+        - 2.0
+        - 2.5
+        - 3.0
+        - 3.5
+      - row: 30
+        ba: Garage WLG
+        floor: null
+        room_no: '-'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 32.252
+        amounts:
+        - 79.02
+        - 95.14
+        - 111.27
+        - 127.4
+        rates:
+        - 2.45
+        - 2.95
+        - 3.45
+        - 3.95
+      - row: 31
+        ba: Eckraum WLG
+        floor: null
+        room_no: '-'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 8.179
+        amounts:
+        - 20.04
+        - 24.13
+        - 28.22
+        - 32.31
+        rates:
+        - 2.45
+        - 2.95
+        - 3.45
+        - 3.95
+      - row: 32
+        ba: R-links
+        floor: null
+        room_no: '-'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.286
+        amounts:
+        - 39.9
+        - 48.04
+        - 56.18
+        - 64.33
+        rates:
+        - 2.45
+        - 2.95
+        - 3.45
+        - 3.95
+      mapping:
+        tenant_id_by_no: TEN-0026
+        tenant_id_by_title: TEN-0026
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0027
+  tenant_no: '80'
+  name: Buchhandlung Michael Rother
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - mr-s70@t-online.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 24.68
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.5
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '80'
+      tenant_no_excel: '80'
+      tenant_no_system_guess: '80'
+      title: Michael Rother Buchhandlung
+      tenant_no_int: 80
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 97.02
+        non_storage:
+        - 97.02
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 3
+        room_no: 337
+        art: null
+        usage: UNKNOWN
+        area_sqm: 18.48
+        amounts:
+        - 97.02
+        rates:
+        - 5.25
+      mapping:
+        tenant_id_by_no: TEN-0027
+        tenant_id_by_title: TEN-0027
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0028
+  tenant_no: '25'
+  name: Staatsbetrieb Sächsisches Immobilien- und Baumanagement
+  legal_form: Anstalt des öffentlichen Rechts
+  managed_by: ORG-0001
+  address: *id011
+  tags:
+  - extern
+  contact_person: Lisa-Jeannine Gleibe
+  email_notifications:
+  - Lisa-Jeannine.Gleibe@sib.smf.sachsen.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 0.0
+      storage_sqm: 121.4
+    rent_per_sqm:
+      office_eur: 0.0
+      storage_eur: 3.05
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '25 '
+      tenant_no_excel: '25'
+      tenant_no_system_guess: '25'
+      title: SIB Staatsbetrieb Hochbauamt
+      tenant_no_int: 25
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 370.27
+        non_storage:
+        - 0.0
+        storage:
+        - 370.27
+      spaces:
+      - row: 11
+        ba: III /1
+        floor: null
+        room_no: 131
+        art: Lager
+        usage: STORAGE
+        area_sqm: 20.66
+        amounts:
+        - 63.01
+        rates:
+        - 3.05
+      - row: 12
+        ba: III /1
+        floor: null
+        room_no: 132
+        art: Lager
+        usage: STORAGE
+        area_sqm: 25.52
+        amounts:
+        - 77.84
+        rates:
+        - 3.05
+      - row: 13
+        ba: III /1
+        floor: null
+        room_no: 133
+        art: Lager
+        usage: STORAGE
+        area_sqm: 19.0
+        amounts:
+        - 57.95
+        rates:
+        - 3.05
+      - row: 14
+        ba: III /1
+        floor: null
+        room_no: 136
+        art: Lager
+        usage: STORAGE
+        area_sqm: 24.29
+        amounts:
+        - 74.08
+        rates:
+        - 3.05
+      - row: 15
+        ba: III /1
+        floor: null
+        room_no: 137
+        art: Lager
+        usage: STORAGE
+        area_sqm: 12.52
+        amounts:
+        - 38.19
+        rates:
+        - 3.05
+      - row: 16
+        ba: III /1
+        floor: null
+        room_no: 138
+        art: Lager
+        usage: STORAGE
+        area_sqm: 19.41
+        amounts:
+        - 59.2
+        rates:
+        - 3.05
+      mapping:
+        tenant_id_by_no: TEN-0028
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0029
+  tenant_no: '48'
+  name: SVB Sachverständigenbüro Irmscher
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - info@svb-irmscher.com
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 52.19
+      storage_sqm: 15.44
+    rent_per_sqm:
+      office_eur: 7.16
+      storage_eur: 4.2
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '48 '
+      tenant_no_excel: '48'
+      tenant_no_system_guess: '48'
+      title: Sachverständigenbüro Irmscher
+      tenant_no_int: 48
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 365.91
+        - 438.68
+        non_storage:
+        - 311.87
+        - 373.89
+        storage:
+        - 54.04
+        - 64.79
+      spaces:
+      - row: 11
+        ba: III/ 5
+        floor: null
+        room_no: 535
+        art: null
+        usage: UNKNOWN
+        area_sqm: 18.37
+        amounts:
+        - 106.52
+        - 127.75
+        rates:
+        - 5.8
+        - 6.954
+      - row: 12
+        ba: III/ 5
+        floor: null
+        room_no: '534.3'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 11.28
+        amounts:
+        - 68.49
+        - 82.1
+        rates:
+        - 6.07
+        - 7.278
+      - row: 13
+        ba: III/ 5
+        floor: null
+        room_no: 536
+        art: null
+        usage: UNKNOWN
+        area_sqm: 22.54
+        amounts:
+        - 136.86
+        - 164.04
+        rates:
+        - 6.07
+        - 7.278
+      - row: 14
+        ba: III/ 5
+        floor: null
+        room_no: '535.1'
+        art: Lager
+        usage: STORAGE
+        area_sqm: 15.44
+        amounts:
+        - 54.04
+        - 64.79
+        rates:
+        - 3.5
+        - 4.197
+      mapping:
+        tenant_id_by_no: TEN-0029
+        tenant_id_by_title: TEN-0029
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0030
+  tenant_no: SP
+  name: Sachverständigenbüro Holger Hertwig
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 0.0
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 0.0
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 2
+    severity:
+      error: 1
+      warning: 1
+    codes:
+    - PAYMENT_TENANT_NO_MISSING
+    - SPACE_TABLE_NOT_PARSEABLE
+    fields:
+    - spaces
+    - tenant_no
+    flags:
+    - code: SPACE_TABLE_NOT_PARSEABLE
+      severity: error
+      tenant_no: SP
+      scope: excel
+      field: spaces
+      message: Excel sheet(s) found but space table could not be parsed.
+      details:
+        tenant_name: Sachverständigenbüro Holger Hertwig
+        candidate_sheets:
+        - Sachverständ. Hertwig
+        errors:
+        - NO_SPACE_ROWS
+      id: RF-0010
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: PAYMENT_TENANT_NO_MISSING
+      severity: warning
+      tenant_no: SP
+      scope: payments
+      field: tenant_no
+      message: Payment entry missing tenant_no; mapping to Excel/units is ambiguous.
+      details:
+        payment_id: PAY-2025-11-01-TEN-0030
+        period: 2025-11
+      id: RF-0031
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+- id: TEN-0031
+  tenant_no: "09"
+  name: BVS Sachsen – Landesverband öffentlich bestellter und vereidigter sowie qualifizierter
+    Sachverständiger e. V.
+  legal_form: e.V.
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - vorstand@sachsen-wsachverstaendige.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 18.4
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.41
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '9 '
+      tenant_no_excel: '9'
+      tenant_no_system_guess: "09"
+      title: b.v.s. Sachsen
+      tenant_no_int: 9
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 111.69
+        - 136.26
+        non_storage:
+        - 111.69
+        - 136.26
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II
+        floor: 5
+        room_no: 537
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.4
+        amounts:
+        - 111.69
+        - 136.26
+        rates:
+        - 6.07
+        - 7.405
+      mapping:
+        tenant_id_by_no: TEN-0031
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0032
+  tenant_no: '64'
+  name: Uhlig & Wehling GmbH Ingenieurgesellschaft
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - info@uhlig-wehling.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 72.15
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.91
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '64 '
+      tenant_no_excel: '64'
+      tenant_no_system_guess: '64'
+      title: Uhlig & Wehling
+      tenant_no_int: 64
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.08.2024
+      totals:
+        all:
+        - 477.56
+        - 570.71
+        non_storage:
+        - 477.56
+        - 570.71
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 1
+        room_no: 129
+        art: null
+        usage: UNKNOWN
+        area_sqm: 36.69
+        amounts:
+        - 242.85
+        - 290.22
+        rates:
+        - 6.619
+        - 7.91
+      - row: 12
+        ba: III
+        floor: 1
+        room_no: '129.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 26.92
+        amounts:
+        - 178.18
+        - 212.94
+        rates:
+        - 6.619
+        - 7.91
+      - row: 13
+        ba: III
+        floor: 1
+        room_no: '129.2'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 8.54
+        amounts:
+        - 56.53
+        - 67.55
+        rates:
+        - 6.619
+        - 7.91
+      mapping:
+        tenant_id_by_no: TEN-0032
+        tenant_id_by_title: TEN-0032
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0033
+  tenant_no: '43'
+  name: CfM GmbH & Co. KG Versicherungsmakler
+  legal_form: GmbH & Co. KG
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - service@cfmgmbh.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 63.57
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 8.67
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '43 '
+      tenant_no_excel: '43'
+      tenant_no_system_guess: '43'
+      title: CfM GmbH & Co.KG
+      tenant_no_int: 43
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 21.06.2024
+      totals:
+        all:
+        - 456.43
+        - 551.15
+        non_storage:
+        - 456.43
+        - 551.15
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II / 4
+        floor: null
+        room_no: 417
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.49
+        amounts:
+        - 168.66
+        - 203.66
+        rates:
+        - 7.18
+        - 8.67
+      - row: 12
+        ba: II / 4
+        floor: null
+        room_no: 418
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.57
+        amounts:
+        - 118.97
+        - 143.66
+        rates:
+        - 7.18
+        - 8.67
+      - row: 13
+        ba: II / 4
+        floor: null
+        room_no: '418.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.51
+        amounts:
+        - 168.8
+        - 203.83
+        rates:
+        - 7.18
+        - 8.67
+      mapping:
+        tenant_id_by_no: TEN-0033
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0034
+  tenant_no: '17'
+  name: W+ Büro für Ingenieurdienstleistungen
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id012
+  tags:
+  - extern
+  email_notifications:
+  - wplus@t-online.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 57.87
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 6.0
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '17'
+      tenant_no_excel: '17'
+      tenant_no_system_guess: '17'
+      title: W+ Büro für Ingenieurdienstleistungen
+      tenant_no_int: 17
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 347.22
+        non_storage:
+        - 347.22
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III / 4
+        floor: 4
+        room_no: 438
+        art: Büro
+        usage: OFFICE
+        area_sqm: 16.96
+        amounts:
+        - 101.76
+        rates:
+        - 6.0
+      - row: 12
+        ba: III / 4
+        floor: 4
+        room_no: 439
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.54
+        amounts:
+        - 135.24
+        rates:
+        - 6.0
+      - row: 13
+        ba: III / 4
+        floor: 4
+        room_no: 440
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.37
+        amounts:
+        - 110.22
+        rates:
+        - 6.0
+      mapping:
+        tenant_id_by_no: TEN-0034
+        tenant_id_by_title: TEN-0034
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0035
+  tenant_no: '69'
+  name: Willke rail construction GmbH & Co. KG
+  legal_form: GmbH & Co. KG
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - sbeu@willke.com
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 218.26
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.25
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '69 '
+      tenant_no_excel: '69'
+      tenant_no_system_guess: '69'
+      title: Mietvertrag vom
+      tenant_no_int: 69
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 1582.38
+        non_storage:
+        - 1582.38
+        storage:
+        - 0.0
+      spaces:
+      - row: 12
+        ba: II
+        floor: 5
+        room_no: 512
+        art: Büro
+        usage: OFFICE
+        area_sqm: 28.37
+        amounts:
+        - 205.68
+        rates:
+        - 7.25
+      - row: 13
+        ba: II
+        floor: 5
+        room_no: 513
+        art: Büro
+        usage: OFFICE
+        area_sqm: 23.86
+        amounts:
+        - 172.98
+        rates:
+        - 7.25
+      - row: 14
+        ba: II
+        floor: 5
+        room_no: 515
+        art: Büro
+        usage: OFFICE
+        area_sqm: 23.64
+        amounts:
+        - 171.39
+        rates:
+        - 7.25
+      - row: 15
+        ba: II
+        floor: 5
+        room_no: 516
+        art: Büro
+        usage: OFFICE
+        area_sqm: 23.56
+        amounts:
+        - 170.81
+        rates:
+        - 7.25
+      - row: 16
+        ba: II
+        floor: 5
+        room_no: '517.1'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 12.47
+        amounts:
+        - 90.41
+        rates:
+        - 7.25
+      - row: 17
+        ba: II
+        floor: 5
+        room_no: '517.2'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 17.7
+        amounts:
+        - 128.32
+        rates:
+        - 7.25
+      - row: 18
+        ba: II
+        floor: 5
+        room_no: 517
+        art: Büro
+        usage: OFFICE
+        area_sqm: 9.32
+        amounts:
+        - 67.57
+        rates:
+        - 7.25
+      - row: 19
+        ba: II
+        floor: 5
+        room_no: 518
+        art: Büro
+        usage: OFFICE
+        area_sqm: 57.98
+        amounts:
+        - 420.35
+        rates:
+        - 7.25
+      - row: 20
+        ba: II
+        floor: 5
+        room_no: 519
+        art: Büro
+        usage: OFFICE
+        area_sqm: 21.36
+        amounts:
+        - 154.86
+        rates:
+        - 7.25
+      mapping:
+        tenant_id_by_no: TEN-0035
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0036
+  tenant_no: '89'
+  name: yard fm GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - post@yard.fm
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 11.81
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.77
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '89 '
+      tenant_no_excel: '89'
+      tenant_no_system_guess: '89'
+      title: yard fm GmbH
+      tenant_no_int: 89
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 76.77
+        - 91.73
+        non_storage:
+        - 76.77
+        - 91.73
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II
+        floor: 1
+        room_no: 111
+        art: null
+        usage: UNKNOWN
+        area_sqm: 11.81
+        amounts:
+        - 76.77
+        - 91.73
+        rates:
+        - 6.5
+        - 7.768
+      mapping:
+        tenant_id_by_no: TEN-0036
+        tenant_id_by_title: TEN-0036
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0037
+  tenant_no: '12'
+  name: Gerichtsvollzieherin Silke Ebert
+  legal_form: Hoheitlich
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - silkeebert@t-online.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 40.34
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 5.38
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 1
+    severity:
+      error: 1
+    codes:
+    - RECONCILIATION_MISMATCH
+    fields:
+    - base_rent_net
+    flags:
+    - code: RECONCILIATION_MISMATCH
+      severity: error
+      tenant_no: '12'
+      scope: reconciliation
+      field: base_rent_net
+      message: Excel-derived sum does not match leading system payment amount (base
+        or base+storage) within tolerance.
+      details:
+        sheet: '12'
+        best_match:
+          segment_index: 0
+          target: base_rent_net
+          total_kind: all
+          total: 217.89
+          target_value: 216.84
+          delta: 1.049999999999983
+        system_base_rent_net: 216.84
+        system_storage_cellar: 0.0
+      id: RF-0001
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '12'
+      tenant_no_excel: '12'
+      tenant_no_system_guess: '12'
+      title: Gerichtsvollzieherin Silke Ebert
+      tenant_no_int: 12
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: Miete ab 01.01.2026
+      totals:
+        all:
+        - 217.89
+        - 262.21
+        non_storage:
+        - 217.89
+        - 262.21
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 3
+        room_no: 334
+        art: null
+        usage: UNKNOWN
+        area_sqm: 20.13
+        amounts:
+        - 108.7
+        - 130.84
+        rates:
+        - 5.4
+        - 6.5
+      - row: 12
+        ba: III
+        floor: 3
+        room_no: 335
+        art: null
+        usage: UNKNOWN
+        area_sqm: 20.21
+        amounts:
+        - 109.19
+        - 131.37
+        rates:
+        - 5.4
+        - 6.5
+      mapping:
+        tenant_id_by_no: TEN-0037
+        tenant_id_by_title: TEN-0037
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0038
+  tenant_no: '81'
+  name: Vierhaus Steuerberatungsgesellschaft
+  legal_form: mbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - rita.ahlswede@vierhaus-kanzlei.de
+  email_invoices:
+  - rita.ahlswede@vierhaus-kanzlei.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 16.54
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.8
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '81 '
+      tenant_no_excel: '81'
+      tenant_no_system_guess: '81'
+      title: Vierhaus Steuerberatungsgesellschaft
+      tenant_no_int: 81
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.09.2024
+      totals:
+        all:
+        - 107.51
+        - 129.01
+        non_storage:
+        - 107.51
+        - 129.01
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: II
+        floor: 4
+        room_no: 416
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.54
+        amounts:
+        - 107.51
+        - 129.01
+        rates:
+        - 6.5
+        - 7.8
+      mapping:
+        tenant_id_by_no: TEN-0038
+        tenant_id_by_title: TEN-0038
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0039
+  tenant_no: '79'
+  name: Prof. Burmeier Ingenieur GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - big-c@burmeier-ingenieure.de
+  email_invoices:
+  - rechnung.20@burmeier-ingenieure.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 25.57
+      storage_sqm: 16.54
+    rent_per_sqm:
+      office_eur: 7.14
+      storage_eur: 5.35
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - STORAGE_ROWS_MISSING
+    fields:
+    - storage_cellar
+    flags:
+    - code: STORAGE_ROWS_MISSING
+      severity: warning
+      tenant_no: '79'
+      scope: spaces
+      field: storage_cellar
+      message: System has storage_cellar component but no storage space rows were
+        identified in Excel.
+      details:
+        sheet: '79 '
+        system_storage_cellar: 88.57
+      id: RF-0026
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '79 '
+      tenant_no_excel: '79'
+      tenant_no_system_guess: '79'
+      title: Fa. Prof. Burmeier Ingenieur GmbH
+      tenant_no_int: 79
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      - index: 2
+        label: ab 01.04.2025
+      totals:
+        all:
+        - 227.85
+        - 271.14
+        - 276.84
+        non_storage:
+        - 227.85
+        - 271.14
+        - 276.84
+        storage:
+        - 0.0
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 5
+        room_no: 539
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.57
+        amounts:
+        - 153.42
+        - 182.57
+        - 186.4
+        rates:
+        - 6.0
+        - 7.14
+        - 7.29
+      - row: 12
+        ba: I
+        floor: 4
+        room_no: 403
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.54
+        amounts:
+        - 74.43
+        - 88.57
+        - 90.43
+        rates:
+        - 4.5
+        - 5.355
+        - 5.467
+      mapping:
+        tenant_id_by_no: TEN-0039
+        tenant_id_by_title: TEN-0039
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0040
+  tenant_no: '91'
+  name: Institut für Angewandte Informatik e. V.
+  legal_form: e.V.
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - vahdati@infai.org
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 95.69
+      storage_sqm: 16.57
+    rent_per_sqm:
+      office_eur: 6.5
+      storage_eur: 3.0
+  review:
+    needed: true
+    count: 1
+    severity:
+      warning: 1
+    codes:
+    - STORAGE_ROWS_MISSING
+    fields:
+    - storage_cellar
+    flags:
+    - code: STORAGE_ROWS_MISSING
+      severity: warning
+      tenant_no: '91'
+      scope: spaces
+      field: storage_cellar
+      message: System has storage_cellar component but no storage space rows were
+        identified in Excel.
+      details:
+        sheet: '91'
+        system_storage_cellar: 49.71
+      id: RF-0029
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '91'
+      tenant_no_excel: '91'
+      tenant_no_system_guess: '91'
+      title: Institut für Angewandte Informatik e.V.
+      tenant_no_int: 91
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 671.7
+        non_storage:
+        - 671.7
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: I
+        floor: 4
+        room_no: 404
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.48
+        amounts:
+        - 152.62
+        rates:
+        - 6.5
+      - row: 12
+        ba: I
+        floor: 4
+        room_no: 405
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.54
+        amounts:
+        - 107.51
+        rates:
+        - 6.5
+      - row: 13
+        ba: I
+        floor: 4
+        room_no: 406
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.51
+        amounts:
+        - 152.82
+        rates:
+        - 6.5
+      - row: 14
+        ba: I
+        floor: 4
+        room_no: 408
+        art: null
+        usage: UNKNOWN
+        area_sqm: 32.16
+        amounts:
+        - 209.04
+        rates:
+        - 6.5
+      - row: 15
+        ba: I
+        floor: 4
+        room_no: 407
+        art: null
+        usage: UNKNOWN
+        area_sqm: 16.57
+        amounts:
+        - 49.71
+        rates:
+        - 3.0
+      mapping:
+        tenant_id_by_no: TEN-0040
+        tenant_id_by_title: TEN-0040
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0041
+  tenant_no: '92'
+  name: ATHENA Technologie Beratung GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - michael.naumann@myathena.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 22.46
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.77
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '92 '
+      tenant_no_excel: '92'
+      tenant_no_system_guess: '92'
+      title: Athena Technologie Beratung GmbH
+      tenant_no_int: 92
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: ab 01.04.2024
+      totals:
+        all:
+        - 145.99
+        - 174.6
+        non_storage:
+        - 145.99
+        - 174.6
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 5
+        room_no: 538
+        art: null
+        usage: UNKNOWN
+        area_sqm: 22.46
+        amounts:
+        - 145.99
+        - 174.6
+        rates:
+        - 6.5
+        - 7.774
+      mapping:
+        tenant_id_by_no: TEN-0041
+        tenant_id_by_title: TEN-0041
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0042
+  tenant_no: '96'
+  name: SG Dresdner Bank Dresden e. V.
+  legal_form: e.V.
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  contact_person: Thomas Roßberg
+  email_notifications:
+  - verein@sg-dreba.de
+  email_invoices:
+  - verein@sg-dreba.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 22.37
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 6.5
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '96 '
+      tenant_no_excel: '96'
+      tenant_no_system_guess: '96'
+      title: SG Dresdner Bank Dresden e.V.
+      tenant_no_int: 96
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 145.41
+        non_storage:
+        - 145.41
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: null
+        floor: 3
+        room_no: 344
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.37
+        amounts:
+        - 145.41
+        rates:
+        - 6.5
+      mapping:
+        tenant_id_by_no: TEN-0042
+        tenant_id_by_title: TEN-0042
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0043
+  tenant_no: '95'
+  name: dps Energie GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - stephan.muecke@dps-energie.net
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 49.11
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 6.0
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '95 '
+      tenant_no_excel: '95'
+      tenant_no_system_guess: '95'
+      title: dps Energie GmbH
+      tenant_no_int: 95
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 294.66
+        non_storage:
+        - 294.66
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: null
+        floor: 4
+        room_no: 436
+        art: null
+        usage: UNKNOWN
+        area_sqm: 25.57
+        amounts:
+        - 153.42
+        rates:
+        - 6.0
+      - row: 12
+        ba: null
+        floor: 4
+        room_no: '436.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 23.54
+        amounts:
+        - 141.24
+        rates:
+        - 6.0
+      mapping:
+        tenant_id_by_no: TEN-0043
+        tenant_id_by_title: TEN-0043
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0044
+  tenant_no: '99'
+  name: H & E Handel und Entwicklungs GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  contact_person: Jürgen Breitmayer
+  email_notifications:
+  - J.Breitmayer@h-e-gmbh.com
+  email_invoices:
+  - J.Breitmayer@h-e-gmbh.com
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 39.79
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.37
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '99 '
+      tenant_no_excel: '99'
+      tenant_no_system_guess: '99'
+      title: H&E Handel und Entwicklungs GmbH
+      tenant_no_int: 99
+      segments:
+      - index: 0
+        label: null
+      - index: 1
+        label: '2024-04-01 00:00:00'
+      totals:
+        all:
+        - 278.53
+        - 293.29
+        non_storage:
+        - 278.53
+        - 293.29
+        storage:
+        - 0.0
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 3
+        room_no: 345
+        art: Büro
+        usage: OFFICE
+        area_sqm: 39.79
+        amounts:
+        - 278.53
+        - 293.29
+        rates:
+        - 7.0
+        - 7.371
+      mapping:
+        tenant_id_by_no: TEN-0044
+        tenant_id_by_title: TEN-0044
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0045
+  tenant_no: '101'
+  name: BDS Sachsen e. V.
+  legal_form: e.V.
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - info@bds-sachsen.com
+  email_invoices:
+  - info@bds-sachsen.com
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 29.29
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.5
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '101 '
+      tenant_no_excel: '101'
+      tenant_no_system_guess: '101'
+      title: BdS Sachsen e.V.
+      tenant_no_int: 101
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 219.68
+        non_storage:
+        - 219.68
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 3
+        room_no: 346
+        art: null
+        usage: UNKNOWN
+        area_sqm: 15.9
+        amounts:
+        - 119.25
+        rates:
+        - 7.5
+      - row: 12
+        ba: III
+        floor: 3
+        room_no: 347
+        art: null
+        usage: UNKNOWN
+        area_sqm: 13.39
+        amounts:
+        - 100.43
+        rates:
+        - 7.5
+      mapping:
+        tenant_id_by_no: TEN-0045
+        tenant_id_by_title: TEN-0045
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0046
+  tenant_no: '102'
+  name: Reformer e. V.
+  legal_form: e.V.
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - tneumann@reformer-ev.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 16.54
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.5
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '102 '
+      tenant_no_excel: '102'
+      tenant_no_system_guess: '102'
+      title: Reformer e.V.
+      tenant_no_int: 102
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 124.05
+        non_storage:
+        - 124.05
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 4
+        room_no: 403
+        art: Büro
+        usage: OFFICE
+        area_sqm: 16.54
+        amounts:
+        - 124.05
+        rates:
+        - 7.5
+      mapping:
+        tenant_id_by_no: TEN-0046
+        tenant_id_by_title: TEN-0046
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0047
+  tenant_no: '105'
+  name: Sittner Kosmetik
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - dd@sittner-kosmetik.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 45.45
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.0
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '105 '
+      tenant_no_excel: '105'
+      tenant_no_system_guess: '105'
+      title: Sittner Kosmetik
+      tenant_no_int: 105
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 318.15
+        non_storage:
+        - 318.15
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 1
+        room_no: 130
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.69
+        amounts:
+        - 130.83
+        rates:
+        - 7.0
+      - row: 12
+        ba: III
+        floor: 1
+        room_no: '130.1'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 26.76
+        amounts:
+        - 187.32
+        rates:
+        - 7.0
+      mapping:
+        tenant_id_by_no: TEN-0047
+        tenant_id_by_title: TEN-0047
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0048
+  tenant_no: '78'
+  name: ABS Optronics GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  contact_person: Frank Bergmann
+  email_notifications:
+  - fbe@edex-ug.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 18.69
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.0
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '78 '
+      tenant_no_excel: '78'
+      tenant_no_system_guess: '78'
+      title: ABS Optronics GmbH (ehemals edex)
+      tenant_no_int: 78
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 130.83
+        non_storage:
+        - 130.83
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III 1
+        floor: 1
+        room_no: '125.1'
+        art: null
+        usage: UNKNOWN
+        area_sqm: 18.69
+        amounts:
+        - 130.83
+        rates:
+        - 7.0
+      mapping:
+        tenant_id_by_no: TEN-0048
+        tenant_id_by_title: TEN-0048
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0049
+  tenant_no: '103'
+  name: ZT Outdoor Living GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - kaiuwe.sielaff@zhengte.eu
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 135.94
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 4.87
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 1
+    severity:
+      error: 1
+    codes:
+    - RECONCILIATION_MISMATCH
+    fields:
+    - base_rent_net
+    flags:
+    - code: RECONCILIATION_MISMATCH
+      severity: error
+      tenant_no: '103'
+      scope: reconciliation
+      field: base_rent_net
+      message: Excel-derived sum does not match leading system payment amount (base
+        or base+storage) within tolerance.
+      details:
+        sheet: '103 '
+        best_match:
+          segment_index: 0
+          target: base_rent_net
+          total_kind: all
+          total: 1025.2706
+          target_value: 662.33
+          delta: 362.9406
+        system_base_rent_net: 662.33
+        system_storage_cellar: 0.0
+      id: RF-0006
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '103 '
+      tenant_no_excel: '103'
+      tenant_no_system_guess: '103'
+      title: 1. Nachtrag
+      tenant_no_int: 103
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 1025.27
+        non_storage:
+        - 1025.27
+        storage:
+        - 0.0
+      spaces:
+      - row: 12
+        ba: III
+        floor: 4
+        room_no: 427
+        art: Büro
+        usage: OFFICE
+        area_sqm: 47.46
+        amounts:
+        - 355.95
+        rates:
+        - 7.5
+      - row: 13
+        ba: III
+        floor: 4
+        room_no: 428
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.42
+        amounts:
+        - 138.15
+        rates:
+        - 7.5
+      - row: 14
+        ba: III
+        floor: 4
+        room_no: 429
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.43
+        amounts:
+        - 168.23
+        rates:
+        - 7.5
+      - row: 15
+        ba: III
+        floor: 4
+        room_no: 430
+        art: Büro
+        usage: OFFICE
+        area_sqm: 18.39
+        amounts:
+        - 140.13
+        rates:
+        - 7.62
+      - row: 16
+        ba: III
+        floor: 1
+        room_no: 135
+        art: Büro
+        usage: OFFICE
+        area_sqm: 29.24
+        amounts:
+        - 222.81
+        rates:
+        - 7.62
+      mapping:
+        tenant_id_by_no: TEN-0049
+        tenant_id_by_title: null
+        mapping_conflict: null
+      attached_via:
+      - tenant_no
+      selected: true
+- id: TEN-0050
+  tenant_no: '106'
+  name: Singakademie Dresden e. V.
+  legal_form: e.V.
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  email_notifications:
+  - info@singakademie-dresden.de
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 22.43
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 7.5
+      storage_eur: 0.0
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '106 '
+      tenant_no_excel: '106'
+      tenant_no_system_guess: '106'
+      title: Singakademie Dresden e.V.
+      tenant_no_int: 106
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 168.23
+        non_storage:
+        - 168.23
+        storage:
+        - 0.0
+      spaces:
+      - row: 11
+        ba: III
+        floor: 3
+        room_no: 341
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.43
+        amounts:
+        - 168.23
+        rates:
+        - 7.5
+      mapping:
+        tenant_id_by_no: TEN-0050
+        tenant_id_by_title: TEN-0050
+        mapping_conflict: false
+      attached_via:
+      - tenant_no
+      - title
+      selected: true
+- id: TEN-0051
+  name: INC Ingenieurbüro Noske & Co. GmbH
+  legal_form: GmbH
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 33.72685
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 8.0
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 4
+    severity:
+      error: 2
+      warning: 2
+    codes:
+    - PAYMENT_TENANT_NO_MISSING
+    - TENANT_NO_COLLISION
+    - TENANT_NO_MISSING
+    - TENANT_NO_SUGGESTED_FROM_EXCEL
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_COLLISION
+      severity: error
+      tenant_no: null
+      scope: masterdata_vs_excel
+      field: tenant_no
+      message: 'Tenant number collision: Excel sheet 107 is labeled ''INC'', but tenant
+        masterdata already uses tenant_no 107 for another tenant (Bert Krüger).'
+      details:
+        tenant_name: INC Ingenieurbüro Noske & Co. GmbH
+        excel_sheet: ' 107 '
+        collides_with_tenant_id: TEN-0061
+        collides_with_tenant_name: Physiotherapie Bert Krüger
+        collides_with_master_tenant_no: '107'
+        suggested_resolution: Decide whether 107 belongs to INC or Bert Krüger; update
+          tenant_no mapping accordingly.
+      id: RF-0011
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: TENANT_NO_MISSING
+      severity: error
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: No tenant_no in payment and no tenant_no in tenant masterdata; cannot
+        link to Excel sheet.
+      details:
+        tenant_name: INC Ingenieurbüro Noske & Co. GmbH
+        payment_id: PAY-2025-11-01-TEN-0051
+      id: RF-0012
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: PAYMENT_TENANT_NO_MISSING
+      severity: warning
+      tenant_no: null
+      scope: payments
+      field: tenant_no
+      message: Payment entry missing tenant_no; mapping to Excel/units is ambiguous.
+      details:
+        payment_id: PAY-2025-11-01-TEN-0051
+        period: 2025-11
+      id: RF-0032
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: TENANT_NO_SUGGESTED_FROM_EXCEL
+      severity: warning
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: Excel provides a likely tenant number for this tenant; consider setting
+        tenant_no accordingly (manual decision).
+      details:
+        tenant_name: INC Ingenieurbüro Noske & Co. GmbH
+        suggested_tenant_no: '107'
+        excel_sheet: ' 107 '
+      id: RF-0033
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: ' 107 '
+      tenant_no_excel: '107'
+      tenant_no_system_guess: '107'
+      title: INC, Anlage 1 zum Mietvertrag ab 15.04.2024
+      tenant_no_int: 107
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 269.81
+        non_storage:
+        - 269.81
+        storage:
+        - 0.0
+      spaces:
+      - row: 12
+        ba: III
+        floor: 5
+        room_no: 532
+        art: Büro
+        usage: OFFICE
+        area_sqm: 22.46
+        amounts:
+        - 179.68
+        rates:
+        - 8.0
+      - row: 13
+        ba: III
+        floor: 5
+        room_no: Vorraum
+        art: Küche
+        usage: OTHER
+        area_sqm: 11.267
+        amounts:
+        - 90.13
+        rates:
+        - 8.0
+      mapping:
+        tenant_id_by_no: TEN-0061
+        tenant_id_by_title: TEN-0051
+        mapping_conflict: true
+      attached_via:
+      - title
+      selected: true
+- id: TEN-0052
+  name: Michael Roth – 3D & VFX Artist
+  legal_form: Freiberuflich
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 29.77
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 8.0
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 3
+    severity:
+      error: 1
+      warning: 2
+    codes:
+    - PAYMENT_TENANT_NO_MISSING
+    - TENANT_NO_MISSING
+    - TENANT_NO_SUGGESTED_FROM_EXCEL
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_MISSING
+      severity: error
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: No tenant_no in payment and no tenant_no in tenant masterdata; cannot
+        link to Excel sheet.
+      details:
+        tenant_name: Michael Roth – 3D & VFX Artist
+        payment_id: PAY-2025-11-01-TEN-0052
+      id: RF-0013
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: PAYMENT_TENANT_NO_MISSING
+      severity: warning
+      tenant_no: null
+      scope: payments
+      field: tenant_no
+      message: Payment entry missing tenant_no; mapping to Excel/units is ambiguous.
+      details:
+        payment_id: PAY-2025-11-01-TEN-0052
+        period: 2025-11
+      id: RF-0034
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: TENANT_NO_SUGGESTED_FROM_EXCEL
+      severity: warning
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: Excel provides a likely tenant number for this tenant; consider setting
+        tenant_no accordingly (manual decision).
+      details:
+        tenant_name: Michael Roth – 3D & VFX Artist
+        suggested_tenant_no: '109'
+        excel_sheet: '109'
+      id: RF-0035
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+  lease_spaces_excel:
+    source_file: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+    sheets:
+    - sheet: '109'
+      tenant_no_excel: '109'
+      tenant_no_system_guess: '109'
+      title: 'Angebot Michael Roth
+
+        3D & VFX Artist'
+      tenant_no_int: 109
+      segments:
+      - index: 0
+        label: null
+      totals:
+        all:
+        - 238.16
+        non_storage:
+        - 238.16
+        storage:
+        - 0.0
+      spaces:
+      - row: 13
+        ba: III
+        floor: 3
+        room_no: '336.1'
+        art: Büro
+        usage: OFFICE
+        area_sqm: 29.77
+        amounts:
+        - 238.16
+        rates:
+        - 8.0
+      mapping:
+        tenant_id_by_no: null
+        tenant_id_by_title: TEN-0052
+        mapping_conflict: null
+      attached_via:
+      - title
+      selected: true
+- id: TEN-0053
+  name: Gesellschaft für Bahnentwicklung und -beratung (GBB) UG (haftungsbeschränkt)
+  legal_form: UG (haftungsbeschränkt)
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 22.46
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 8.0
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 2
+    severity:
+      error: 1
+      warning: 1
+    codes:
+    - PAYMENT_TENANT_NO_MISSING
+    - TENANT_NO_MISSING
+    fields:
+    - tenant_no
+    flags:
+    - code: TENANT_NO_MISSING
+      severity: error
+      tenant_no: null
+      scope: masterdata
+      field: tenant_no
+      message: No tenant_no in payment and no tenant_no in tenant masterdata; cannot
+        link to Excel sheet.
+      details:
+        tenant_name: Gesellschaft für Bahnentwicklung und -beratung (GBB) UG (haftungsbeschränkt)
+        payment_id: PAY-2025-11-01-TEN-0053
+      id: RF-0014
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: PAYMENT_TENANT_NO_MISSING
+      severity: warning
+      tenant_no: null
+      scope: payments
+      field: tenant_no
+      message: Payment entry missing tenant_no; mapping to Excel/units is ambiguous.
+      details:
+        payment_id: PAY-2025-11-01-TEN-0053
+        period: 2025-11
+      id: RF-0036
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+- id: TEN-0054
+  tenant_no: "N"
+  name: HMMW Habich Müller-Magdeburg Weber
+  legal_form: ''
+  managed_by: ORG-0001
+  address: *id001
+  tags:
+  - extern
+  metrics:
+    source: Rent Roll Nov 2025 (Stand 01.11.2025) – User table
+    status: simulated
+    area:
+      office_sqm: 16.54
+      storage_sqm: 0.0
+    rent_per_sqm:
+      office_eur: 8.0
+      storage_eur: 0.0
+  review:
+    needed: true
+    count: 2
+    severity:
+      error: 1
+      warning: 1
+    codes:
+    - EXCEL_SHEET_MISSING
+    - PAYMENT_TENANT_NO_MISSING
+    fields:
+    - sheet
+    - tenant_no
+    flags:
+    - code: EXCEL_SHEET_MISSING
+      severity: error
+      tenant_no: "N"
+      scope: excel
+      field: sheet
+      message: No matching Excel tenant sheet found for this tenant_no; unit/space
+        data cannot be imported.
+      details:
+        tenant_name: HMMW Habich Müller-Magdeburg Weber
+        expected_no: "N"
+      id: RF-0009
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+    - code: PAYMENT_TENANT_NO_MISSING
+      severity: warning
+      tenant_no: "N"
+      scope: payments
+      field: tenant_no
+      message: Payment entry missing tenant_no; mapping to Excel/units is ambiguous.
+      details:
+        payment_id: PAY-2025-11-01-TEN-0054
+        period: 2025-11
+      id: RF-0030
+      created_at: '2025-12-17T08:55:48.881762+00:00'
+change_log:
+- ts: "2025-12-13"
+  file: tenants.yaml
+  summary: Mieternummern, Ansprechpartner und E-Mail-Kontakte ergänzt; fehlende externe
+    Mieter ergänzt.
+  source: User table (Mieter-Nr./E-Mails) pasted in chat
+- ts: "2025-12-13"
+  file: tenants.yaml
+  summary: Postanschriften ergänzt; Adressen via YAML-Anker standardisiert.
+  source: User address list pasted in chat
+- ts: "2025-12-13"
+  file: tenants.yaml
+  summary: Indexierungsregel für DC International Business Kultur und Service GmbH
+    ergänzt (VPI > 3 %, ab 01.08.2024).
+  source: 'User input: Indexierungsregel DC International'
+- ts: "2025-12-13"
+  file: tenants.yaml
+  summary: 'Indexierungslogik DC International präzisiert: sofortige Anpassung bei
+    Überschreiten (>3 % VPI), monatliche Prüfung.'
+  source: 'User clarification: bei Überschreiten sofort'
+- ts: "2025-12-13"
+  file: tenants.yaml
+  summary: 'Indexierung DC: base_index_value Platzhalter ergänzt (für automatische
+    Schwellenprüfung im Dashboard).'
+  source: 'Dashboard requirement: threshold check needs base index value'
+- ts: "2025-12-13"
+  file: tenants.yaml
+  summary: Simulierte Flächen- und €/qm-Metriken (Büro/Lager) aus Rent Roll Nov 2025
+    ergänzt; Status=simulated.
+  source: User pasted rent roll table (Nov 2025)
+- ts: "2025-12-13"
+  file: tenants.yaml
+  summary: 'DC Indexierung: Basisindexwert (VPI 2020=100) für 2024-08 hinterlegt (119.7)
+    zur automatischen Schwellenprüfung.'
+  source: Destatis VPI Monatswert 2024-08 (2020=100)
+- ts: "2025-12-13"
+  file: tenants.yaml
+  summary: Zusätzliche Mieter-Stammdatensätze aus interner Mieter-/Adressliste ergänzt
+    (inkl. ehemalige Mieter als inactive; Leaders/Bert/Dr. Schöne als active).
+  source: User pasted tenant/address checklist; web lookups for selected entities
+- ts: "2025-12-17"
+  file: tenants.yaml
+  summary: 'Excel Anlage 1: Raum-/Flächendaten + Review-Flags in tenants integriert;
+    payments bleiben führend und unverändert.'
+  source: Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx + interne Reconciliation/Review-Flags
+enrichment:
+  generated_at: '2025-12-17T13:25:42.790514+00:00'
+  payments_are_leading: true
+  sources:
+  - Mieter IPRO_ Anlage 1 zum Mietvertrag.xlsx
+  - review_flags.yaml + lease_spaces.yaml (generated from Excel + existing YAML)
+  note: Excel Raum-/Flächendaten und Review-Flags wurden in tenants.yaml integriert.
+    payments.yaml bleibt führend und unverändert.
+  orphan_excel_sheets:
+  - sheet: 111 - Angebot
+    tenant_no_excel: '111'
+    tenant_no_system_guess: '111'
+    title: Bürogemeinschaft Sachse & Günther
+    tenant_no_int: 111
+    segments:
+    - index: 0
+      label: null
+    totals:
+      all:
+      - 346.38
+      non_storage:
+      - 346.38
+      storage:
+      - 0.0
+    spaces:
+    - row: 10
+      ba: 3
+      floor: 2
+      room_no: 214
+      art: Büro
+      usage: OFFICE
+      area_sqm: 40.75
+      amounts:
+      - 346.38
+      rates:
+      - 8.5
+    mapping:
+      tenant_id_by_no: null
+      tenant_id_by_title: null
+      mapping_conflict: null

@@ -1,0 +1,12 @@
+apps:
+  - id: tacheles
+    name: "Tacheles – Mängel"
+    workdir: "/Users/ericschone/Library/Mobile Documents/com~apple~CloudDocs/Y/Tacheles"
+    script: "./start_dashboard.command"
+    args: ["8010"]
+
+  - id: ipro
+    name: "IPRO Dashboard"
+    workdir: "/Users/ericschone/Library/Mobile Documents/com~apple~CloudDocs/Y/IPRO"
+    script: "./start_dashboard.command"
+    args: ["8000"]

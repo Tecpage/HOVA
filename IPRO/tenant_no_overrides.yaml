@@ -1,0 +1,303 @@
+# tenant_no_overrides.yaml
+# Projekt Y – Ergänzende Mieternummern (ohne Änderung an tenants.yaml)
+# Quelle: Arbeitstabelle 2022–2023 (Spalte H / Miet-Nr.) + Chat-Notizen
+#
+# Hinweis:
+# - Diese Datei überschreibt/ergänzt *nur* tenant_no während des Dashboard-Builds.
+# - tenants.yaml bleibt unverändert (kein Nachtragen in YAML nötig).
+# - Namen werden nicht verändert; Matching erfolgt tolerant (vereinheitlicht).
+
+overrides:
+  - tenant_no: "02"
+    names:
+      - "B & A Gebäudeservice GmbH"
+      - "B & A Gebäudeservice UG"
+      - "B & A Gebäudeservice"
+
+  - tenant_no: "05"
+    names:
+      - "Maik Rother Maler Rother"
+      - "Maler Rother"
+
+  - tenant_no: "07"
+    names:
+      - "Gunar Bach Hausverwaltung/Immobilien"
+      - "Hausverwaltung Gunar Bach"
+      - "HV Gunar Bach"
+
+  - tenant_no: "08"
+    names:
+      - "ACP IT Solutions GmbH"
+      - "ACP IT-Solutions GmbH"
+      - "ACP IT Solutions"
+
+  - tenant_no: "09"
+    names:
+      - "BVS Sachsen"
+      - "b.v.s. Sachsen"
+
+  - tenant_no: "11"
+    names:
+      - "PBM Projekt Büro Management"
+      - "PBM Projektbüro Management"
+
+  - tenant_no: "12"
+    names:
+      - "Gerichtsvollzieherin Silke Ebert"
+      - "Obergerichtsvollzieherin Silke Ebert"
+
+  - tenant_no: "14"
+    names:
+      - "Investitionsverwaltung Klinik am Tharandter Wald GmbH"
+      - "Invest. Tharandter Wald"
+
+  - tenant_no: "15"
+    names:
+      - "Landschaftsarchitekten Lagotzki Starke Grütze"
+      - "Landschaftsarchitektur Büro Lagotzki-Starke-Grütze"
+
+  - tenant_no: "16"
+    names:
+      - "Latchezar Bossev Weinmarketing Dresden"
+      - "Bossev Weinmarketing"
+
+  - tenant_no: "17"
+    names:
+      - "W+ Büro für Ingenieurdienstleistungen"
+
+  - tenant_no: "21"
+    names:
+      - "Dussmann Service Deutschland GmbH"
+
+  - tenant_no: "22"
+    names:
+      - "Ingenieurbüro Dr. Elisabeth Seveke"
+      - "Dr. Seveke GmbH"
+      - "IB Seveke"
+
+  - tenant_no: "23"
+    names:
+      - "Chauffeur Service Dresden GmbH & Co. KG"
+      - "Chauffeur Company"
+
+  - tenant_no: "25"
+    names:
+      - "Staatsbetrieb Sächsisches Immobilien- und Baumanagement"
+      - "SIB Staatsbetrieb Hochbauamt"
+      - "SIB / NL DD I (Staatliches Vermögensamt für Familie u. Soziales)"
+      - "SIB"
+
+  - tenant_no: "27"
+    names:
+      - "Bildungsinstitut des Handels e. V."
+      - "Bildungsinstitut des Handels"
+      - "Bildungsinsitut des Handels"
+
+  - tenant_no: "34"
+    names:
+      - "Christoph Hein Restauratorengesellschaft mbH"
+      - "Christoph Hein Restauratorenges. mbH"
+
+  - tenant_no: "35"
+    names:
+      - "Heidelmann & Klingebiel Planungsgesellschaft mbH"
+      - "Heidelmann & Klingebiel"
+
+  - tenant_no: "36"
+    names:
+      - "SPIE Fleischhauer GmbH"
+      - "SPIE Information & Communication Services GmbH"
+      - "SPIE FInformation & Communication Services GmbH"
+
+  - tenant_no: "37"
+    names:
+      - "Ländliche Erwachsenenbildung im Freistaat Sachsen e. V."
+      - "LEB Ländliche Erwachsenenbildung"
+
+  - tenant_no: "38"
+    names:
+      - "H & H Bürodienstleistungen und Reisebüro Hai Vu Dinh"
+      - "Bürodienstleistung VU DINH Hai"
+
+  - tenant_no: "40"
+    names:
+      - "Linguwerk GmbH"
+      - "Linguwerk"
+
+  - tenant_no: "43"
+    names:
+      - "CfM GmbH & Co. KG Versicherungsmakler"
+      - "CfM GmbH & Co.KG"
+      - "CfM GmbH & Co. KG"
+
+  - tenant_no: "45"
+    names:
+      - "Ingenieurbüro Kirsten"
+
+  - tenant_no: "46"
+    names:
+      - "Helga Eckert"
+      - "Malerin Helga Eckert"
+
+  - tenant_no: "48"
+    names:
+      - "SVB Sachverständigenbüro Irmscher"
+      - "Sachverständigenbüro Irmscher"
+
+  - tenant_no: "51"
+    names:
+      - "EIG Eisenbahningenieurgesellschaft GmbH"
+      - "E.I.G."
+      - "EIG"
+
+  - tenant_no: "53"
+    names:
+      - "EDV Medienconsult & Journalistik"
+
+  - tenant_no: "54"
+    names:
+      - "Sachverständigenbüro Thomas Frick"
+      - "SVB Frick"
+
+  - tenant_no: "56"
+    names:
+      - "BPS Bildungsportal Sachsen GmbH"
+      - "BPS Bildungsportal Sachsen"
+
+  - tenant_no: "64"
+    names:
+      - "Uhlig & Wehling GmbH Ingenieurgesellschaft"
+      - "Uhlig & Wehling GmbH"
+
+  - tenant_no: "69"
+    names:
+      - "Willke rail construction GmbH & Co. KG"
+      - "Wilke rail construction GmbH & Co. KG"
+      - "Willke rail construction GmbH"
+
+  - tenant_no: "70"
+    names:
+      - "Dresdner Reisezentrum GmbH"
+
+  - tenant_no: "75"
+    names:
+      - "Energie – Solar – Beratung Dipl.-Ing. (FH) Stephan Mücke"
+      - "Energie Solar Beratung Mücke"
+
+  - tenant_no: "78"
+    names:
+      - "ABS Optronics GmbH"
+      - "ABS Optronics GmbH (ehemals edex)"
+      - "ABS Optronics GmbH ehem. edex UG Herr Frank Bergmann"
+
+  - tenant_no: "79"
+    names:
+      - "Prof. Burmeier Ingenieur GmbH"
+      - "Fa. Prof. Burmeier Ingenieur GmbH"
+
+  - tenant_no: "80"
+    names:
+      - "Buchhandlung Michael Rother"
+      - "Michael Rother Buchhandlung"
+
+  - tenant_no: "81"
+    names:
+      - "Vierhaus Steuerberatungsgesellschaft"
+
+  - tenant_no: "83"
+    names:
+      - "Funk Versicherungsmakler GmbH"
+      - "Funk & Söhne Versicherung"
+
+  - tenant_no: "84"
+    names:
+      - "DC International Business Kultur und Service GmbH"
+      - "DC Int.Bks GmbH"
+      - "DC Int.Bks"
+
+  - tenant_no: "86"
+    names:
+      - "Obergerichtsvollzieher Kluge"
+
+  - tenant_no: "89"
+    names:
+      - "yard fm GmbH"
+
+  - tenant_no: "91"
+    names:
+      - "Institut für Angewandte Informatik e. V."
+      - "Institut für Angewandte Informatik e.V."
+
+  - tenant_no: "92"
+    names:
+      - "ATHENA Technologie Beratung GmbH"
+      - "Athena Technologie Beratung GmbH"
+
+  - tenant_no: "94"
+    names:
+      - "Hausverwalter24 UG"
+      - "Hausverwalter24 UG (haftungsbeschränkt)"
+
+  - tenant_no: "95"
+    names:
+      - "dps Energie GmbH"
+
+  - tenant_no: "96"
+    names:
+      - "SG Dresdner Bank Dresden e. V."
+      - "SG Dresdner Bank Dresden e.V."
+
+  - tenant_no: "97"
+    names:
+      - "Leaders Academy"
+      - "Leaders Academy Dresden"
+
+  - tenant_no: "99"
+    names:
+      - "H & E Handel und Entwicklungs GmbH"
+      - "H&E Handel und Entwicklungs GmbH"
+
+  - tenant_no: "101"
+    names:
+      - "BDS Sachsen e. V."
+      - "BdS Sachsen e.V."
+
+  - tenant_no: "102"
+    names:
+      - "Reformer e. V."
+      - "Reformer e.V"
+
+  - tenant_no: "103"
+    names:
+      - "ZT Outdoor Living GmbH"
+
+  - tenant_no: "104"
+    names:
+      - "T & S Innovation GmbH"
+      - "T & S Innovation"
+      - "Bert Krüger"
+
+  - tenant_no: "105"
+    names:
+      - "Sittner Kosmetik"
+      - "Kosmetik Sittner"
+
+  - tenant_no: "106"
+    names:
+      - "Singakademie Dresden e. V."
+      - "Singakademie Dresden e.V."
+
+  - tenant_no: "107"
+    names:
+      - "Physiotherapie Bert Krüger"
+
+  - tenant_no: "108"
+    names:
+      - "Dr. Eric J. Schöne"
+      - "Dr Eric J. Schöne"
+      - "Dr. Eric Schöne"
+
+  - tenant_no: "109"
+    names:
+      - "Light Frame FX"
+      - "Michael Roth – 3D & VFX Artist"

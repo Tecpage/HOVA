@@ -1,0 +1,69 @@
+#!/bin/bash
+set -euo pipefail
+
+# Robust IPRO start script
+PORT="${1:-8000}"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DASH="$ROOT/dashboard"
+DATA="$DASH/data"
+PIDFILE="$DATA/server.pid"
+LOG="/Users/${USER}/Library/Logs/IPRO/ipro_${PORT}.log"
+
+mkdir -p "$DATA" "$(dirname "$LOG")"
+
+# Stop old server if pidfile exists
+if [ -f "$PIDFILE" ]; then
+  OLD_PID="$(cat "$PIDFILE" 2>/dev/null || true)"
+  if [ -n "$OLD_PID" ] && kill -0 "$OLD_PID" 2>/dev/null; then
+    kill "$OLD_PID" 2>/dev/null || true
+    sleep 0.2
+  fi
+  rm -f "$PIDFILE" || true
+fi
+
+# Free port if needed
+PIDS_BY_PORT="$(lsof -ti tcp:${PORT} 2>/dev/null || true)"
+if [ -n "$PIDS_BY_PORT" ]; then
+  kill ${PIDS_BY_PORT} 2>/dev/null || true
+  sleep 0.2
+fi
+
+# Build dashboard if builder exists
+if [ -f "$ROOT/build_dashboard.py" ]; then
+  python3 "$ROOT/build_dashboard.py" >>"$LOG" 2>&1 || true
+fi
+
+# Start a simple local server serving /dashboard/ from the project root.
+# We serve from ROOT so /dashboard/ path works.
+python3 - <<PY >>"$LOG" 2>&1 &
+import http.server, socketserver, os, sys
+from urllib.parse import urlparse
+
+PORT=int(os.environ.get("PORT","8000"))
+ROOT=os.environ.get("ROOT",".")
+os.chdir(ROOT)
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        p = urlparse(self.path).path
+        if p == "/":
+            self.send_response(302)
+            self.send_header("Location","/dashboard/")
+            self.end_headers()
+            return
+        return super().do_GET()
+
+with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as httpd:
+    print(f"Serving http://127.0.0.1:{PORT}/dashboard/ from {ROOT}")
+    httpd.serve_forever()
+PY
+
+NEW_PID=$!
+echo "$NEW_PID" > "$PIDFILE"
+
+# Do NOT open browser if started from IPRO.app (it opens itself)
+if [ "${Y_NO_OPEN:-0}" != "1" ]; then
+  open "http://127.0.0.1:${PORT}/dashboard/?v=$(date +%s)" >/dev/null 2>&1 || true
+fi
+
+exit 0

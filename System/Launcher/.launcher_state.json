@@ -1,0 +1,13 @@
+{
+  "started": {
+    "tacheles": {
+      "pid": 4905,
+      "ts": 1765915133.049747,
+      "cmd": [
+        "./start_dashboard.command",
+        "8010"
+      ],
+      "cwd": "/Users/ericschone/Library/Mobile Documents/com~apple~CloudDocs/Y/Tacheles"
+    }
+  }
+}
