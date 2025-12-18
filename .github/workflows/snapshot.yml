@@ -1,9 +1,7 @@
 name: Nova Snapshot
-
 on:
   push:
     branches: [ main ]
-
 jobs:
   snapshot:
     runs-on: ubuntu-latest

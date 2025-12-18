@@ -1,9 +1,7 @@
 name: Export Nova (Text)
-
 on:
   push:
     branches: [ main ]
-
 jobs:
   export:
     runs-on: ubuntu-latest
