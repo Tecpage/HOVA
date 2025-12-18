@@ -1,0 +1,23 @@
+name: Export Nova (Text)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export full state
+        run: |
+          mkdir export
+          cp nova.yaml export/
+          cp CHANGELOG.md export/
+          git log --pretty=fuller > export/git_log.txt
+          tar -czf nova_export_text.tar.gz export
+      - name: Upload export
+        uses: actions/upload-artifact@v4
+        with:
+          name: nova-export-text
+          path: nova_export_text.tar.gz
